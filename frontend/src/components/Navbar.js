@@ -11,25 +11,23 @@ function Navbar() {
       <div className="list">
         <ul>
           <span>
-            {" "}
-            <Link to="/">Home</Link>{" "}
-          </span>
-          <span>
-            {" "}
-            <Link to="/about">About</Link>{" "}
-          </span>
-          <span>
-            {" "}
-            <Link to="/contact">Contact</Link>{" "}
+            <Link to="/">Home</Link>
           </span>
 
           <span>
-            {" "}
-            <Link to="/contact">Contact</Link>{" "}
+            <Link to="/about">About</Link>
+          </span>
+
+          <span>
+            <Link to="/contact">Contact</Link>
+          </span>
+
+          <span>            
+            <Link to="/contact">Contact</Link>
           </span>
           <span>
-            {" "}
-            <Link to="/contact">Contact</Link>{" "}
+            
+            <Link to="/login">Prijava</Link>
           </span>
         </ul>
       </div>
