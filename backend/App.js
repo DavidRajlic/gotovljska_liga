@@ -1,29 +1,35 @@
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
-const password = process.env.MONGO_URL; 
+const mongoose = require("mongoose");
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
+const password = process.env.MONGO_PASSWORD;
 const uri = `mongodb+srv://rajlicdavid:${password}@gotovljskaliga.ho2ghjr.mongodb.net/?appName=GotovljskaLiga`;
+const express = require("express");
+const cors = require("cors");
+const createError = require("http-errors");
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+// connect  to mongodb
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
+
+const PORT = 4000;
+const app = express();
+app.listen(PORT);
+
+// connect frontend to backend
+app.use(cors({ origin: ["http://localhost:3000", "http://localhost:4000"] }));
+app.use(cors());
+
+// needed to transport data from fromntend to backedn (name of team for example)
+app.use(express.json());
+
+const teamsRouter = require("./routes/TeamRoutes");
+app.use("/teams", teamsRouter);
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  next(createError(404));
 });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+module.exports = app;

@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const CODE = process.env.REACT_APP_KODA;
 
 function Login() {
   const [enteredCode, setEnteredCode] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (enteredCode === CODE) {
       alert("Administrator prijavljen!");
+      login(); // Nastavi stanje prijave na true
       // Tukaj lahko dodate nadaljnjo logiko po uspešni prijavi
     } else {
       alert("Neveljavna koda za prijavo administratorja!");
@@ -25,7 +28,7 @@ function Login() {
       <p>Prijavi se lahko le administrator!</p>
       <form onSubmit={handleSubmit}>
         <label>KODA:</label>
-        <input type="text" name="username" value={enteredCode} onChange={handleChange} />
+        <input type="text" value={enteredCode} onChange={handleChange} />
         <br />
         <button type="submit">Login</button>
       </form>

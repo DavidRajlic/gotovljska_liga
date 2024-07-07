@@ -1,4 +1,4 @@
-var teamModel = require('../models/TeamModel.js')
+const teamModel = require("../models/teamModel.js");
 
 /**
  * TeamController.js
@@ -6,135 +6,121 @@ var teamModel = require('../models/TeamModel.js')
  * @description :: Server-side logic for managing Teams.
  */
 module.exports = {
-
-    /**
-     * TeamController.list()
-     */
-    list: function (req, res) {
-        teamModel.find(function (err, Teams) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting Team.',
-                    error: err
-                });
-            }
-
-            return res.json(Teams);
-        });
-    },
-
-    /**
-     * TeamController.show()
-     */
-    show: function (req, res) {
-        var id = req.params.id;
-
-        teamModel.findOne({_id: id}, function (err, Team) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting Team.',
-                    error: err
-                });
-            }
-
-            if (!Team) {
-                return res.status(404).json({
-                    message: 'No such Team'
-                });
-            }
-
-            return res.json(Team);
-        });
-    },
-
-    /**
-     * TeamController.create()
-     */
-    create: function (req, res) {
-        var Team = new teamModel({
-			name : req.body.name,
-			players : req.body.players,
-			points : req.body.points,
-			goalsScored : req.body.goalsScored,
-			goalsConceded : req.body.goalsConceded,
-			goalDiffrence : req.body.goalDiffrence,
-			matchesPlayed : req.body.matchesPlayed,
-			wins : req.body.wins,
-			draws : req.body.draws,
-			losses : req.body.losses
-        });
-
-        Team.save(function (err, Team) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating Team',
-                    error: err
-                });
-            }
-
-            return res.status(201).json(Team);
-        });
-    },
-
-    /**
-     * TeamController.update()
-     */
-    update: function (req, res) {
-        var id = req.params.id;
-
-        teamModel.findOne({_id: id}, function (err, Team) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting Team',
-                    error: err
-                });
-            }
-
-            if (!Team) {
-                return res.status(404).json({
-                    message: 'No such Team'
-                });
-            }
-
-            Team.name = req.body.name ? req.body.name : Team.name;
-			Team.players = req.body.players ? req.body.players : Team.players;
-			Team.points = req.body.points ? req.body.points : Team.points;
-			Team.goalsScored = req.body.goalsScored ? req.body.goalsScored : Team.goalsScored;
-			Team.goalsConceded = req.body.goalsConceded ? req.body.goalsConceded : Team.goalsConceded;
-			Team.goalDiffrence = req.body.goalDiffrence ? req.body.goalDiffrence : Team.goalDiffrence;
-			Team.matchesPlayed = req.body.matchesPlayed ? req.body.matchesPlayed : Team.matchesPlayed;
-			Team.wins = req.body.wins ? req.body.wins : Team.wins;
-			Team.draws = req.body.draws ? req.body.draws : Team.draws;
-			Team.losses = req.body.losses ? req.body.losses : Team.losses;
-			
-            Team.save(function (err, Team) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating Team.',
-                        error: err
-                    });
-                }
-
-                return res.json(Team);
-            });
-        });
-    },
-
-    /**
-     * TeamController.remove()
-     */
-    remove: function (req, res) {
-        var id = req.params.id;
-
-        teamModel.findByIdAndRemove(id, function (err, Team) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the Team.',
-                    error: err
-                });
-            }
-
-            return res.status(204).json();
-        });
+  /**
+   * TeamController.list()
+   */
+  list: async function (req, res) {
+    try {
+      const teams = await teamModel.find();
+      return res.json(teams);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when getting Teams.",
+        error: err,
+      });
     }
+  },
+
+  /**
+   * TeamController.show()
+   */
+  show: async function (req, res) {
+    const id = req.params.id;
+    try {
+      const team = await teamModel.findOne({ _id: id });
+      if (!team) {
+        return res.status(404).json({
+          message: "No such Team",
+        });
+      }
+      return res.json(team);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when getting Team.",
+        error: err,
+      });
+    }
+  },
+
+  /**
+   * TeamController.create()
+   */
+  create: async function (req, res) {
+    try {
+      const newTeam = new teamModel({
+        name: req.body.name,
+        players: [""],
+        points: 0,
+        goalsScored: 0,
+        goalsConceded: 0,
+        goalDiffrence: 0,
+        matchesPlayed: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+      });
+
+      await newTeam.save();
+      console.log("kulll");
+      return res.status(201).json({
+        message: "Team created",
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Error when creating Team",
+        error: err,
+      });
+    }
+  },
+
+  /**
+   * TeamController.update()
+   */
+  update: async function (req, res) {
+    const id = req.params.id;
+    try {
+      const team = await teamModel.findOne({ _id: id });
+      if (!team) {
+        return res.status(404).json({
+          message: "No such Team",
+        });
+      }
+
+      team.name = req.body.name || team.name;
+      team.players = req.body.players || team.players;
+      team.points = req.body.points || team.points;
+      team.goalsScored = req.body.goalsScored || team.goalsScored;
+      team.goalsConceded = req.body.goalsConceded || team.goalsConceded;
+      team.goalDiffrence = req.body.goalDiffrence || team.goalDiffrence;
+      team.matchesPlayed = req.body.matchesPlayed || team.matchesPlayed;
+      team.wins = req.body.wins || team.wins;
+      team.draws = req.body.draws || team.draws;
+      team.losses = req.body.losses || team.losses;
+
+      const updatedTeam = await team.save();
+      return res.json(updatedTeam);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when updating Team.",
+        error: err,
+      });
+    }
+  },
+
+  /**
+   * TeamController.remove()
+   */
+  remove: async function (req, res) {
+    const id = req.params.id;
+    try {
+      await teamModel.findByIdAndRemove(id);
+      return res.status(204).json();
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when deleting the Team.",
+        error: err,
+      });
+    }
+  },
 };
