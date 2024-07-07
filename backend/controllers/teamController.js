@@ -113,8 +113,14 @@ module.exports = {
    */
   remove: async function (req, res) {
     const id = req.params.id;
+
     try {
-      await teamModel.findByIdAndRemove(id);
+      const team = await teamModel.findByIdAndDelete(id);
+
+      if (!team) {
+        return res.status(404).json({ message: "Team not found" });
+      }
+
       return res.status(204).json();
     } catch (err) {
       return res.status(500).json({

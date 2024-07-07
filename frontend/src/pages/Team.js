@@ -3,7 +3,7 @@ import axios from "axios";
 
 function Teams() {
   const [teams, setTeams] = useState([]);
-  const [name, setname] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -16,7 +16,7 @@ function Teams() {
     };
 
     fetchTeams();
-  }, []);
+  }, [teams]);
 
   const handleCreateTeam = async (event) => {
     event.preventDefault();
@@ -24,17 +24,22 @@ function Teams() {
       await axios.post("http://localhost:4000/teams", {
         name: name,
       });
-      // Fetch teams again after creating a new one
-      const newTeamsResponse = await axios.get("http://localhost:4000/teams");
-      setTeams(newTeamsResponse.data);
-      setname("");
+      setName("");
     } catch (error) {
       console.error("Prišlo je do napake pri ustvarjanju ekipe!", error);
     }
   };
 
+  const removeTeam = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4000/teams/${id}`);
+    } catch (error) {
+      console.error("Prišlo je do napake pri brisanju ekipe!", error);
+    }
+  };
+
   const handleChange = (event) => {
-    setname(event.target.value);
+    setName(event.target.value);
   };
 
   return (
@@ -48,6 +53,7 @@ function Teams() {
         {teams.map((team) => (
           <div key={team._id}>
             <h2>{team.name}</h2>
+            <button onClick={() => removeTeam(team._id)}>Izbriši ekipo</button>
           </div>
         ))}
       </ul>
