@@ -9,17 +9,16 @@ module.exports = {
   /**
    * playerController.list()
    */
-  list: function (req, res) {
-    PlayerModel.find(function (err, players) {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when getting player.",
-          error: err,
-        });
-      }
-
+  list: async function (req, res) {
+    try {
+      const players = await PlayerModel.find();
       return res.json(players);
-    });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when getting player.",
+        error: err,
+      });
+    }
   },
 
   /**
@@ -73,16 +72,11 @@ module.exports = {
   /**
    * playerController.update()
    */
-  update: function (req, res) {
-    var id = req.params.id;
-
-    PlayerModel.findOne({ _id: id }, function (err, player) {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when getting player",
-          error: err,
-        });
-      }
+  update: async function (req, res) {
+    console.log("heree");
+    try {
+      const id = req.params.id;
+      const player = await PlayerModel.findOne({ _id: id });
 
       if (!player) {
         return res.status(404).json({
@@ -90,26 +84,19 @@ module.exports = {
         });
       }
 
-      player.name = req.body.name ? req.body.name : player.name;
-      player.goalsScored = req.body.goalsScored
-        ? req.body.goalsScored
-        : player.goalsScored;
-      player.yellowCards = req.body.yellowCards
-        ? req.body.yellowCards
-        : player.yellowCards;
-      player.redCards = req.body.redCards ? req.body.redCards : player.redCards;
+      player.name = req.body.name || player.name;
+      player.goalsScored = req.body.goalsScored + player.goalsScored;
+      player.yellowCards = req.body.yellowCards + player.yellowCards;
+      player.redCards = req.body.redCards + player.redCards;
 
-      player.save(function (err, player) {
-        if (err) {
-          return res.status(500).json({
-            message: "Error when updating player.",
-            error: err,
-          });
-        }
-
-        return res.json(player);
+      const updatedPlayer = await player.save();
+      return res.json(updatedPlayer);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when updating player.",
+        error: err,
       });
-    });
+    }
   },
 
   /**
