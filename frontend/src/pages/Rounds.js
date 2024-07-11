@@ -1,96 +1,92 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Round() {
-  const [rounds, setRounds] = useState([]);
   const [date, setDate] = useState("");
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
   const [currentRoundMatches, setCurrentRoundMatches] = useState([]);
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [selectedTime, setSelectedTime] = useState("");
-  const [createMatch, setCreateMatch] = useState(false);
+  const [matchday, setMatchday] = useState(1);
+  const [groupedMatches, setGroupedMatches] = useState({});
 
-  useEffect(() => {
-    const fetchRoundAndTeams = async () => {
-      try {
-        const [roundResponse, teamsResponse] = await Promise.all([
-          axios.get("http://localhost:4000/rounds"),
-          axios.get("http://localhost:4000/teams"),
-        ]);
+  const navigate = useNavigate();
 
-        setRounds(roundResponse.data);
-        setTeams(teamsResponse.data);
-      } catch (error) {
-        console.error("Prišlo je do napake pri pridobivanju podatkov!", error);
-      }
-    };
+  const fetchTeamsAndMatches = async () => {
+    try {
+      const [teamsResponse, matchesResponse] = await Promise.all([
+        axios.get("http://localhost:4000/teams"),
+        axios.get("http://localhost:4000/matches"),
+      ]);
 
-    fetchRoundAndTeams();
-  }, []);
+      setTeams(teamsResponse.data);
+      const fetchedMatches = matchesResponse.data;
+      setMatches(fetchedMatches);
+      groupMatchesByMatchday(fetchedMatches);
 
-  const handleChange = (event) => {
-    setDate(event.target.value);
+      const maxMatchday = Math.max(
+        ...fetchedMatches.map((match) => match.matchday),
+        0
+      );
+      setMatchday(maxMatchday + 1);
+    } catch (error) {
+      console.error("Prišlo je do napake pri pridobivanju podatkov!", error);
+    }
   };
 
-  const handleTimeChange = (event) => {
-    setSelectedTime(event.target.value);
+  useEffect(() => {
+    fetchTeamsAndMatches();
+  }, []);
+
+  const groupMatchesByMatchday = (matches) => {
+    const grouped = matches.reduce((acc, match) => {
+      const day = match.matchday;
+      if (!acc[day]) {
+        acc[day] = [];
+      }
+      acc[day].push(match);
+      return acc;
+    }, {});
+    setGroupedMatches(grouped);
   };
 
   const handleTeamClick = (team) => {
-    if (selectedTeams.length < 2) {
+    if (selectedTeams.length < 2 && !selectedTeams.includes(team)) {
       setSelectedTeams([...selectedTeams, team]);
     }
   };
 
-  const addMatch = async () => {
+  const addMatch = () => {
     if (selectedTeams.length === 2 && selectedTime !== "") {
-      try {
-        const response = await axios.post("http://localhost:4000/matches", {
-          team1: selectedTeams[0]._id,
-          team2: selectedTeams[1]._id,
-          time: selectedTime,
-        });
+      const newMatch = {
+        team1Id: selectedTeams[0]._id,
+        team2Id: selectedTeams[1]._id,
+        team1: selectedTeams[0].name,
+        team2: selectedTeams[1].name,
+        time: selectedTime,
+        date: date,
+        matchday: matchday,
+      };
 
-        const newMatch = {
-          team1: selectedTeams[0],
-          team2: selectedTeams[1],
-          time: selectedTime,
-        };
-
-        setMatches((prevMatches) => [...prevMatches, newMatch]);
-        setCurrentRoundMatches((prevMatches) => [...prevMatches, newMatch]);
-
-        setSelectedTeams([]);
-        setSelectedTime("");
-      } catch (error) {
-        console.error("Prišlo je do napake pri ustvarjanju tekme!", error);
-      }
+      setCurrentRoundMatches([...currentRoundMatches, newMatch]);
+      setSelectedTeams([]);
+      setSelectedTime("");
     }
   };
 
-  const createRound = async (event) => {
-    event.preventDefault();
+  const confirmMatchday = async () => {
     try {
-      // Ustvarimo novo kolo
-      const response = await axios.post("http://localhost:4000/rounds", {
-        round: rounds.length + 1,
-        date: date,
-        matches: currentRoundMatches,
-      });
-      let newRound = {
-        round: rounds.length + 1,
-        date: date,
-        matches: currentRoundMatches,
-      };
-      // Po uspešnem dodajanju, ponastavimo stanja
-      setDate("");
-      setMatches([]);
+      for (const match of currentRoundMatches) {
+        await axios.post("http://localhost:4000/matches", match);
+      }
       setCurrentRoundMatches([]);
-      setCreateMatch(false);
-      setRounds((prevRounds) => [...prevRounds, newRound]);
+      setDate("");
+      setMatchday(matchday + 1);
+      fetchTeamsAndMatches(); // Refresh the matches after adding new ones
     } catch (error) {
-      console.error("Prišlo je do napake pri ustvarjanju kola!", error);
+      console.error("Prišlo je do napake pri ustvarjanju tekem!", error);
     }
   };
 
@@ -99,76 +95,133 @@ function Round() {
     return team ? team.name : "Neznana ekipa";
   };
 
-  console.log(rounds);
+  const editMatch = (team1, team2, matchId, team1Id, team2Id) => {
+    navigate(`/rounds/${matchId}`, {
+      state: {
+        team1: team1,
+        team2: team2,
+        matchId: matchId,
+        team1Id: team1Id,
+        team2Id: team2Id,
+      },
+    });
+  };
+
   return (
     <div>
       <h1>Razpored</h1>
 
-      <h3>{rounds.length + 1}. KOLO</h3>
+      <h3>{matchday}. KOLO</h3>
       <input
         type="text"
         placeholder="Datum"
         value={date}
-        onChange={handleChange}
+        onChange={(e) => setDate(e.target.value)}
       />
-      {createMatch ? (
+      <div>
+        <h4>Dodaj tekmo</h4>
+        <ul>
+          {teams.map((team) => (
+            <button
+              key={team._id}
+              type="button"
+              onClick={() => handleTeamClick(team)}
+              disabled={selectedTeams.length >= 2}
+            >
+              {team.name}
+            </button>
+          ))}
+        </ul>
         <div>
-          <ul>
-            {teams.map((team) => (
-              <button
-                key={team._id}
-                type="button"
-                onClick={() => handleTeamClick(team)}
-                disabled={selectedTeams.length >= 2}
-              >
-                {team.name}
-              </button>
-            ))}
-          </ul>
-          <div>
-            <p>Izbrane ekipe:</p>
-            {selectedTeams.map((team, index) => (
-              <div key={index}>
-                <span>{team.name}</span>
-              </div>
-            ))}
-            {selectedTeams.length === 2 && (
-              <div>
-                <input
-                  type="text"
-                  placeholder="Čas tekme"
-                  value={selectedTime}
-                  onChange={handleTimeChange}
-                />
-                <button onClick={addMatch}>Potrdi tekmo</button>
-              </div>
-            )}
-          </div>
+          <p>Izbrane ekipe:</p>
+          {selectedTeams.map((team, index) => (
+            <div key={index}>
+              <span>{team.name}</span>
+            </div>
+          ))}
+          {selectedTeams.length === 2 && (
+            <div>
+              <input
+                type="text"
+                placeholder="Čas tekme"
+                value={selectedTime}
+                onChange={(e) => setSelectedTime(e.target.value)}
+              />
+              <button onClick={addMatch}>Dodaj tekmo</button>
+            </div>
+          )}
         </div>
-      ) : (
-        <span></span>
-      )}
-      <button type="button" onClick={() => setCreateMatch(!createMatch)}>
-        Dodaj tekmo
-      </button>
-      <button onClick={createRound}>Dodaj {rounds.length + 1}. kolo</button>
-
-      {rounds.map((round, index) => (
-        <div key={index}>
-          <h3>
-            {round.round}. KOLO {round.date}
-          </h3>
-          {round.matches.map((match, matchIndex) => (
-            <div key={matchIndex}>
+      </div>
+      {currentRoundMatches.length > 0 && (
+        <div>
+          <h4>Tekme za {matchday}. kolo:</h4>
+          {currentRoundMatches.map((match, index) => (
+            <div key={index}>
               <span>
-                {" "}
-                {match.team1.name} vs {match.team2.name}{" "}
+                {match.team1} vs {match.team2}
               </span>
-              {match.time && <span> ob {match.time}</span>}
+              <span> ob {match.time}</span>
             </div>
           ))}
         </div>
-      ))}
+      )}
+      <button onClick={confirmMatchday}>Potrdi {matchday}. kolo</button>
+
+      <div>
+        <h2>Vsa Kola</h2>
+        {Object.keys(groupedMatches).map((day) => (
+          <div key={day}>
+            <h3>
+              {day}. KOLO {groupedMatches[day][0].date}
+            </h3>
+            {groupedMatches[day].map((match) => (
+              <div key={match._id}>
+                <span>
+                  {match.team1} vs {match.team2} ob {match.time}{" "}
+                  {match.matchPlayed && (
+                    <span style={{ fontWeight: "700", padding: "10px" }}>
+                      {" "}
+                      {match.team1Goals} : {match.team2Goals}{" "}
+                      <button
+                        onClick={() =>
+                          editMatch(
+                            match.team1,
+                            match.team2,
+                            match._id,
+                            match.team1Id,
+                            match.team2Id
+                          )
+                        }
+                      >
+                        {" "}
+                        Uredi tekmo{" "}
+                      </button>
+                    </span>
+                  )}
+                </span>
+                {match.matchPlayed && (
+                  <div>
+                    <h4> Strelci za {match.team1}</h4>
+                    {match.team1Scorers.map((scorer, index) => (
+                      <div key={index}>
+                        {scorer.player}{" "}
+                        {scorer.goals > 1 && <span> {scorer.goals}x </span>}
+                      </div>
+                    ))}
+                    <h4> Strelci za {match.team2}</h4>
+                    {match.team2Scorers.map((scorer, index) => (
+                      <div key={index}>
+                        {scorer.player}{" "}
+                        {scorer.goals > 1 && <span> {scorer.goals}x </span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
