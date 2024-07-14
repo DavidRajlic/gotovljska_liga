@@ -7,8 +7,10 @@ function Match() {
   const team1Id = location.state.team1Id;
   const team2Id = location.state.team2Id;
   const matchId = location.state.matchId;
+  const [match, setMatch] = useState(null);
   const [team1, setTeam1] = useState(null);
   const [team2, setTeam2] = useState(null);
+  const [didNotPlay, setDidNotPlay] = useState(false);
   const [yellowCards, setYellowCards] = useState({ team1: [], team2: [] });
   const [redCards, setRedCards] = useState({ team1: [], team2: [] });
   const [team1Goals, setTeam1Goals] = useState("");
@@ -24,15 +26,23 @@ function Match() {
     team2: {},
   });
 
-  // get team by this id
+  // Stanje za število rumenih in rdečih kartonov na ekipo
+  const [team1YellowCardCount, setTeam1YellowCardCount] = useState(0);
+  const [team2YellowCardCount, setTeam2YellowCardCount] = useState(0);
+  const [team1RedCardCount, setTeam1RedCardCount] = useState(0);
+  const [team2RedCardCount, setTeam2RedCardCount] = useState(0);
+
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const [team1Response, team2Response] = await Promise.all([
-          axios.get(`http://localhost:4000/teams/${team1Id}`),
-          axios.get(`http://localhost:4000/teams/${team2Id}`),
-          axios.get(`http://localhost:4000/matches/${matchId}`),
-        ]);
+        const [team1Response, team2Response, matchResponse] = await Promise.all(
+          [
+            axios.get(`http://localhost:4000/teams/${team1Id}`),
+            axios.get(`http://localhost:4000/teams/${team2Id}`),
+            axios.get(`http://localhost:4000/matches/${matchId}`),
+          ]
+        );
+        setMatch(matchResponse.data);
         setTeam1(team1Response.data);
         setTeam2(team2Response.data);
       } catch (error) {
@@ -57,6 +67,11 @@ function Match() {
         [player._id]: (prevYellowCardPlayers[team][player._id] || 0) + 1,
       },
     }));
+    if (team === "team1") {
+      setTeam1YellowCardCount((prevCount) => prevCount + 1);
+    } else {
+      setTeam2YellowCardCount((prevCount) => prevCount + 1);
+    }
   };
 
   const handleRedCardClick = (team, index) => {
@@ -73,6 +88,11 @@ function Match() {
         [player._id]: (prevRedCardPlayers[team][player._id] || 0) + 1,
       },
     }));
+    if (team === "team1") {
+      setTeam1RedCardCount((prevCount) => prevCount + 1);
+    } else {
+      setTeam2RedCardCount((prevCount) => prevCount + 1);
+    }
   };
 
   const handleGoalClick = (team, index) => {
@@ -101,16 +121,78 @@ function Match() {
     } else if (team2Goals > team1Goals) {
       winner = team2;
     } else {
-      winner = undefined;
+      winner = null;
+    }
+
+    if (match.matchPlayed) {
+      for (const scorer of match.team1Scorers) {
+        console.log("tukaj");
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          goalsScored: scorer.goals,
+        });
+      }
+      for (const scorer of match.team2Scorers) {
+        console.log("tukaj1");
+        console.log(scorer.goals);
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          goalsScored: scorer.goals,
+        });
+      }
+      console.log("tukaj2");
+      await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+        goalsScored: -Math.abs(match.team1Goals),
+        goalsConceded: -Math.abs(match.team2Goals),
+        matchesPlayed: -1,
+      });
+
+      console.log("tukaj");
+      await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+        goalsScored: -Math.abs(match.team2Goals),
+        goalsConceded: -Math.abs(match.team1Goals),
+        matchesPlayed: -1,
+      });
+      console.log(match.winner, team1Id);
+      if (match.winner === team1Id) {
+        console.log("tukajWin in točke");
+        await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          wins: -1,
+          points: -3,
+        });
+
+        await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          losses: -1,
+        });
+      } else if (match.winner === team2Id) {
+        console.log("tukaj");
+        await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          wins: -1,
+          points: -3,
+        });
+        await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          losses: -1,
+        });
+      } else {
+        console.log("tukaj");
+        await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          draws: -1,
+          points: -1,
+        });
+        await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          draws: -1,
+          points: -1,
+        });
+      }
     }
 
     try {
       // Pretvori indekse v imena igralcev
       const team1Scorers = Object.keys(goals.team1).map((index) => ({
+        id: team1.players[index]._id,
         player: team1.players[index].name,
         goals: goals.team1[index],
       }));
       const team2Scorers = Object.keys(goals.team2).map((index) => ({
+        id: team2.players[index]._id,
         player: team2.players[index].name,
         goals: goals.team2[index],
       }));
@@ -156,21 +238,36 @@ function Match() {
       let team2Losses = 0;
       let team2Points;
 
-      if (winner === team1) {
+      if (winner === team1 && !didNotPlay) {
+        console.log("here");
         team1Wins = 1;
         team1Points = 3;
         team2Points = 0;
         team2Losses = 1;
-      } else if (winner === undefined) {
-        team1Points = 1;
-        team2Points = 1;
-        team1Draws = 1;
-        team2Draws = 1;
-      } else {
+      } else if (winner === team1 && didNotPlay) {
+        console.log("here1");
+        team1Wins = 1;
+        team1Points = 3;
+        team2Points = -1;
+        team2Losses = 1;
+      } else if (winner === team2 && didNotPlay) {
+        console.log("here2");
+        team2Wins = 1;
+        team1Points = -1;
+        team2Points = 3;
+        team1Losses = 1;
+      } else if (winner === team2 && !didNotPlay) {
+        console.log("here3");
         team1Points = 0;
         team2Points = 3;
         team2Wins = 1;
         team1Losses = 1;
+      } else if (winner === null) {
+        console.log("here4");
+        team1Points = 1;
+        team2Points = 1;
+        team1Draws = 1;
+        team2Draws = 1;
       }
 
       await axios.put(`http://localhost:4000/teams/${team1Id}`, {
@@ -178,6 +275,8 @@ function Match() {
         goalsScored: Number(team1Goals),
         goalsConceded: Number(team2Goals),
         matchesPlayed: 1,
+        yellowCards: team1YellowCardCount,
+        redCards: team1RedCardCount,
         wins: team1Wins,
         draws: team1Draws,
         losses: team1Losses,
@@ -188,6 +287,8 @@ function Match() {
         goalsScored: Number(team2Goals),
         goalsConceded: Number(team1Goals),
         matchesPlayed: 1,
+        yellowCards: team2YellowCardCount,
+        redCards: team2RedCardCount,
         wins: team2Wins,
         draws: team2Draws,
         losses: team2Losses,
@@ -210,6 +311,17 @@ function Match() {
         error
       );
     }
+  };
+
+  const handleTeamClick = (team) => {
+    if (team === team1) {
+      setTeam1Goals(0);
+      setTeam2Goals(3);
+    } else {
+      setTeam1Goals(3);
+      setTeam2Goals(0);
+    }
+    setDidNotPlay(true);
   };
 
   // Preveri, če podatki niso še naloženi
@@ -246,6 +358,45 @@ function Match() {
         />
         <button onClick={handleResult}>Potrdi rezultat</button>
       </div>
+      <ul>
+        <label> Ali se katera od ekip ni prikazala na tekmi? </label>
+        <button
+          key={team1Id}
+          type="button"
+          onClick={() => handleTeamClick(team1)}
+        >
+          {team1.name}
+        </button>
+        <button
+          key={team2Id}
+          type="button"
+          onClick={() => handleTeamClick(team2)}
+        >
+          {team2.name}
+        </button>
+      </ul>
+      {match.matchPlayed && (
+        <div>
+          <span style={{ fontWeight: "700", padding: "10px" }}>
+            {" "}
+            {match.team1Goals} : {match.team2Goals}{" "}
+          </span>
+          <h4> Strelci za {match.team1}</h4>
+          {match.team1Scorers.map((scorer, index) => (
+            <div key={index}>
+              {scorer.player}{" "}
+              {scorer.goals > 1 && <span> {scorer.goals}x </span>}
+            </div>
+          ))}
+          <h4> Strelci za {match.team2}</h4>
+          {match.team2Scorers.map((scorer, index) => (
+            <div key={index}>
+              {scorer.player}{" "}
+              {scorer.goals > 1 && <span> {scorer.goals}x </span>}
+            </div>
+          ))}
+        </div>
+      )}
       <h2>{team1.name}</h2>
       {team1.players.map((player, index) => (
         <div className="player" key={index}>
@@ -326,14 +477,6 @@ function Match() {
             </li>
           ))}
         </ul>
-        <h3>Igralci z doseženimi goli - ID-ji (team1):</h3>
-        <ul>
-          {Object.keys(goalScorers.team1).map((playerId) => (
-            <li key={playerId}>
-              {playerId}: {goalScorers.team1[playerId]}x
-            </li>
-          ))}
-        </ul>
       </div>
       <div>
         <h3>Igralci z doseženimi goli (team2):</h3>
@@ -341,14 +484,6 @@ function Match() {
           {Object.keys(goals.team2).map((index) => (
             <li key={index}>
               {team2.players[index].name} {goals.team2[index]}x
-            </li>
-          ))}
-        </ul>
-        <h3>Igralci z doseženimi goli - ID-ji (team2):</h3>
-        <ul>
-          {Object.keys(goalScorers.team2).map((playerId) => (
-            <li key={playerId}>
-              {playerId}: {goalScorers.team2[playerId]}x
             </li>
           ))}
         </ul>

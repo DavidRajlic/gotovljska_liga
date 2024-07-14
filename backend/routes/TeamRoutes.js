@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var TeamController = require("../controllers/TeamController.js");
+var TeamController = require("../controllers/teamController.js");
 
 /*
  * GET
@@ -21,6 +21,7 @@ router.post("/", TeamController.create);
  * PUT
  */
 router.put("/:id", TeamController.update);
+router.put("/again/:id", TeamController.updateTeam);
 
 /*
  * DELETE
