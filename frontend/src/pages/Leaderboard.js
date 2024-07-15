@@ -19,9 +19,9 @@ function Teams() {
   }, []);
 
   return (
-    <div>
+    <div className="leaderboard">
       <h1>Lestvica </h1>
-      <table className="leaderboard">
+      <table>
         <tr>
           <th> </th>
           <th>Ekipa </th>
@@ -38,8 +38,14 @@ function Teams() {
 
         {teams.map((team, index) => (
           <tr className="tr" key={team._id}>
-            <td> {index + 1}.</td>
-            <td> {team.name}</td>
+            <td>
+              {" "}
+              <b> {index + 1}. </b>
+            </td>
+            <td>
+              {" "}
+              <b> {team.name} </b>{" "}
+            </td>
             <td> {team.matchesPlayed}</td>
             <td> {team.wins}</td>
             <td> {team.draws}</td>

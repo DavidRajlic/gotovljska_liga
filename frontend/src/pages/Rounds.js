@@ -11,6 +11,7 @@ function Round() {
   const [selectedTime, setSelectedTime] = useState("");
   const [matchday, setMatchday] = useState(1);
   const [groupedMatches, setGroupedMatches] = useState({});
+  const [freeTeams, setFreeTeams] = useState({});
 
   const navigate = useNavigate();
 
@@ -24,7 +25,6 @@ function Round() {
       setTeams(teamsResponse.data);
       const fetchedMatches = matchesResponse.data;
       setMatches(fetchedMatches);
-      groupMatchesByMatchday(fetchedMatches);
 
       const maxMatchday = Math.max(
         ...fetchedMatches.map((match) => match.matchday),
@@ -40,6 +40,10 @@ function Round() {
     fetchTeamsAndMatches();
   }, []);
 
+  useEffect(() => {
+    groupMatchesByMatchday(matches);
+  }, [matches, teams]);
+
   const groupMatchesByMatchday = (matches) => {
     const grouped = matches.reduce((acc, match) => {
       const day = match.matchday;
@@ -49,7 +53,29 @@ function Round() {
       acc[day].push(match);
       return acc;
     }, {});
+
     setGroupedMatches(grouped);
+    calculateFreeTeams(grouped);
+  };
+
+  const calculateFreeTeams = (grouped) => {
+    const freeTeams = {};
+    const totalMatchdays = Object.keys(grouped).length;
+
+    for (let day = 1; day <= totalMatchdays; day++) {
+      if (grouped[day]) {
+        const playingTeams = new Set(
+          grouped[day].flatMap((match) => [match.team1Id, match.team2Id])
+        );
+        const freeTeamsForDay = teams.filter(
+          (team) => !playingTeams.has(team._id)
+        );
+        if (freeTeamsForDay.length > 0) {
+          freeTeams[day] = freeTeamsForDay.map((team) => team.name);
+        }
+      }
+    }
+    setFreeTeams(freeTeams);
   };
 
   const handleTeamClick = (team) => {
@@ -182,43 +208,26 @@ function Round() {
                     <span style={{ fontWeight: "700", padding: "10px" }}>
                       {" "}
                       {match.team1Goals} : {match.team2Goals}{" "}
-                      <button
-                        onClick={() =>
-                          editMatch(
-                            match.team1,
-                            match.team2,
-                            match._id,
-                            match.team1Id,
-                            match.team2Id
-                          )
-                        }
-                      >
-                        {" "}
-                        Uredi tekmo{" "}
-                      </button>
                     </span>
                   )}
+                  <button
+                    onClick={() =>
+                      editMatch(
+                        match.team1,
+                        match.team2,
+                        match._id,
+                        match.team1Id,
+                        match.team2Id
+                      )
+                    }
+                  >
+                    {" "}
+                    Uredi tekmo{" "}
+                  </button>
                 </span>
-                {match.matchPlayed && (
-                  <div>
-                    <h4> Strelci za {match.team1}</h4>
-                    {match.team1Scorers.map((scorer, index) => (
-                      <div key={index}>
-                        {scorer.player}{" "}
-                        {scorer.goals > 1 && <span> {scorer.goals}x </span>}
-                      </div>
-                    ))}
-                    <h4> Strelci za {match.team2}</h4>
-                    {match.team2Scorers.map((scorer, index) => (
-                      <div key={index}>
-                        {scorer.player}{" "}
-                        {scorer.goals > 1 && <span> {scorer.goals}x </span>}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
+            {freeTeams[day] && <p>Prosto: {freeTeams[day].join(", ")}</p>}
           </div>
         ))}
       </div>

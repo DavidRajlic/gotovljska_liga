@@ -15,6 +15,10 @@ function Match() {
   const [redCards, setRedCards] = useState({ team1: [], team2: [] });
   const [team1Goals, setTeam1Goals] = useState("");
   const [team2Goals, setTeam2Goals] = useState("");
+  const [team1Yellow, setTeam1Yellow] = useState("");
+  const [team2Yellow, setTeam2Yellow] = useState("");
+  const [team1Red, setTeam1Red] = useState("");
+  const [team2Red, setTeam2Red] = useState("");
   const [goals, setGoals] = useState({ team1: {}, team2: {} });
   const [goalScorers, setGoalScorers] = useState({ team1: {}, team2: {} });
   const [yellowCardPlayers, setYellowCardPlayers] = useState({
@@ -60,6 +64,7 @@ function Match() {
       ...prevYellowCards,
       [team]: [...prevYellowCards[team], index],
     }));
+
     setYellowCardPlayers((prevYellowCardPlayers) => ({
       ...prevYellowCardPlayers,
       [team]: {
@@ -138,10 +143,40 @@ function Match() {
           goalsScored: scorer.goals,
         });
       }
+
+      for (const scorer of match.team1YellowCards) {
+        console.log("tukaj1");
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          yellowCards: scorer.yellowCards,
+        });
+      }
+
+      for (const scorer of match.team2YellowCards) {
+        console.log("tukaj1");
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          yellowCards: scorer.yellowCards,
+        });
+      }
+
+      for (const scorer of match.team1RedCards) {
+        console.log("tukaj1");
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          redCards: scorer.redCards,
+        });
+      }
+
+      for (const scorer of match.team2RedCards) {
+        console.log("tukaj1");
+        await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          redCards: scorer.redCards,
+        });
+      }
       console.log("tukaj2");
       await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
         goalsScored: -Math.abs(match.team1Goals),
         goalsConceded: -Math.abs(match.team2Goals),
+        yellowCards: -Math.abs(match.team1YellowCards.length),
+        redCards: -Math.abs(match.team1RedCards.length),
         matchesPlayed: -1,
       });
 
@@ -149,6 +184,8 @@ function Match() {
       await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
         goalsScored: -Math.abs(match.team2Goals),
         goalsConceded: -Math.abs(match.team1Goals),
+        yellowCards: -Math.abs(match.team2YellowCards.length),
+        redCards: -Math.abs(match.team2RedCards.length),
         matchesPlayed: -1,
       });
       console.log(match.winner, team1Id);
@@ -197,6 +234,36 @@ function Match() {
         goals: goals.team2[index],
       }));
 
+      // Transform yellow card data into the desired format
+      const team1YellowCards = Object.keys(yellowCardPlayers.team1).map(
+        (playerId) => ({
+          id: playerId,
+          player: team1.players.find((player) => player._id === playerId).name,
+          yellowCards: yellowCardPlayers.team1[playerId],
+        })
+      );
+      const team2YellowCards = Object.keys(yellowCardPlayers.team2).map(
+        (playerId) => ({
+          id: playerId,
+          player: team2.players.find((player) => player._id === playerId).name,
+          yellowCards: yellowCardPlayers.team2[playerId],
+        })
+      );
+
+      const team1RedCards = Object.keys(redCardPlayers.team1).map(
+        (playerId) => ({
+          id: playerId,
+          player: team1.players.find((player) => player._id === playerId).name,
+          redCards: redCardPlayers.team1[playerId],
+        })
+      );
+      const team2RedCards = Object.keys(redCardPlayers.team2).map(
+        (playerId) => ({
+          id: playerId,
+          player: team2.players.find((player) => player._id === playerId).name,
+          redCards: redCardPlayers.team2[playerId],
+        })
+      );
       // Posodobi število golov in kartonov za vsakega igralca v ekipi 1
       for (const player of team1.players) {
         const playerId = player._id;
@@ -294,12 +361,18 @@ function Match() {
         losses: team2Losses,
       });
 
+      console.log(team1Goals, team2Goals);
+
       // Pošlji podatke na strežnik
       await axios.put(`http://localhost:4000/matches/${matchId}`, {
         team1Goals: team1Goals,
         team2Goals: team2Goals,
         team1Scorers: team1Scorers,
         team2Scorers: team2Scorers,
+        team1YellowCards: team1YellowCards,
+        team2YellowCards: team2YellowCards,
+        team1RedCards: team1RedCards,
+        team2RedCards: team2RedCards,
         matchPlayed: true,
         winner: winner,
       });

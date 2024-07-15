@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Teams() {
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -42,6 +45,12 @@ function Teams() {
     setName(event.target.value);
   };
 
+  const handleShowPlayers = (teamId, teamName) => {
+    navigate(`/teams/${teamId}`, {
+      state: { teamName: teamName, teamId: teamId },
+    });
+  };
+
   return (
     <div>
       <h1> EKIPE </h1>
@@ -53,6 +62,9 @@ function Teams() {
         {teams.map((team) => (
           <div key={team._id}>
             <h2>{team.name}</h2>
+            <button onClick={() => handleShowPlayers(team._id, team.name)}>
+              Pokaži igralce
+            </button>
             <button onClick={() => removeTeam(team._id)}>Izbriši ekipo</button>
           </div>
         ))}
