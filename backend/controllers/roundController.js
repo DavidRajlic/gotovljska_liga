@@ -21,6 +21,20 @@ module.exports = {
     }
   },
 
+  latest: async function (req, res) {
+    try {
+      console.log("kjut");
+      const latestRound = await RoundModel.findOne()
+        .sort({ createdAt: -1 })
+        .populate("matches");
+      res.json(latestRound);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Napaka pri pridobivanju zadnjega kola.", error });
+    }
+  },
+
   /**
    * roundController.show()
    */
@@ -71,6 +85,40 @@ module.exports = {
   /**
    * roundController.update()
    */
+  update: function (req, res) {
+    var id = req.params.id;
+
+    RoundModel.findOne({ _id: id }, function (err, round) {
+      if (err) {
+        return res.status(500).json({
+          message: "Error when getting round",
+          error: err,
+        });
+      }
+
+      if (!round) {
+        return res.status(404).json({
+          message: "No such round",
+        });
+      }
+
+      round.round = req.body.round ? req.body.round : round.round;
+      round.date = req.body.date ? req.body.date : round.date;
+      round.matches = req.body.matches ? req.body.matches : round.matches;
+
+      round.save(function (err, round) {
+        if (err) {
+          return res.status(500).json({
+            message: "Error when updating round.",
+            error: err,
+          });
+        }
+
+        return res.json(round);
+      });
+    });
+  },
+
   update: function (req, res) {
     var id = req.params.id;
 

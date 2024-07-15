@@ -70,24 +70,15 @@ module.exports = {
    * playerController.update()
    */
   update: async function (req, res) {
-    console.log("here");
     try {
       const id = req.params.id;
       const player = await PlayerModel.findOne({ _id: id });
-      console.log(player);
 
       if (!player) {
         return res.status(404).json({
           message: "No such player",
         });
       }
-
-      // Log incoming values for debugging
-      console.log("Incoming values:", {
-        goalsScored: req.body.goalsScored,
-        yellowCards: req.body.yellowCards,
-        redCards: req.body.redCards,
-      });
 
       // Ensure the incoming values are numbers
       const goalsScored = parseInt(req.body.goalsScored, 10);
@@ -136,12 +127,9 @@ module.exports = {
   },
 
   updatePlayer: async function (req, res) {
-    console.log("tukajleee");
-
     try {
       const id = req.params.id;
       const player = await PlayerModel.findOne({ _id: id });
-      console.log(player);
 
       if (!player) {
         return res.status(404).json({
@@ -149,8 +137,27 @@ module.exports = {
         });
       }
 
-      player.goalsScored = player.goalsScored - req.body.goalsScored;
+      // Posodobi igralčeve statistike
+      const goalsScored =
+        req.body.goalsScored !== undefined
+          ? parseInt(req.body.goalsScored, 10)
+          : 0;
+      const yellowCards =
+        req.body.yellowCards !== undefined
+          ? parseInt(req.body.yellowCards, 10)
+          : 0;
+      const redCards =
+        req.body.redCards !== undefined ? parseInt(req.body.redCards, 10) : 0;
 
+      // Odštejemo vrednosti od trenutnih statistik igralca
+      player.goalsScored = player.goalsScored - goalsScored;
+      player.yellowCards = player.yellowCards - yellowCards;
+      player.redCards = player.redCards - redCards;
+
+      // Poskrbimo, da vrednosti ne gredo pod 0
+      player.goalsScored = Math.max(player.goalsScored, 0);
+      player.yellowCards = Math.max(player.yellowCards, 0);
+      player.redCards = Math.max(player.redCards, 0);
       const updatedPlayer = await player.save();
 
       return res.json(updatedPlayer);

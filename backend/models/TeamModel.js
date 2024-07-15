@@ -9,9 +9,11 @@ var teamSchema = new Schema({
   goalsConceded: Number,
   goalDiffrence: Number,
   matchesPlayed: Number,
+  yellowCards: Number,
+  redCards: Number,
   wins: Number,
   draws: Number,
   losses: Number,
 });
 
-module.exports = mongoose.model("teams", teamSchema);
+module.exports = mongoose.model("team", teamSchema);

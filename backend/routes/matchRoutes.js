@@ -1,30 +1,31 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var matchController = require('../controllers/matchController.js');
+var matchController = require("../controllers/matchController.js");
 
 /*
  * GET
  */
-router.get('/', matchController.list);
+router.get("/", matchController.list);
+router.get("/latest", matchController.latest);
 
 /*
  * GET
  */
-router.get('/:id', matchController.show);
+router.get("/:id", matchController.show);
 
 /*
  * POST
  */
-router.post('/', matchController.create);
+router.post("/", matchController.create);
 
 /*
  * PUT
  */
-router.put('/:id', matchController.update);
+router.put("/:id", matchController.update);
 
 /*
  * DELETE
  */
-router.delete('/:id', matchController.remove);
+router.delete("/:id", matchController.remove);
 
 module.exports = router;

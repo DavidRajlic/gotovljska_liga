@@ -75,6 +75,10 @@ module.exports = {
         team2Goals: 0,
         team1Scorers: [],
         team2Scorers: [],
+        team1YellowCards: [],
+        team2YellowCards: [],
+        team1RedCards: [],
+        team2RedCards: [],
         matchPlayed: false,
         date: req.body.date,
         matchday: req.body.matchday,
@@ -106,15 +110,22 @@ module.exports = {
           message: "No such match",
         });
       }
+
       match.team1Id = req.body.team1Id || match.team1Id;
       match.team2Id = req.body.team2Id || match.team2Id;
       match.team1 = req.body.team1 || match.team1;
       match.team2 = req.body.team2 || match.team2;
       match.time = req.body.time || match.time;
-      match.team1Goals = req.body.team1Goals || match.team1Goals;
-      match.team2Goals = req.body.team2Goals || match.team2Goals;
+      match.team1Goals = req.body.team1Goals ?? match.team1Goals;
+      match.team2Goals = req.body.team2Goals ?? match.team2Goals;
       match.team1Scorers = req.body.team1Scorers || match.team1Scorers;
       match.team2Scorers = req.body.team2Scorers || match.team2Scorers;
+      match.team1YellowCards =
+        req.body.team1YellowCards || match.team1YellowCards;
+      match.team2YellowCards =
+        req.body.team2YellowCards || match.team2YellowCards;
+      match.team1RedCards = req.body.team1RedCards || match.team1RedCards;
+      match.team2RedCards = req.body.team2RedCards || match.team2RedCards;
       match.matchPlayed = req.body.matchPlayed || match.matchPlayed;
       match.date = req.body.date || match.date;
       match.matchday = req.body.matchday || match.matchday;
