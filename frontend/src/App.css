@@ -1,3 +1,6 @@
+body {
+}
+
 .App {
   text-align: center;
 }
@@ -37,22 +40,19 @@
   }
 }
 
-
 nav {
   display: flex;
   flex-direction: row;
-  background-color: #E9192D;
+  background-color: #e9192d;
   width: 100%;
 }
 
-
-
-nav span a{
+nav span a {
   color: white;
   text-decoration: none;
 }
 
-nav span a:hover{
+nav span a:hover {
   color: greenyellow;
 }
 
@@ -73,3 +73,229 @@ nav ul {
   width: 30%;
 }
 
+/*
+Players.js start
+*/
+
+.player {
+  width: 30%;
+  margin-bottom: 15px;
+}
+
+.player span {
+  cursor: pointer;
+}
+.selected {
+  border: 2px solid blue;
+  border-radius: 4px;
+}
+
+/*
+Players.js end 
+*/
+table {
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 2px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+.points {
+  border: 5px solid black;
+  color: black;
+}
+
+.leaderboard {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 60%;
+  margin: auto;
+  height: 50vh;
+}
+
+.leaderboard th {
+  background-color: #e9192d;
+  color: #fff;
+}
+
+.leaderboard tr {
+  background-color: lightblue;
+}
+.leaderboard h1 {
+}
+
+/* Team.js start  */
+
+.teamContainer {
+  width: 30%;
+  margin: auto;
+}
+
+.addTeamInput {
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.teamContainer form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.teamTitle {
+  text-align: center;
+}
+
+.teamList {
+}
+
+.team {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  width: 65%;
+  margin: auto;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  background-color: lightcoral;
+  color: #fff;
+}
+
+.showPlayersBtn {
+  border-radius: 5px;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #f39c12;
+  color: #ffffff;
+}
+
+.deleteTeamBtn {
+  border-radius: 5px;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  background-color: #e9192d;
+  color: #fff;
+}
+
+.addTeam {
+  border-radius: 5px;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #2ecc71;
+  color: #ffffff;
+  margin-left: 5px;
+}
+/* Team.js end  */
+
+/* Round.js start  */
+
+.matchdayTitle {
+  display: flex;
+  justify-content: center;
+}
+
+.dateInput {
+  margin-left: 1rem;
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: black;
+}
+
+.selectTeamList {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 5px;
+  width: 20%;
+}
+
+.selectTeamList button {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: fit-content;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #f39c12;
+}
+
+.showEditor,
+.hideEditor {
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+  overflow: hidden;
+}
+
+.hideEditor {
+  max-height: 0;
+  opacity: 0;
+}
+
+.showEditor {
+  min-height: 300px; /* Adjust according to the content's height */
+  opacity: 1;
+}
+
+.showEditorBtn,
+.hideEditorBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.selectTeamList button:hover {
+  background-color: #2ecc71;
+}
+
+.matchdayTable {
+  width: 30%;
+}
+
+.confirmMatchday {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: fit-content;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #2ecc71;
+}
+
+.matchdayContainer {
+  border-top: 1px black solid;
+  margin-top: 1rem;
+}
+
+.matchdayTable th {
+  background-color: #e9192d;
+  color: #fff;
+}
+
+.matchdayTable tr {
+  background-color: lightblue;
+  color: black;
+}
+
+.editMatchBtn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.freeTr td {
+  background-color: lightblue;
+  border: none;
+}
+.freeTr {
+  border: 2px black solid;
+}
+
+/* Round.js end  */
