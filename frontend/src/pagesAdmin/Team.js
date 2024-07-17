@@ -52,23 +52,46 @@ function Teams() {
   };
 
   return (
-    <div>
-      <h1> EKIPE </h1>
+    <div className="teamContainer">
+      <h1 className="teamTitle"> EKIPE </h1>
       <form onSubmit={handleCreateTeam}>
-        <input type="text" value={name} onChange={handleChange} />
-        <button type="submit">Ustvari ekipo</button>
+        <input
+          className="addTeamInput"
+          type="text"
+          placeholder="ime ekipe"
+          value={name}
+          onChange={handleChange}
+        />
+        <button className="addTeam" type="submit">
+          Dodaj ekipo
+        </button>
       </form>
-      <ul>
-        {teams.map((team) => (
-          <div key={team._id}>
-            <h2>{team.name}</h2>
-            <button onClick={() => handleShowPlayers(team._id, team.name)}>
-              Pokaži igralce
-            </button>
-            <button onClick={() => removeTeam(team._id)}>Izbriši ekipo</button>
-          </div>
-        ))}
-      </ul>
+      <div className="teamsContainer">
+        <ul className="teamList">
+          {teams.map((team) => (
+            <div className="team" key={team._id}>
+              <span style={{ fontSize: "20px" }}>
+                {" "}
+                <b> {team.name}</b>
+              </span>
+              <span>
+                <button
+                  className="showPlayersBtn"
+                  onClick={() => handleShowPlayers(team._id, team.name)}
+                >
+                  Igralci
+                </button>
+                <button
+                  className="deleteTeamBtn"
+                  onClick={() => removeTeam(team._id)}
+                >
+                  <small> ✖ </small>
+                </button>
+              </span>
+            </div>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

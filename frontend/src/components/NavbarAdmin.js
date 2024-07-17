@@ -19,11 +19,17 @@ function Navbar() {
           </span>
 
           <span>
-            <Link to="/contact">Contact</Link>
+            <Link to="/rounds">Razpored</Link>
           </span>
 
-          <span>            
-            <Link to="/contact">Contact</Link>
+          <span>
+            <Link to="/scorers"> Strelci </Link>
+          </span>
+          <span>
+            <Link to="/login">Prijava</Link>
+          </span>
+          <span>
+            <Link to="/login">Odjava</Link>
           </span>
         </ul>
       </div>

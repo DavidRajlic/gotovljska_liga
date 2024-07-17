@@ -45,6 +45,9 @@ nav {
   flex-direction: row;
   background-color: #e9192d;
   width: 100%;
+  padding: 10px;
+  position: sticky;
+  top: 0;
 }
 
 nav span a {
@@ -59,7 +62,7 @@ nav span a:hover {
 nav ul {
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: 40%;
 }
 
 .list {
@@ -238,7 +241,8 @@ th {
 }
 
 .showEditor {
-  min-height: 300px; /* Adjust according to the content's height */
+  margin-left: 5px;
+  max-height: 500px;
   opacity: 1;
 }
 
@@ -255,7 +259,7 @@ th {
 }
 
 .matchdayTable {
-  width: 30%;
+  width: 70%;
 }
 
 .confirmMatchday {
@@ -265,22 +269,45 @@ th {
   min-width: fit-content;
   cursor: pointer;
   color: #ffffff;
-  background-color: #2ecc71;
+  background-color: #008cba;
 }
 
 .matchdayContainer {
-  border-top: 1px black solid;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; /* Adds consistent spacing between the tables */
+  width: 90%;
+  margin: auto;
   margin-top: 1rem;
+  padding: 1rem; /* Optional: Adds padding inside the container */
+}
+
+.listOfMatchdays {
+  cursor: pointer;
+  border: 1px solid #ccc; /* Adds a border around each table container */
+  padding: 1rem; /* Adds padding inside each table container */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.matchdayTable {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .matchdayTable th {
   background-color: #e9192d;
-  color: #fff;
+  color: #ffffff;
 }
 
-.matchdayTable tr {
+.matchdayTable td {
   background-color: lightblue;
-  color: black;
+}
+
+.matchdayTable th,
+.matchdayTable td {
+  border: 1px solid #282c34;
+  padding: 0.5rem;
+  text-align: center;
 }
 
 .editMatchBtn {
@@ -290,12 +317,85 @@ th {
   cursor: pointer;
 }
 
+.nextMatchdayAdmin {
+  display: flex;
+  justify-content: center;
+  border-top: 1px black solid;
+}
+
+.nextMatchdayAdmin h2 {
+  text-align: center;
+}
+
+.nextMatchdayAdmin div {
+  width: 40%;
+}
+.nextMatchdayAdmin table {
+  margin: auto;
+}
+
 .freeTr td {
   background-color: lightblue;
   border: none;
 }
 .freeTr {
-  border: 2px black solid;
+  border: 1px black solid;
 }
 
 /* Round.js end  */
+
+/* TopScorers.js start  */
+
+.topScorersContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.topScorersTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.topScorersTable th {
+  background-color: #e9192d;
+  color: #ffffff;
+}
+
+.topScorersTable td {
+  background-color: lightblue;
+}
+/* TopScorers.js end  */
+
+/* Matchdays.js end  */
+
+.nextMatchday {
+  display: flex;
+  justify-content: center;
+}
+
+.nextMatchday h2 {
+  text-align: center;
+}
+
+.nextMatchday div {
+  width: 40%;
+}
+.nextMatchday table {
+  margin: auto;
+}
+
+.matchdayBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.matchdayBtn {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: #008cba;
+  color: #ffffff;
+}
+/* Matchdays.js end  */

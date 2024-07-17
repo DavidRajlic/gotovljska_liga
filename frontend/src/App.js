@@ -7,14 +7,16 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import NavBarAdmin from "./components/NavbarAdmin";
-import Login from "./pages/Login";
-import Players from "./pages/Players";
-import Rounds from "./pages/Rounds";
-import Match from "./pages/Match";
-import TopScorers from "./pages/TopScorers";
+import Login from "./pagesAdmin/Login";
+import Players from "./pagesAdmin/Players";
+import Rounds from "./pagesAdmin/Rounds";
+import Match from "./pagesAdmin/Match";
+import Matchdays from "./pages/Matchdays";
+import TopScorers from "./pagesAdmin/TopScorers";
+import Leaderboard from "./pagesAdmin/Leaderboard";
 import "./App.css";
 import { AuthProvider, AuthContext } from "../src/contexts/AuthContext";
-import Teams from "./pages/Team";
+import Teams from "./pagesAdmin/Team";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -23,10 +25,12 @@ function App() {
     <div className="app">
       {isLoggedIn ? <NavBarAdmin /> : <Navbar />}
       <Routes>
+        <Route path="/" element={<Leaderboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/teams" element={<Teams />} />
         <Route path="/teams/:id" element={<Players />} />
         <Route path="/rounds" element={<Rounds />} />
+        <Route path="/matchdays" element={<Matchdays />} />
         <Route path="/rounds/:id" element={<Match />} />
         <Route path="/scorers" element={<TopScorers />} />
       </Routes>

@@ -119,7 +119,7 @@ function Match() {
     }));
   };
 
-  const handleResult = async () => {
+  const confirmResult = async () => {
     let winner;
     if (team1Goals > team2Goals) {
       winner = team1;
@@ -199,6 +199,11 @@ function Match() {
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
           losses: -1,
         });
+        if (match.team1Scorers.length === 0 && match.team1Goals === 3) {
+          await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+            points: 1,
+          });
+        }
       } else if (match.winner === team2Id) {
         console.log("tukaj");
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
@@ -208,6 +213,12 @@ function Match() {
         await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
           losses: -1,
         });
+
+        if (match.team2Scorers.length === 0 && match.team2Goals === 3) {
+          await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+            points: 1,
+          });
+        }
       } else {
         console.log("tukaj");
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
@@ -429,7 +440,12 @@ function Match() {
           min="0"
           max="100"
         />
-        <button onClick={handleResult}>Potrdi rezultat</button>
+        <button
+          onClick={confirmResult}
+          disabled={team1Goals === "" || team2Goals === ""}
+        >
+          Potrdi rezultat
+        </button>
       </div>
       <ul>
         <label> Ali se katera od ekip ni prikazala na tekmi? </label>
@@ -448,6 +464,65 @@ function Match() {
           {team2.name}
         </button>
       </ul>
+      <div>
+        <h2> Podatki za {match.team1}</h2>
+
+        <div>
+          <b> ⚽:</b>
+          {Object.keys(goals.team1).map((index) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team1.players[index].name} {goals.team1[index]}x.
+            </span>
+          ))}
+        </div>
+
+        <div>
+          <b>🟨:</b>
+          {yellowCards.team1.map((index, idx) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team1.players[index].name}
+            </span>
+          ))}
+        </div>
+        <div>
+          <b>🟥:</b>
+          {redCards.team1.map((index, idx) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team1.players[index].name}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h2> Podatki za {match.team2}</h2>
+
+        <div>
+          <b> ⚽:</b>
+          {Object.keys(goals.team2).map((index) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team2.players[index].name} {goals.team2[index]}x.
+            </span>
+          ))}
+        </div>
+
+        <div>
+          <b>🟨:</b>
+          {yellowCards.team2.map((index, idx) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team2.players[index].name}
+            </span>
+          ))}
+        </div>
+        <div>
+          <b>🟥:</b>
+          {redCards.team2.map((index, idx) => (
+            <span style={{ padding: "10px" }} key={index}>
+              {team2.players[index].name}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {match.matchPlayed && (
         <div>
           <span style={{ fontWeight: "700", padding: "10px" }}>
@@ -513,8 +588,8 @@ function Match() {
         </div>
       ))}
       <br />
-      <div>
-        <h3>Igralci z rumenimi kartoni (team1):</h3>
+      {/*<div>
+        <b>Igralci z rumenimi kartoni (team1):</b>
         <ul>
           {yellowCards.team1.map((index, idx) => (
             <li key={idx}>{team1.players[index].name}</li>
@@ -561,6 +636,7 @@ function Match() {
           ))}
         </ul>
       </div>
+      */}
     </div>
   );
 }
