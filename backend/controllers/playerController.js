@@ -172,18 +172,22 @@ module.exports = {
   /**
    * playerController.remove()
    */
-  remove: function (req, res) {
-    var id = req.params.id;
+  remove: async function (req, res) {
+    const id = req.params.id;
 
-    PlayerModel.findByIdAndRemove(id, function (err, player) {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when deleting the player.",
-          error: err,
-        });
+    try {
+      const player = await PlayerModel.findByIdAndDelete(id);
+
+      if (!player) {
+        return res.status(404).json({ message: "player not found" });
       }
 
       return res.status(204).json();
-    });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when deleting the player.",
+        error: err,
+      });
+    }
   },
 };

@@ -21,6 +21,7 @@ router.post("/", TeamController.create);
  * PUT
  */
 router.put("/:id", TeamController.update);
+router.put("/players/:id", TeamController.updateTeamPlayers);
 router.put("/again/:id", TeamController.updateTeam);
 
 /*

@@ -238,6 +238,44 @@ module.exports = {
     }
   },
 
+  updateTeamPlayers: async function (req, res) {
+    const id = req.params.id;
+    try {
+      const team = await teamModel.findOne({ _id: id });
+      if (!team) {
+        return res.status(404).json({
+          message: "No such Team",
+        });
+      }
+
+      team.players = req.body.players;
+      const updatedTeam = await team.save();
+      return res.json(updatedTeam);
+    } catch (err) {
+      console.error("Error when updating Team:", err);
+
+      // Check if the error is a validation error
+      if (err.name === "ValidationError") {
+        return res.status(400).json({
+          message: "Validation error when updating Team.",
+          error: err.errors,
+        });
+      }
+
+      // Check if the error is related to database connectivity
+      if (err.name === "MongoError" && err.code === 11000) {
+        return res.status(500).json({
+          message: "Database error when updating Team.",
+          error: err,
+        });
+      }
+
+      return res.status(500).json({
+        message: "Error when updating Team.",
+        error: err,
+      });
+    }
+  },
   /**
    * TeamController.remove()
    */
