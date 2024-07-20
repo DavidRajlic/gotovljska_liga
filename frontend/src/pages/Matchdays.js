@@ -132,27 +132,14 @@ function Round() {
     return team ? team.name : "Neznana ekipa";
   };
 
-  const editMatch = (team1, team2, matchId, team1Id, team2Id) => {
-    navigate(`/rounds/${matchId}`, {
-      state: {
-        team1: team1,
-        team2: team2,
-        matchId: matchId,
-        team1Id: team1Id,
-        team2Id: team2Id,
-      },
-    });
-  };
-
   const handleMatchdayClick = (matches) => {
-    const matchIds = matches.map((match) => console.log(match._id));
-    //navigate("/some-path", { state: { matchIds } });
+    const matchIds = matches.map((match) => match._id);
+    navigate("/matches", { state: { matchIds } });
   };
 
   return (
     <div>
       <h1 className="matchdayTitle">Razpored</h1>
-
       <div className="nextMatchday">
         {" "}
         {nextMatchday && (
@@ -195,6 +182,7 @@ function Round() {
           </div>
         )}
       </div>
+      {/* <span className="note"> Za ogled tekem kliknite na kolo </span>{" "} */}
       <div className="matchdayContainer">
         {Object.keys(groupedMatches).map((day) => {
           const matchPlayed = groupedMatches[day][0].matchPlayed; // Extracting the matchPlayed status from the first match of the day
@@ -212,7 +200,6 @@ function Round() {
                     {day}. KOLO {groupedMatches[day][0].date}{" "}
                   </b>
                 </span>
-                <button className="matchdayBtn"> Ogled </button>
               </div>
 
               <table className="matchdayTable" key={day}>
