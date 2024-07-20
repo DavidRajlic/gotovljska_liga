@@ -362,13 +362,21 @@ Players.js end
 }
 
 .selectTeamList button {
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  min-width: fit-content;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: #f39c12;
+  background-color: #e9192d; /* Zelena barva ozadja */
+  border: none; /* Brez obrobe */
+  color: white; /* Barva besedila */
+  padding: 15px 32px; /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
+  text-align: center; /* Poravnava besedila na sredino */
+  text-decoration: none; /* Brez podčrtaja */
+  display: inline-block; /* Inline-block prikaz */
+  font-size: 16px; /* Velikost pisave */
+  margin: 4px 2px; /* Zunanji robovi (zgoraj/spodaj, levo/desno) */
+  cursor: pointer; /* Spremeni kazalec miške v kazalec */
+  border-radius: 12px; /* Zaobljeni robovi */
+}
+
+.selectTeamBtn:hover {
+  background-color: #a00; /* Temnejša zelena barva ozadja pri prehodu */
 }
 
 .showEditor,
@@ -396,10 +404,6 @@ Players.js end
   text-decoration: underline;
 }
 
-.selectTeamList button:hover {
-  background-color: #2ecc71;
-}
-
 .matchdayTable {
   width: 70%;
 }
@@ -411,7 +415,7 @@ Players.js end
   min-width: fit-content;
   cursor: pointer;
   color: #ffffff;
-  background-color: #008cba;
+  background-color: #4caf50;
 }
 
 .matchdayContainer {
@@ -660,4 +664,131 @@ Players.js end
 
 .players {
   width: 40%;
+}
+
+/* Match start */
+
+.matchContainer {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.matchHeader {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  align-items: center;
+  background-color: #343a40;
+  width: 80%;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.match-header input[type="number"] {
+  width: 50px;
+  padding: 5px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.teamNotAttend {
+  display: flex;
+  justify-content: center;
+}
+
+.teamNotAttend label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.teamNotAttend button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 3px;
+  color: #ffffff;
+  background-color: #e9192d;
+}
+
+.teamNotAttend button:hover {
+  background-color: #a00;
+}
+
+.changedMatchData {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.changedMatchDataTeam1 {
+  width: 50%;
+}
+
+.editMatch {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.editMatchTeam1 {
+  width: 40%;
+}
+
+.match-header button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.match-header button:disabled {
+  background-color: #6c757d;
+}
+
+.teams-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.team-card {
+  background-color: #fff;
+  width: 48%;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.team-card h2 {
+  margin-top: 0;
+}
+
+.players .player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.players .player:last-child {
+  border-bottom: none;
+}
+
+.players .player span {
+  cursor: pointer;
+}
+
+.players .player span:hover {
+  color: #007bff;
 }

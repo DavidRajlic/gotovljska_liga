@@ -422,9 +422,15 @@ function Match() {
   };
 
   return (
-    <div>
-      <div>
-        {team1.name} : {team2.name}
+    <div className="matchContainer">
+      <div className="matchHeader">
+        <b>
+          {" "}
+          <h2>
+            {" "}
+            {team1.name} : {team2.name}{" "}
+          </h2>
+        </b>
         <input
           onChange={handleChangeTeam1}
           value={team1Goals}
@@ -448,145 +454,237 @@ function Match() {
         </button>
       </div>
       <ul>
-        <label> Ali se katera od ekip ni prikazala na tekmi? </label>
-        <button
-          key={team1Id}
-          type="button"
-          onClick={() => handleTeamClick(team1)}
-        >
-          {team1.name}
-        </button>
-        <button
-          key={team2Id}
-          type="button"
-          onClick={() => handleTeamClick(team2)}
-        >
-          {team2.name}
-        </button>
+        <div className="teamNotAttend">
+          {" "}
+          <label> Ali se katera od ekip ni prikazala na tekmi? </label>{" "}
+          <button
+            key={team1Id}
+            type="button"
+            onClick={() => handleTeamClick(team1)}
+          >
+            {team1.name}
+          </button>
+          <button
+            key={team2Id}
+            type="button"
+            onClick={() => handleTeamClick(team2)}
+          >
+            {team2.name}
+          </button>{" "}
+        </div>
       </ul>
-      <div>
-        <h2> Podatki za {match.team1}</h2>
-
-        <div>
-          <b> ⚽:</b>
-          {Object.keys(goals.team1).map((index) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team1.players[index].name} {goals.team1[index]}x.
-            </span>
-          ))}
-        </div>
-
-        <div>
-          <b>🟨:</b>
-          {yellowCards.team1.map((index, idx) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team1.players[index].name}
-            </span>
-          ))}
-        </div>
-        <div>
-          <b>🟥:</b>
-          {redCards.team1.map((index, idx) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team1.players[index].name}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div>
-        <h2> Podatki za {match.team2}</h2>
-
-        <div>
-          <b> ⚽:</b>
-          {Object.keys(goals.team2).map((index) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team2.players[index].name} {goals.team2[index]}x.
-            </span>
-          ))}
-        </div>
-
-        <div>
-          <b>🟨:</b>
-          {yellowCards.team2.map((index, idx) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team2.players[index].name}
-            </span>
-          ))}
-        </div>
-        <div>
-          <b>🟥:</b>
-          {redCards.team2.map((index, idx) => (
-            <span style={{ padding: "10px" }} key={index}>
-              {team2.players[index].name}
-            </span>
-          ))}
-        </div>
-      </div>
-
       {match.matchPlayed && (
-        <div>
-          <span style={{ fontWeight: "700", padding: "10px" }}>
-            {" "}
-            {match.team1Goals} : {match.team2Goals}{" "}
-          </span>
-          <h4> Strelci za {match.team1}</h4>
-          {match.team1Scorers.map((scorer, index) => (
-            <div key={index}>
-              {scorer.player}{" "}
-              {scorer.goals > 1 && <span> {scorer.goals}x </span>}
-            </div>
-          ))}
-          <h4> Strelci za {match.team2}</h4>
-          {match.team2Scorers.map((scorer, index) => (
-            <div key={index}>
-              {scorer.player}{" "}
-              {scorer.goals > 1 && <span> {scorer.goals}x </span>}
-            </div>
-          ))}
+        <div className="match" key={match._id}>
+          <h2 style={{ color: "black" }}> Trenutni podatki o tekmi</h2>
+          <div>
+            <h2>
+              {match.team1} : {match.team2} {match.team1Goals} :{" "}
+              {match.team2Goals}{" "}
+              {(match.team1Goals > 0 || match.team2Goals > 0) &&
+                match.team1Scorers.length === 0 &&
+                match.team2Scorers.length === 0 && <span> B.B</span>}
+            </h2>
+
+            {match.matchPlayed && (
+              <div className="matchScorers">
+                {(match.team1Goals > 0 || match.team2Goals > 0) &&
+                  match.team1Scorers.length === 0 &&
+                  match.team2Scorers.length === 0 && (
+                    <div style={{ color: "red" }}>
+                      {" "}
+                      Poražena ekipa se tekme ni udeležeila, zato ji je bila
+                      kazensko odvzeta točka!
+                    </div>
+                  )}
+                <div className="scorersColumn">
+                  {match.team1Scorers.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player}{" "}
+                      {scorer.goals > 1 && (
+                        <span className="goal"> {scorer.goals}x </span>
+                      )}
+                      <small> ⚽</small>
+                    </div>
+                  ))}
+                  {match.team1YellowCards.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player}{" "}
+                      <small className="yellow-card"> 🟨 </small>
+                    </div>
+                  ))}
+                  {match.team1RedCards.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player} <small className="red-card"> 🟥 </small>
+                    </div>
+                  ))}
+                </div>
+                <div className="scorersColumn">
+                  {match.team2Scorers.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player}{" "}
+                      {scorer.goals > 1 && (
+                        <span className="goal"> {scorer.goals}x </span>
+                      )}
+                      <small> ⚽</small>
+                    </div>
+                  ))}
+                  {match.team2YellowCards.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player}{" "}
+                      <small className="yellow-card"> 🟨 </small>
+                    </div>
+                  ))}
+                  {match.team2RedCards.map((scorer, index) => (
+                    <div key={index}>
+                      {scorer.player} <small className="red-card"> 🟥 </small>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
-      <h2>{team1.name}</h2>
-      {team1.players.map((player, index) => (
-        <div className="players" key={index}>
-          <span
-            style={{
-              fontWeight: 700,
-              display: "inline-block",
-              width: "30%",
-            }}
-          >
-            {player.name}:
-          </span>
-          <span onClick={() => handleGoalClick("team1", index)}> ⚽ </span>
-          <span onClick={() => handleYellowCardClick("team1", index)}>
-            {" "}
-            🟨{" "}
-          </span>
-          <span onClick={() => handleRedCardClick("team1", index)}> 🟥 </span>
+      <h2 style={{ textAlign: "center" }}> Spremenjeni podatki tekme</h2>
+      <div className="changedMatchData">
+        <div className="changedMatchDataTeam1">
+          <h2> {match.team1}</h2>
+
+          <div>
+            <b> ⚽:</b>
+            {Object.keys(goals.team1).map((index) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team1.players[index].name} {goals.team1[index]}x.
+              </span>
+            ))}
+          </div>
+
+          <div>
+            <b>🟨:</b>
+            {yellowCards.team1.map((index, idx) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team1.players[index].name}
+              </span>
+            ))}
+          </div>
+          <div>
+            <b>🟥:</b>
+            {redCards.team1.map((index, idx) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team1.players[index].name}
+              </span>
+            ))}
+          </div>
         </div>
-      ))}
-      <br />
-      <br />
-      <h2>{team2.name}</h2>
-      {team2.players.map((player, index) => (
-        <div className="players" key={index}>
-          <span
-            style={{
-              fontWeight: 700,
-              display: "inline-block",
-              width: "30%",
-            }}
-          >
-            {player.name}:
-          </span>
-          <span onClick={() => handleGoalClick("team2", index)}> ⚽ </span>
-          <span onClick={() => handleYellowCardClick("team2", index)}>
-            {" "}
-            🟨{" "}
-          </span>
-          <span onClick={() => handleRedCardClick("team2", index)}> 🟥 </span>
+        <div>
+          <h2> {match.team2}</h2>
+
+          <div>
+            <b> ⚽:</b>
+            {Object.keys(goals.team2).map((index) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team2.players[index].name} {goals.team2[index]}x.
+              </span>
+            ))}
+          </div>
+
+          <div>
+            <b>🟨:</b>
+            {yellowCards.team2.map((index, idx) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team2.players[index].name}
+              </span>
+            ))}
+          </div>
+          <div>
+            <b>🟥:</b>
+            {redCards.team2.map((index, idx) => (
+              <span style={{ padding: "10px" }} key={index}>
+                {team2.players[index].name}
+              </span>
+            ))}
+          </div>
         </div>
-      ))}
+      </div>
+
+      <div className="editMatch">
+        <div className="editMatchTeam1">
+          <h2>{team1.name}</h2>
+          {team1.players.map((player, index) => (
+            <div className="player" key={index}>
+              <span
+                style={{
+                  fontWeight: 700,
+                  display: "inline-block",
+                  width: "30%",
+                }}
+              >
+                {player.name}:
+              </span>
+              <span
+                onClick={() => handleGoalClick("team1", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                ⚽{" "}
+              </span>
+              <span
+                onClick={() => handleYellowCardClick("team1", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                🟨{" "}
+              </span>
+              <span
+                onClick={() => handleRedCardClick("team1", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                🟥{" "}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="editMatchTeam1">
+          <h2>{team2.name}</h2>
+          {team2.players.map((player, index) => (
+            <div className="player" key={index}>
+              <span
+                style={{
+                  fontWeight: 700,
+                  display: "inline-block",
+                  width: "30%",
+                }}
+              >
+                {player.name}:
+              </span>
+              <span
+                onClick={() => handleGoalClick("team2", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                ⚽{" "}
+              </span>
+              <span
+                onClick={() => handleYellowCardClick("team2", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                🟨{" "}
+              </span>
+              <span
+                onClick={() => handleRedCardClick("team2", index)}
+                style={{ cursor: "pointer" }}
+              >
+                {" "}
+                🟥{" "}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <br />
       {/*<div>
         <b>Igralci z rumenimi kartoni (team1):</b>
