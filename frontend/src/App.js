@@ -12,9 +12,10 @@ import Players from "./pagesAdmin/Players";
 import Rounds from "./pagesAdmin/Rounds";
 import Match from "./pagesAdmin/Match";
 import Matchdays from "./pages/Matchdays";
+import Matches from "./pages/Matches";
 import TopScorers from "./pagesAdmin/TopScorers";
 import Leaderboard from "./pagesAdmin/Leaderboard";
-import "./App.css";
+import "./styles/App.css";
 import { AuthProvider, AuthContext } from "../src/contexts/AuthContext";
 import Teams from "./pagesAdmin/Team";
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/teams/:id" element={<Players />} />
         <Route path="/rounds" element={<Rounds />} />
         <Route path="/matchdays" element={<Matchdays />} />
+        <Route path="/matches" element={<Matches />} />
         <Route path="/rounds/:id" element={<Match />} />
         <Route path="/scorers" element={<TopScorers />} />
       </Routes>

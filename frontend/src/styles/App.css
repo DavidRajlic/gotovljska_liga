@@ -1,0 +1,663 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f9fc;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  background-color: #f62217;
+  width: 100%;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+}
+
+nav span a {
+  color: white;
+  text-decoration: none;
+}
+
+.list span a:hover {
+  color: lightblue;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.list {
+  display: flex;
+  justify-content: end;
+  width: 65%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1.2rem;
+  width: 30%;
+}
+
+/*
+Players.js start
+*/
+.playerContainer {
+  width: 30%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.playerContainer h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.playerContainer h2 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.player-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.player-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.player-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.player-button:hover {
+  background-color: #0056b3;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.player:last-child {
+  border-bottom: none;
+}
+
+.player span {
+  display: flex;
+  align-items: center;
+}
+
+.player span:first-child {
+  font-weight: bold;
+  width: 30%;
+}
+
+.player span:not(:first-child) {
+  margin-left: 10px;
+}
+
+.deletePlayerBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #e9192d;
+  transition: color 0.3s ease;
+}
+
+.player .goal {
+  color: green;
+}
+
+.player .yellow-card {
+  color: gold;
+}
+
+.player .red-card {
+  color: red;
+}
+/*
+Players.js end 
+*/
+.leaderboard {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.leaderboard h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.leaderboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard th,
+.leaderboard td {
+  border: 1px solid black;
+  padding: 12px;
+  text-align: center;
+  background-color: lightblue;
+}
+
+.leaderboard th {
+  background-color: #e9192d;
+  color: white;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+/*
+.leaderboard tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+  */
+
+.leaderboard tr:hover {
+  background-color: #ddd;
+}
+
+.leaderboard td {
+  font-size: 1rem;
+}
+
+.leaderboard td b {
+}
+
+.points b {
+  font-weight: 800;
+}
+
+/* Team.js start  */
+
+.teamContainer {
+  margin: auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  width: 25%;
+}
+
+.teamTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.teamContainer form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.addTeamInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-right: 10px;
+  width: 60%;
+}
+
+.addTeam {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addTeam:hover {
+  background-color: #218838;
+}
+
+.teamsContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.teamList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 90%;
+}
+
+.team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ccc;
+  background-color: #f62217;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.team:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.team span {
+  font-size: 20px;
+}
+
+.deleteTeamBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.deleteTeamBtn:hover {
+  color: #a00;
+}
+/* Team.js end  */
+
+/* Round.js start  */
+
+.matchdayTitle {
+  display: flex;
+  justify-content: center;
+}
+
+.dateInput {
+  margin-left: 1rem;
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: black;
+}
+
+.selectTeamList {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 5px;
+  width: 20%;
+}
+
+.selectTeamList button {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: fit-content;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #f39c12;
+}
+
+.showEditor,
+.hideEditor {
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+  overflow: hidden;
+}
+
+.hideEditor {
+  max-height: 0;
+  opacity: 0;
+}
+
+.showEditor {
+  margin-left: 5px;
+  max-height: 500px;
+  opacity: 1;
+}
+
+.showEditorBtn,
+.hideEditorBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.selectTeamList button:hover {
+  background-color: #2ecc71;
+}
+
+.matchdayTable {
+  width: 70%;
+}
+
+.confirmMatchday {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: fit-content;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #008cba;
+}
+
+.matchdayContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; /* Adds consistent spacing between the tables */
+  width: 90%;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 1rem; /* Optional: Adds padding inside the container */
+}
+
+.listOfMatchdays {
+  cursor: pointer;
+  border: 1px solid #ccc; /* Adds a border around each table container */
+  padding: 1rem; /* Adds padding inside each table container */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.matchdayTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.matchdayTable th {
+  background-color: #e9192d;
+  color: #ffffff;
+}
+
+.matchdayTable td {
+  background-color: lightblue;
+}
+
+.matchdayTable th,
+.matchdayTable td {
+  border: 1px solid #282c34;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.editMatchBtn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nextMatchdayAdmin {
+  display: flex;
+  justify-content: center;
+  border-top: 1px black solid;
+}
+
+.nextMatchdayAdmin h2 {
+  text-align: center;
+}
+
+.nextMatchdayAdmin div {
+  width: 40%;
+}
+.nextMatchdayAdmin table {
+  margin: auto;
+}
+
+.freeTr td {
+  background-color: lightblue;
+  border: none;
+}
+.freeTr {
+  border: 1px black solid;
+}
+
+/* Round.js end  */
+
+/* TopScorers.js start  */
+
+.topScorersContainer {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.topScorersContainer h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.topScorersTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.topScorersTable th,
+.topScorersTable td {
+  padding: 12px;
+  text-align: center;
+}
+
+.topScorersTable th {
+  background-color: #e9192d;
+  color: white;
+  font-size: 18px;
+}
+
+.topScorersTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.topScorersTable tr:hover {
+  background-color: #ddd;
+}
+
+.topScorersTable td {
+  font-size: 16px;
+}
+
+/* TopScorers.js end  */
+
+/* Matchdays.js end  */
+
+.nextMatchday {
+  display: flex;
+  justify-content: center;
+}
+
+.nextMatchday h2 {
+  text-align: center;
+}
+
+.nextMatchday div {
+  width: 40%;
+}
+.nextMatchday table {
+  margin: auto;
+}
+
+.matchdayBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.matchdayBtn {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: #008cba;
+  color: #ffffff;
+}
+
+.note {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+/* Matchdays.js end  */
+
+/* Matches.js start  */
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Matches styles */
+/* Matches styles */
+.resultsContainer {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.resultsTitle {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.match {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background-color: #f0f8ff;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.match:hover {
+  background-color: #e6f7ff;
+  transform: translateY(-5px);
+}
+
+.match h2 {
+  color: #007bff;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  font-size: 20px;
+}
+
+.matchScorers {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  margin: auto;
+}
+
+.scorersColumn div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.goal {
+  margin-left: 3px;
+  color: green;
+}
+
+.yellow-card {
+  color: gold;
+}
+
+.red-card {
+  color: red;
+}
+
+.resultsContainer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* Matches.js end  */
+
+.players {
+  width: 40%;
+}

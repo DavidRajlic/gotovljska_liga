@@ -5,23 +5,26 @@ function Navbar() {
   return (
     <nav>
       <div className="logo">
-        <h3> Gotovljska liga ⚽ </h3>
+        <span>
+          {" "}
+          <Link to="/">
+            {" "}
+            <b> Gotovljska liga ⚽ </b>
+          </Link>{" "}
+        </span>
       </div>
 
       <div className="list">
         <ul>
           <span>
-            <Link to="/">Home</Link>
+            <Link to="/">Lestvica</Link>
           </span>
-
+          <span>
+            <Link to="/teams">Ekipe</Link>
+          </span>
           <span>
             <Link to="/matchdays">Razpored</Link>
           </span>
-
-          <span>
-            <Link to="/contact">Contact</Link>
-          </span>
-
           <span>
             <Link to="/scorers"> Strelci </Link>
           </span>

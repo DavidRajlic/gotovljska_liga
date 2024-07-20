@@ -547,7 +547,7 @@ function Match() {
       )}
       <h2>{team1.name}</h2>
       {team1.players.map((player, index) => (
-        <div className="player" key={index}>
+        <div className="players" key={index}>
           <span
             style={{
               fontWeight: 700,
@@ -569,7 +569,7 @@ function Match() {
       <br />
       <h2>{team2.name}</h2>
       {team2.players.map((player, index) => (
-        <div className="player" key={index}>
+        <div className="players" key={index}>
           <span
             style={{
               fontWeight: 700,

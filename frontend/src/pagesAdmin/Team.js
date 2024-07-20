@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 
 function Teams() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState("");
 
@@ -19,7 +21,7 @@ function Teams() {
     };
 
     fetchTeams();
-  }, [teams]);
+  }, []); // Prazno polje odvisnosti, da se useEffect zažene samo enkrat
 
   const handleCreateTeam = async (event) => {
     event.preventDefault();
@@ -28,18 +30,37 @@ function Teams() {
         name: name,
       });
       setName("");
+      fetchTeams(); // Fetch teams again after creating a new team
     } catch (error) {
       console.error("Prišlo je do napake pri ustvarjanju ekipe!", error);
     }
   };
 
-  const removeTeam = async (id) => {
+  const fetchTeams = async () => {
     try {
-      await axios.delete(`http://localhost:4000/teams/${id}`);
+      const response = await axios.get("http://localhost:4000/teams");
+      setTeams(response.data);
     } catch (error) {
-      console.error("Prišlo je do napake pri brisanju ekipe!", error);
+      console.error("Prišlo je do napake pri pridobivanju ekip!", error);
     }
   };
+
+  const removeTeam = async (teamId, teamName) => {
+    if (
+      window.confirm(
+        `Ali ste prepričani, da želite odstraniti ekipo ${teamName}?`
+      )
+    ) {
+      try {
+        await axios.delete(`http://localhost:4000/teams/${teamId}`);
+        setTeams(teams.filter((team) => team._id !== teamId));
+      } catch (error) {
+        console.error("Prišlo je do napake pri brisanju ekipe!", error);
+      }
+    }
+  };
+
+  console.log(isLoggedIn);
 
   const handleChange = (event) => {
     setName(event.target.value);
@@ -54,40 +75,46 @@ function Teams() {
   return (
     <div className="teamContainer">
       <h1 className="teamTitle"> EKIPE </h1>
-      <form onSubmit={handleCreateTeam}>
-        <input
-          className="addTeamInput"
-          type="text"
-          placeholder="ime ekipe"
-          value={name}
-          onChange={handleChange}
-        />
-        <button className="addTeam" type="submit">
-          Dodaj ekipo
-        </button>
-      </form>
+      {isLoggedIn && (
+        <form onSubmit={handleCreateTeam}>
+          <input
+            className="addTeamInput"
+            type="text"
+            placeholder="ime ekipe"
+            value={name}
+            onChange={handleChange}
+          />
+          <button className="addTeam" type="submit">
+            Dodaj ekipo
+          </button>
+        </form>
+      )}
+
       <div className="teamsContainer">
         <ul className="teamList">
           {teams.map((team) => (
-            <div className="team" key={team._id}>
+            <div
+              className="team"
+              key={team._id}
+              onClick={() => handleShowPlayers(team._id, team.name)}
+            >
               <span style={{ fontSize: "20px" }}>
                 {" "}
                 <b> {team.name}</b>
               </span>
-              <span>
-                <button
-                  className="showPlayersBtn"
-                  onClick={() => handleShowPlayers(team._id, team.name)}
-                >
-                  Igralci
-                </button>
-                <button
-                  className="deleteTeamBtn"
-                  onClick={() => removeTeam(team._id)}
-                >
-                  <small> ✖ </small>
-                </button>
-              </span>
+              {isLoggedIn && (
+                <span>
+                  <button
+                    className="deleteTeamBtn"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the click event from bubbling up to the parent div
+                      removeTeam(team._id, team.name);
+                    }}
+                  >
+                    <small> ✖ </small>
+                  </button>
+                </span>
+              )}
             </div>
           ))}
         </ul>

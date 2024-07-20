@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 
 function Players() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [team, setTeam] = useState(null);
   const [player, setPlayer] = useState("");
   const [players, setPlayers] = useState([]);
@@ -52,13 +54,14 @@ function Players() {
       // Pridobi zadnjega dodanega igralca
       const lastPlayer = allPlayers[allPlayers.length - 1];
 
-      // Posodobi seznam igralcev v ekipi
       const updatedPlayers = [...team.players, lastPlayer];
       const updatedTeam = { ...team, players: updatedPlayers };
 
-      await axios.put(`http://localhost:4000/teams/${teamId}`, updatedTeam);
+      await axios.put(
+        `http://localhost:4000/teams/players/${teamId}`,
+        updatedTeam
+      );
       fetchTeam();
-      // Posodobi stanje aplikacije
       setTeam(updatedTeam);
       setPlayer("");
     } catch (error) {
@@ -66,6 +69,32 @@ function Players() {
         "Prišlo je do napake pri ustvarjanju igralca ali posodabljanju ekipe!",
         error
       );
+    }
+  };
+
+  const removePlayer = async (playerId, playerName) => {
+    if (
+      window.confirm(
+        `Ali ste prepričani, da želite odstraniti igralca ${playerName}?`
+      )
+    ) {
+      try {
+        await axios.delete(`http://localhost:4000/players/${playerId}`);
+        const updatedPlayers = players.filter(
+          (player) => player._id !== playerId
+        );
+        const updatedTeamPlayers = team.players.filter(
+          (teamPlayer) => teamPlayer._id !== playerId
+        );
+        console.log(updatedPlayers);
+        setPlayers(updatedPlayers);
+        setTeam({ ...team, players: updatedTeamPlayers });
+        await axios.put(`http://localhost:4000/teams/players/${teamId}`, {
+          players: updatedPlayers,
+        });
+      } catch (error) {
+        console.error("Prišlo je do napake pri brisanju igralca!", error);
+      }
     }
   };
 
@@ -78,34 +107,49 @@ function Players() {
   }
 
   return (
-    <div>
+    <div className="playerContainer">
       <h1>{teamName}</h1>
       <div>
-        <h2>Podatki o ekipi</h2>
-        <form onSubmit={createPlayer}>
-          <input type="text" value={player} onChange={handleChange} />
-          <button type="submit"> Dodaj igralca </button>
-        </form>
+        {isLoggedIn && (
+          <span>
+            <h2>Vnesi igralca</h2>
+            <form className="player-form" onSubmit={createPlayer}>
+              <input
+                className="player-input"
+                type="text"
+                value={player}
+                onChange={handleChange}
+              />
+              <button className="player-button" type="submit">
+                Dodaj igralca
+              </button>
+            </form>
+          </span>
+        )}
         <ul>
           <h3>Igralci:</h3>
           {players.map((player) => (
             <div className="player" key={player._id}>
-              <span
-                style={{
-                  fontWeight: 700,
-                  display: "inline-block",
-                  width: "30%",
-                }}
-              >
-                {player.name}:
-              </span>
-              <span> ⚽: {player.goalsScored} </span>
-              <span> 🟨: {player.yellowCards} </span>
-              <span> 🟥: {player.redCards} </span>
+              <span>{player.name}:</span>
+              <span className="goal">⚽: {player.goalsScored}</span>
+              <span className="yellow-card">🟨: {player.yellowCards}</span>
+              <span className="red-card">🟥: {player.redCards}</span>
+              {isLoggedIn && (
+                <span>
+                  <button
+                    className="deletePlayerBtn"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the click event from bubbling up to the parent div
+                      removePlayer(player._id, player.name);
+                    }}
+                  >
+                    <small> ✖ </small>
+                  </button>
+                </span>
+              )}
             </div>
           ))}
         </ul>
-        {/* Add any other team details here */}
       </div>
     </div>
   );
