@@ -161,6 +161,7 @@ function Round() {
             <ul className="selectTeamList">
               {teams.map((team) => (
                 <button
+                  className="selectTeamBtn"
                   key={team._id}
                   type="button"
                   onClick={() => handleTeamClick(team)}
