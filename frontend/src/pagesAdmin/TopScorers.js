@@ -47,15 +47,20 @@ function Teams() {
               </tr>
             </thead>
             <tbody>
-              {scorers.slice(0, 10).map((scorer, index) => (
-                <tr key={scorer._id}>
-                  <td>{scorer.rank}.</td>
-                  <td>
-                    <b>{scorer.name}</b>
-                  </td>
-                  <td>{scorer.goalsScored}</td>
-                </tr>
-              ))}
+              {scorers.slice(0, 10).map(
+                (scorer, index) =>
+                  scorer.goalsScored > 0 && (
+                    <tr key={scorer._id}>
+                      <td>
+                        <b> {scorer.rank}. </b>
+                      </td>
+                      <td>
+                        <b>{scorer.name}</b>
+                      </td>
+                      <td>{scorer.goalsScored}</td>
+                    </tr>
+                  )
+              )}
             </tbody>
           </table>
         </div>
