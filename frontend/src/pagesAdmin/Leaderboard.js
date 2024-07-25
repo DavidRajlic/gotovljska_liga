@@ -45,6 +45,7 @@ function Teams() {
         return b.points - a.points;
       } else {
         const headToHeadResult = getHeadToHeadResult(a, b, matches);
+        console.log(headToHeadResult);
         if (headToHeadResult !== 0) {
           return headToHeadResult;
         } else {
@@ -61,6 +62,7 @@ function Teams() {
   };
 
   const getHeadToHeadResult = (teamA, teamB, matches) => {
+    console.log(teamA.name, teamB.name);
     let teamAWins = 0;
     let teamBWins = 0;
     let teamAGoalDifference = 0;
@@ -107,12 +109,8 @@ function Teams() {
       return teamBWins - teamAWins;
     } else if (teamAGoalDifference !== teamBGoalDifference) {
       return teamBGoalDifference - teamAGoalDifference;
-    } else if (teamAGoals !== teamBGoals) {
-      return teamBGoals - teamAGoals;
     } else {
-      const teamACards = teamA.yellowCards + teamA.redCards;
-      const teamBCards = teamB.yellowCards + teamB.redCards;
-      return teamACards - teamBCards;
+      return 0;
     }
   };
 
