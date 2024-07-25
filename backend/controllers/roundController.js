@@ -68,6 +68,7 @@ module.exports = {
         round: req.body.round,
         date: req.body.date,
         matches: req.body.matches,
+        pinned: req.body.pinned,
       });
 
       await round.save();
@@ -105,6 +106,7 @@ module.exports = {
       round.round = req.body.round ? req.body.round : round.round;
       round.date = req.body.date ? req.body.date : round.date;
       round.matches = req.body.matches ? req.body.matches : round.matches;
+      round.pinned = req.body.pinned ? req.body.pinned : round.pinned;
 
       round.save(function (err, round) {
         if (err) {
@@ -119,16 +121,11 @@ module.exports = {
     });
   },
 
-  update: function (req, res) {
-    var id = req.params.id;
+  update: async function (req, res) {
+    const id = req.params.id;
 
-    RoundModel.findOne({ _id: id }, function (err, round) {
-      if (err) {
-        return res.status(500).json({
-          message: "Error when getting round",
-          error: err,
-        });
-      }
+    try {
+      const round = await RoundModel.findOne({ _id: id });
 
       if (!round) {
         return res.status(404).json({
@@ -136,21 +133,22 @@ module.exports = {
         });
       }
 
-      round.round = req.body.round ? req.body.round : round.round;
-      round.date = req.body.date ? req.body.date : round.date;
-      round.matches = req.body.matches ? req.body.matches : round.matches;
+      round.round = req.body.round !== undefined ? req.body.round : round.round;
+      round.date = req.body.date !== undefined ? req.body.date : round.date;
+      round.matches =
+        req.body.matches !== undefined ? req.body.matches : round.matches;
+      round.pinned =
+        req.body.pinned !== undefined ? req.body.pinned : round.pinned;
 
-      round.save(function (err, round) {
-        if (err) {
-          return res.status(500).json({
-            message: "Error when updating round.",
-            error: err,
-          });
-        }
+      const updatedRound = await round.save();
 
-        return res.json(round);
+      return res.json(updatedRound);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Error when updating round.",
+        error: err,
       });
-    });
+    }
   },
 
   /**
