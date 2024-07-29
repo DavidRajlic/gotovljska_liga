@@ -2,6 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { AuthProvider, AuthContext } from "../contexts/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function Players() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -19,7 +23,6 @@ function Players() {
   const fetchTeam = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/teams/${teamId}`);
-
       setTeam(response.data);
 
       // Fetch player details
@@ -38,20 +41,19 @@ function Players() {
   const createPlayer = async (event) => {
     event.preventDefault();
     try {
-      // Ustvari novega igralca
       const newPlayerData = {
         name: player,
         goalsScored: 0,
         yellowCards: 0,
         redCards: 0,
+        mustPayYellowCard: false,
+        mustPayRedCard: false,
       };
       await axios.post("http://localhost:4000/players", newPlayerData);
 
-      // Pridobi posodobljen seznam vseh igralcev
       const response = await axios.get("http://localhost:4000/players");
       const allPlayers = response.data;
 
-      // Pridobi zadnjega dodanega igralca
       const lastPlayer = allPlayers[allPlayers.length - 1];
 
       const updatedPlayers = [...team.players, lastPlayer];
@@ -64,38 +66,49 @@ function Players() {
       fetchTeam();
       setTeam(updatedTeam);
       setPlayer("");
+      toast.success("Igralec uspešno ustvarjen");
     } catch (error) {
       console.error(
         "Prišlo je do napake pri ustvarjanju igralca ali posodabljanju ekipe!",
         error
       );
+      toast.error("Prišlo je do napake pri dodajnaju igralca!");
     }
   };
 
   const removePlayer = async (playerId, playerName) => {
-    if (
-      window.confirm(
-        `Ali ste prepričani, da želite odstraniti igralca ${playerName}?`
-      )
-    ) {
-      try {
-        await axios.delete(`http://localhost:4000/players/${playerId}`);
-        const updatedPlayers = players.filter(
-          (player) => player._id !== playerId
-        );
-        const updatedTeamPlayers = team.players.filter(
-          (teamPlayer) => teamPlayer._id !== playerId
-        );
-        console.log(updatedPlayers);
-        setPlayers(updatedPlayers);
-        setTeam({ ...team, players: updatedTeamPlayers });
-        await axios.put(`http://localhost:4000/teams/players/${teamId}`, {
-          players: updatedPlayers,
-        });
-      } catch (error) {
-        console.error("Prišlo je do napake pri brisanju igralca!", error);
-      }
-    }
+    confirmAlert({
+      title: "Potrditev brisanja",
+      message: `Ali ste prepričani, da želite odstraniti igralca ${playerName}?`,
+      buttons: [
+        {
+          label: "Da",
+          onClick: async () => {
+            try {
+              await axios.delete(`http://localhost:4000/players/${playerId}`);
+              const updatedPlayers = players.filter(
+                (player) => player._id !== playerId
+              );
+              const updatedTeamPlayers = team.players.filter(
+                (teamPlayer) => teamPlayer._id !== playerId
+              );
+              setPlayers(updatedPlayers);
+              setTeam({ ...team, players: updatedTeamPlayers });
+              await axios.put(`http://localhost:4000/teams/players/${teamId}`, {
+                players: updatedPlayers,
+              });
+              toast.success("Igralec uspešno odstranjen!");
+            } catch (error) {
+              toast.error("Prišlo je do napake pri odstranjevanju igralca!");
+            }
+          },
+        },
+        {
+          label: "Ne",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   const handleChange = (event) => {
@@ -108,6 +121,7 @@ function Players() {
 
   return (
     <div className="playerContainer">
+      <ToastContainer position="top-right" />
       <h1>{teamName}</h1>
       <div>
         {isLoggedIn && (
@@ -132,8 +146,24 @@ function Players() {
             <div className="player" key={player._id}>
               <span>{player.name}:</span>
               <span className="goal">⚽: {player.goalsScored}</span>
-              <span className="yellow-card">🟨: {player.yellowCards}</span>
-              <span className="red-card">🟥: {player.redCards}</span>
+              {player.mustPayYellowCard ? (
+                <span className="yellow-card">
+                  {" "}
+                  🟨: {player.yellowCards}
+                  <small style={{ color: "red" }}> * </small>{" "}
+                </span>
+              ) : (
+                <span className="yellow-card"> 🟨: {player.yellowCards} </span>
+              )}
+              {player.mustPayRedCard ? (
+                <span className="red-card">
+                  🟥: {player.redCards}{" "}
+                  <small style={{ color: "red" }}> * </small>{" "}
+                </span>
+              ) : (
+                <span className="red-card">🟥: {player.redCards} </span>
+              )}
+
               {isLoggedIn && (
                 <span>
                   <button
