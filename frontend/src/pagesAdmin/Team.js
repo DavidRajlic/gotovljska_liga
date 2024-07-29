@@ -2,6 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "../contexts/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function Teams() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -21,9 +25,9 @@ function Teams() {
     };
 
     fetchTeams();
-  }, []); // Prazno polje odvisnosti, da se useEffect zažene samo enkrat
+  }, []);
 
-  const handleCreateTeam = async (event) => {
+  const createTeam = async (event) => {
     event.preventDefault();
     try {
       await axios.post("http://localhost:4000/teams", {
@@ -31,8 +35,10 @@ function Teams() {
       });
       setName("");
       fetchTeams(); // Fetch teams again after creating a new team
+      toast.success("Ekipa uspešno ustvarjena");
     } catch (error) {
       console.error("Prišlo je do napake pri ustvarjanju ekipe!", error);
+      toast.error("Prišlo je do napake pri ustvarjanju ekipe!");
     }
   };
 
@@ -46,27 +52,35 @@ function Teams() {
   };
 
   const removeTeam = async (teamId, teamName) => {
-    if (
-      window.confirm(
-        `Ali ste prepričani, da želite odstraniti ekipo ${teamName}?`
-      )
-    ) {
-      try {
-        await axios.delete(`http://localhost:4000/teams/${teamId}`);
-        setTeams(teams.filter((team) => team._id !== teamId));
-      } catch (error) {
-        console.error("Prišlo je do napake pri brisanju ekipe!", error);
-      }
-    }
+    confirmAlert({
+      title: "Potrditev brisanja",
+      message: `Ali ste prepričani, da želite odstraniti ekipo ${teamName}?`,
+      buttons: [
+        {
+          label: "Da",
+          onClick: async () => {
+            try {
+              await axios.delete(`http://localhost:4000/teams/${teamId}`);
+              setTeams(teams.filter((team) => team._id !== teamId));
+              toast.success("Ekipa uspešno izbrisana!");
+            } catch (error) {
+              toast.error("Prišlo je do napake pri brisanju ekipe!");
+            }
+          },
+        },
+        {
+          label: "Ne",
+          onClick: () => {},
+        },
+      ],
+    });
   };
-
-  console.log(isLoggedIn);
 
   const handleChange = (event) => {
     setName(event.target.value);
   };
 
-  const handleShowPlayers = (teamId, teamName) => {
+  const showPlayers = (teamId, teamName) => {
     navigate(`/teams/${teamId}`, {
       state: { teamName: teamName, teamId: teamId },
     });
@@ -74,9 +88,10 @@ function Teams() {
 
   return (
     <div className="teamContainer">
+      <ToastContainer position="top-right" />
       <h1 className="teamTitle"> EKIPE </h1>
       {isLoggedIn && (
-        <form onSubmit={handleCreateTeam}>
+        <form onSubmit={createTeam}>
           <input
             className="addTeamInput"
             type="text"
@@ -84,7 +99,7 @@ function Teams() {
             value={name}
             onChange={handleChange}
           />
-          <button className="addTeam" type="submit">
+          <button className="addTeamBtn" type="submit">
             Dodaj ekipo
           </button>
         </form>
@@ -96,7 +111,7 @@ function Teams() {
             <div
               className="team"
               key={team._id}
-              onClick={() => handleShowPlayers(team._id, team.name)}
+              onClick={() => showPlayers(team._id, team.name)}
             >
               <span style={{ fontSize: "20px" }}>
                 {" "}
