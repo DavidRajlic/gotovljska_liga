@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import EditMatch from "../components/editMatch";
 
 function Match() {
   const location = useLocation();
@@ -15,10 +16,6 @@ function Match() {
   const [redCards, setRedCards] = useState({ team1: [], team2: [] });
   const [team1Goals, setTeam1Goals] = useState("");
   const [team2Goals, setTeam2Goals] = useState("");
-  const [team1Yellow, setTeam1Yellow] = useState("");
-  const [team2Yellow, setTeam2Yellow] = useState("");
-  const [team1Red, setTeam1Red] = useState("");
-  const [team2Red, setTeam2Red] = useState("");
   const [goals, setGoals] = useState({ team1: {}, team2: {} });
   const [goalScorers, setGoalScorers] = useState({ team1: {}, team2: {} });
   const [yellowCardPlayers, setYellowCardPlayers] = useState({
@@ -282,12 +279,19 @@ function Match() {
         const playerYellowCards = yellowCardPlayers.team1[playerId] || 0;
         const playerRedCards = redCardPlayers.team1[playerId] || 0;
 
+        const updateData = {
+          goalsScored: playerGoals,
+          yellowCards: playerYellowCards,
+          redCards: playerRedCards,
+          mustPayYellowCard: playerYellowCards > 0,
+          mustPayRedCard: playerRedCards > 0,
+        };
+
         if (playerGoals > 0 || playerYellowCards > 0 || playerRedCards > 0) {
-          await axios.put(`http://localhost:4000/players/${playerId}`, {
-            goalsScored: playerGoals,
-            yellowCards: playerYellowCards,
-            redCards: playerRedCards,
-          });
+          await axios.put(
+            `http://localhost:4000/players/${playerId}`,
+            updateData
+          );
         }
       }
 
@@ -298,12 +302,19 @@ function Match() {
         const playerYellowCards = yellowCardPlayers.team2[playerId] || 0;
         const playerRedCards = redCardPlayers.team2[playerId] || 0;
 
+        const updateData = {
+          goalsScored: playerGoals,
+          yellowCards: playerYellowCards,
+          redCards: playerRedCards,
+          mustPayYellowCard: playerYellowCards > 0,
+          mustPayRedCard: playerRedCards > 0,
+        };
+
         if (playerGoals > 0 || playerYellowCards > 0 || playerRedCards > 0) {
-          await axios.put(`http://localhost:4000/players/${playerId}`, {
-            goalsScored: playerGoals,
-            yellowCards: playerYellowCards,
-            redCards: playerRedCards,
-          });
+          await axios.put(
+            `http://localhost:4000/players/${playerId}`,
+            updateData
+          );
         }
       }
 
@@ -387,7 +398,7 @@ function Match() {
         matchPlayed: true,
         winner: winner,
       });
-
+      window.location.reload();
       console.log("Rezultat in strelci so uspešno posodobljeni.");
     } catch (error) {
       console.error(
@@ -447,10 +458,15 @@ function Match() {
           max="100"
         />
         <button
+          className={
+            team1Goals === "" || team2Goals === ""
+              ? "disabledBtn"
+              : "confirmResult"
+          }
           onClick={confirmResult}
           disabled={team1Goals === "" || team2Goals === ""}
         >
-          Potrdi rezultat
+          Potrdi Rezultat
         </button>
       </div>
       <ul>
@@ -608,133 +624,21 @@ function Match() {
       </div>
 
       <div className="editMatch">
-        <div className="editMatchTeam1">
-          <h2>{team1.name}</h2>
-          {team1.players.map((player, index) => (
-            <div className="player" key={index}>
-              <span
-                style={{
-                  fontWeight: 700,
-                  display: "inline-block",
-                  width: "30%",
-                }}
-              >
-                {player.name}:
-              </span>
-              <span
-                onClick={() => handleGoalClick("team1", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                ⚽{" "}
-              </span>
-              <span
-                onClick={() => handleYellowCardClick("team1", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                🟨{" "}
-              </span>
-              <span
-                onClick={() => handleRedCardClick("team1", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                🟥{" "}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <div className="editMatchTeam1">
-          <h2>{team2.name}</h2>
-          {team2.players.map((player, index) => (
-            <div className="player" key={index}>
-              <span
-                style={{
-                  fontWeight: 700,
-                  display: "inline-block",
-                  width: "30%",
-                }}
-              >
-                {player.name}:
-              </span>
-              <span
-                onClick={() => handleGoalClick("team2", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                ⚽{" "}
-              </span>
-              <span
-                onClick={() => handleYellowCardClick("team2", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                🟨{" "}
-              </span>
-              <span
-                onClick={() => handleRedCardClick("team2", index)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                🟥{" "}
-              </span>
-            </div>
-          ))}
-        </div>
+        <EditMatch
+          team={team1}
+          handleGoalClick={handleGoalClick}
+          handleYellowCardClick={handleYellowCardClick}
+          handleRedCardClick={handleRedCardClick}
+        />
+        <EditMatch
+          team={team2}
+          handleGoalClick={handleGoalClick}
+          handleYellowCardClick={handleYellowCardClick}
+          handleRedCardClick={handleRedCardClick}
+        />
       </div>
 
       <br />
-      {/*<div>
-        <b>Igralci z rumenimi kartoni (team1):</b>
-        <ul>
-          {yellowCards.team1.map((index, idx) => (
-            <li key={idx}>{team1.players[index].name}</li>
-          ))}
-        </ul>
-        <h3>Igralci z rumenimi kartoni (team2):</h3>
-        <ul>
-          {yellowCards.team2.map((index, idx) => (
-            <li key={idx}>{team2.players[index].name}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3>Igralci z rdečimi kartoni (team1):</h3>
-        <ul>
-          {redCards.team1.map((index, idx) => (
-            <li key={idx}>{team1.players[index].name}</li>
-          ))}
-        </ul>
-        <h3>Igralci z rdečimi kartoni (team2):</h3>
-        <ul>
-          {redCards.team2.map((index, idx) => (
-            <li key={idx}>{team2.players[index].name}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3>Igralci z doseženimi goli (team1):</h3>
-        <ul>
-          {Object.keys(goals.team1).map((index) => (
-            <li key={index}>
-              {team1.players[index].name} {goals.team1[index]}x
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3>Igralci z doseženimi goli (team2):</h3>
-        <ul>
-          {Object.keys(goals.team2).map((index) => (
-            <li key={index}>
-              {team2.players[index].name} {goals.team2[index]}x
-            </li>
-          ))}
-        </ul>
-      </div>
-      */}
     </div>
   );
 }
