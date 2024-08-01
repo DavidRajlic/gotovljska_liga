@@ -79,6 +79,8 @@ module.exports = {
    * TeamController.update()
    */
   update: async function (req, res) {
+    console.log("here");
+
     const id = req.params.id;
     try {
       const team = await teamModel.findOne({ _id: id });
@@ -88,46 +90,54 @@ module.exports = {
         });
       }
 
-      // Ensure the incoming values are numbers where necessary
-      const points = parseInt(req.body.points, 10);
-      const goalsScored = parseInt(req.body.goalsScored, 10);
-      const goalsConceded = parseInt(req.body.goalsConceded, 10);
-      const matchesPlayed = parseInt(req.body.matchesPlayed, 10);
-      const yellowCards = parseInt(req.body.yellowCards, 10);
-      const redCards = parseInt(req.body.redCards, 10);
-      const wins = parseInt(req.body.wins, 10);
-      const draws = parseInt(req.body.draws, 10);
-      const losses = parseInt(req.body.losses, 10);
+      // Ensure the incoming values are numbers where necessary, default to 0 if not provided
+      const points = parseInt(req.body.points, 10) || 0;
+      const goalsScored = parseInt(req.body.goalsScored, 10) || 0;
+      const goalsConceded = parseInt(req.body.goalsConceded, 10) || 0;
+      const matchesPlayed = parseInt(req.body.matchesPlayed, 10) || 0;
+      const yellowCards = parseInt(req.body.yellowCards, 10) || 0;
+      const redCards = parseInt(req.body.redCards, 10) || 0;
+      const wins = parseInt(req.body.wins, 10) || 0;
+      const draws = parseInt(req.body.draws, 10) || 0;
+      const losses = parseInt(req.body.losses, 10) || 0;
 
+      console.log(typeof points);
+      console.log(goalsScored);
+
+      // Only check for NaN values if the property is provided in the request body
       if (
-        isNaN(points) ||
-        isNaN(goalsScored) ||
-        isNaN(goalsConceded) ||
-        isNaN(matchesPlayed) ||
-        isNaN(yellowCards) ||
-        isNaN(redCards) ||
-        isNaN(wins) ||
-        isNaN(draws) ||
-        isNaN(losses)
+        (req.body.points && isNaN(points)) ||
+        (req.body.goalsScored && isNaN(goalsScored)) ||
+        (req.body.goalsConceded && isNaN(goalsConceded)) ||
+        (req.body.matchesPlayed && isNaN(matchesPlayed)) ||
+        (req.body.yellowCards && isNaN(yellowCards)) ||
+        (req.body.redCards && isNaN(redCards)) ||
+        (req.body.wins && isNaN(wins)) ||
+        (req.body.draws && isNaN(draws)) ||
+        (req.body.losses && isNaN(losses))
       ) {
         return res.status(400).json({
           message:
             "Invalid input values. Expected numbers for points, goalsScored, goalsConceded, matchesPlayed, yellowCards, redCards, wins, draws, and losses.",
         });
       }
+      console.log(typeof points);
 
-      team.name = req.body.name || team.name;
-      team.players = req.body.players || team.players;
-      team.points = points + team.points;
-      team.goalsScored = goalsScored + team.goalsScored;
-      team.goalsConceded = goalsConceded + team.goalsConceded;
+      // Only update the fields that are provided in the request body
+      if (req.body.name) team.name = req.body.name;
+      if (req.body.players) team.players = req.body.players;
+      if (req.body.points) team.points += points;
+      if (req.body.goalsScored) team.goalsScored += goalsScored;
+      if (req.body.goalsConceded) team.goalsConceded += goalsConceded;
+      if (req.body.matchesPlayed) team.matchesPlayed += matchesPlayed;
+      if (req.body.yellowCards) team.yellowCards += yellowCards;
+      if (req.body.redCards) team.redCards += redCards;
+      if (req.body.wins) team.wins += wins;
+      if (req.body.draws) team.draws += draws;
+      if (req.body.losses) team.losses += losses;
+
+      // Update goal difference
       team.goalDiffrence = team.goalsScored - team.goalsConceded;
-      team.matchesPlayed = matchesPlayed + team.matchesPlayed;
-      team.yellowCards = yellowCards + team.yellowCards;
-      team.redCards = redCards + team.redCards;
-      team.wins = wins + team.wins;
-      team.draws = draws + team.draws;
-      team.losses = losses + team.losses;
 
       const updatedTeam = await team.save();
       return res.json(updatedTeam);
@@ -199,16 +209,16 @@ module.exports = {
       if (req.body.name !== undefined) team.name = req.body.name;
       if (req.body.players !== undefined) team.players = req.body.players;
 
-      team.points += points;
-      team.goalsScored += goalsScored;
-      team.goalsConceded += goalsConceded;
+      team.points = team.points - points;
+      team.goalsScored = team.goalsScored - goalsScored;
+      team.goalsConceded = team.goalsConceded - goalsConceded;
       team.goalDifference = team.goalsScored - team.goalsConceded;
-      team.matchesPlayed += matchesPlayed;
-      team.yellowCards += yellowCards;
-      team.redCards += redCards;
-      team.wins += wins;
-      team.draws += draws;
-      team.losses += losses;
+      team.matchesPlayed = team.matchesPlayed - matchesPlayed;
+      team.yellowCards = team.yellowCards - yellowCards;
+      team.redCards = team.redCards - redCards;
+      team.wins = team.wins - wins;
+      team.draws = team.draws - draws;
+      team.losses = team.losses - losses;
 
       const updatedTeam = await team.save();
       return res.json(updatedTeam);
