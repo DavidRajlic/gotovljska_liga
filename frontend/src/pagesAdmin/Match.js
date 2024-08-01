@@ -98,6 +98,7 @@ function Match() {
   };
 
   const handleGoalClick = (team, index) => {
+    console.log(team, index);
     const player =
       team === "team1" ? team1.players[index] : team2.players[index];
     setGoals((prevGoals) => ({
@@ -128,109 +129,98 @@ function Match() {
 
     if (match.matchPlayed) {
       for (const scorer of match.team1Scorers) {
-        console.log("tukaj");
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           goalsScored: scorer.goals,
         });
       }
       for (const scorer of match.team2Scorers) {
-        console.log("tukaj1");
-        console.log(scorer.goals);
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           goalsScored: scorer.goals,
         });
       }
 
       for (const scorer of match.team1YellowCards) {
-        console.log("tukaj1");
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           yellowCards: scorer.yellowCards,
         });
       }
 
       for (const scorer of match.team2YellowCards) {
-        console.log("tukaj1");
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           yellowCards: scorer.yellowCards,
         });
       }
 
       for (const scorer of match.team1RedCards) {
-        console.log("tukaj1");
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           redCards: scorer.redCards,
         });
       }
 
       for (const scorer of match.team2RedCards) {
-        console.log("tukaj1");
         await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
           redCards: scorer.redCards,
         });
       }
-      console.log("tukaj2");
+
       await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
-        goalsScored: -Math.abs(match.team1Goals),
-        goalsConceded: -Math.abs(match.team2Goals),
-        yellowCards: -Math.abs(match.team1YellowCards.length),
-        redCards: -Math.abs(match.team1RedCards.length),
-        matchesPlayed: -1,
+        goalsScored: match.team1Goals,
+        goalsConceded: match.team2Goals,
+        yellowCards: match.team1YellowCards.length,
+        redCards: match.team1RedCards.length,
+        matchesPlayed: 1,
       });
 
-      console.log("tukaj");
       await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
-        goalsScored: -Math.abs(match.team2Goals),
-        goalsConceded: -Math.abs(match.team1Goals),
-        yellowCards: -Math.abs(match.team2YellowCards.length),
-        redCards: -Math.abs(match.team2RedCards.length),
-        matchesPlayed: -1,
+        goalsScored: match.team2Goals,
+        goalsConceded: match.team1Goals,
+        yellowCards: match.team2YellowCards.length,
+        redCards: match.team2RedCards.length,
+        matchesPlayed: 1,
       });
-      console.log(match.winner, team1Id);
+
       if (match.winner === team1Id) {
-        console.log("tukajWin in točke");
         await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
-          wins: -1,
-          points: -3,
+          wins: 1,
+          points: 3,
         });
 
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
-          losses: -1,
+          losses: 1,
         });
         if (match.team1Scorers.length === 0 && match.team1Goals === 3) {
-          await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          await axios.put(`http://localhost:4000/teams/${team2Id}`, {
             points: 1,
           });
         }
       } else if (match.winner === team2Id) {
-        console.log("tukaj");
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
-          wins: -1,
-          points: -3,
+          wins: 1,
+          points: 3,
         });
         await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
-          losses: -1,
+          losses: 1,
         });
 
         if (match.team2Scorers.length === 0 && match.team2Goals === 3) {
-          await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          await axios.put(`http://localhost:4000/teams/${team1Id}`, {
             points: 1,
           });
         }
       } else {
-        console.log("tukaj");
         await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
-          draws: -1,
-          points: -1,
+          draws: 1,
+          points: 1,
         });
         await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
-          draws: -1,
-          points: -1,
+          draws: 1,
+          points: 1,
         });
       }
     }
 
     try {
-      // Pretvori indekse v imena igralcev
+      // Convert indexes into player names
       const team1Scorers = Object.keys(goals.team1).map((index) => ({
         id: team1.players[index]._id,
         player: team1.players[index].name,
@@ -328,31 +318,26 @@ function Match() {
       let team2Points;
 
       if (winner === team1 && !didNotPlay) {
-        console.log("here");
         team1Wins = 1;
         team1Points = 3;
         team2Points = 0;
         team2Losses = 1;
       } else if (winner === team1 && didNotPlay) {
-        console.log("here1");
         team1Wins = 1;
         team1Points = 3;
         team2Points = -1;
         team2Losses = 1;
       } else if (winner === team2 && didNotPlay) {
-        console.log("here2");
         team2Wins = 1;
         team1Points = -1;
         team2Points = 3;
         team1Losses = 1;
       } else if (winner === team2 && !didNotPlay) {
-        console.log("here3");
         team1Points = 0;
         team2Points = 3;
         team2Wins = 1;
         team1Losses = 1;
       } else if (winner === null) {
-        console.log("here4");
         team1Points = 1;
         team2Points = 1;
         team1Draws = 1;
@@ -382,8 +367,6 @@ function Match() {
         draws: team2Draws,
         losses: team2Losses,
       });
-
-      console.log(team1Goals, team2Goals);
 
       // Pošlji podatke na strežnik
       await axios.put(`http://localhost:4000/matches/${matchId}`, {
@@ -562,80 +545,35 @@ function Match() {
         </div>
       )}
       <h2 style={{ textAlign: "center" }}> Spremenjeni podatki tekme</h2>
-      <div className="changedMatchData">
-        <div className="changedMatchDataTeam1">
-          <h2> {match.team1}</h2>
-
-          <div>
-            <b> ⚽:</b>
-            {Object.keys(goals.team1).map((index) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team1.players[index].name} {goals.team1[index]}x.
-              </span>
-            ))}
-          </div>
-
-          <div>
-            <b>🟨:</b>
-            {yellowCards.team1.map((index, idx) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team1.players[index].name}
-              </span>
-            ))}
-          </div>
-          <div>
-            <b>🟥:</b>
-            {redCards.team1.map((index, idx) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team1.players[index].name}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2> {match.team2}</h2>
-
-          <div>
-            <b> ⚽:</b>
-            {Object.keys(goals.team2).map((index) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team2.players[index].name} {goals.team2[index]}x.
-              </span>
-            ))}
-          </div>
-
-          <div>
-            <b>🟨:</b>
-            {yellowCards.team2.map((index, idx) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team2.players[index].name}
-              </span>
-            ))}
-          </div>
-          <div>
-            <b>🟥:</b>
-            {redCards.team2.map((index, idx) => (
-              <span style={{ padding: "10px" }} key={index}>
-                {team2.players[index].name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
 
       <div className="editMatch">
-        <EditMatch
-          team={team1}
-          handleGoalClick={handleGoalClick}
-          handleYellowCardClick={handleYellowCardClick}
-          handleRedCardClick={handleRedCardClick}
-        />
-        <EditMatch
-          team={team2}
-          handleGoalClick={handleGoalClick}
-          handleYellowCardClick={handleYellowCardClick}
-          handleRedCardClick={handleRedCardClick}
-        />
+        <div style={{ width: "90%" }}>
+          <EditMatch
+            match={match.team1}
+            goals={goals}
+            yellowCards={yellowCards}
+            redCards={redCards}
+            team={team1}
+            teamName="team1"
+            handleGoalClick={handleGoalClick}
+            handleYellowCardClick={handleYellowCardClick}
+            handleRedCardClick={handleRedCardClick}
+          />
+        </div>
+
+        <div style={{ width: "90%" }}>
+          <EditMatch
+            match={match.team2}
+            goals={goals}
+            yellowCards={yellowCards}
+            redCards={redCards}
+            team={team2}
+            teamName="team2"
+            handleGoalClick={handleGoalClick}
+            handleYellowCardClick={handleYellowCardClick}
+            handleRedCardClick={handleRedCardClick}
+          />
+        </div>
       </div>
 
       <br />

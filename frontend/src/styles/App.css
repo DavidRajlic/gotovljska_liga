@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f7f9fc;
+  background-color: #f0f0f0;
 }
 
 .App {
@@ -45,7 +45,7 @@ body {
 nav {
   display: flex;
   flex-direction: row;
-  background-color: #f62217;
+  background-color: #ff0000;
   width: 100%;
   padding: 10px;
   position: sticky;
@@ -178,7 +178,7 @@ ul {
 }
 
 .player .yellow-card {
-  color: gold;
+  color: black;
 }
 
 .player .red-card {
@@ -187,6 +187,8 @@ ul {
 /*
 Players.js end 
 */
+
+/* Leaderboard.js  start */
 .leaderboard {
   width: 60%;
   margin: 20px auto;
@@ -220,26 +222,15 @@ Players.js end
   text-transform: uppercase;
 }
 
-/*
-.leaderboard tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-  */
-
-.leaderboard tr:hover {
-  background-color: #ddd;
-}
-
 .leaderboard td {
   font-size: 1rem;
-}
-
-.leaderboard td b {
 }
 
 .points b {
   font-weight: 800;
 }
+
+/* Leaderboard.js end
 
 /* Team.js start  */
 
@@ -274,7 +265,7 @@ Players.js end
   width: 60%;
 }
 
-.addTeam {
+.addTeamBtn {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -285,7 +276,7 @@ Players.js end
   transition: background-color 0.3s ease;
 }
 
-.addTeam:hover {
+.addTeamBtn:hover {
   background-color: #218838;
 }
 
@@ -320,10 +311,6 @@ Players.js end
   background-color: #e0e0e0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
-}
-
-.team span {
-  font-size: 20px;
 }
 
 .deleteTeamBtn {
@@ -488,6 +475,11 @@ Players.js end
   border: 1px black solid;
 }
 
+.pinMatchday {
+  display: flex;
+  justify-content: end;
+}
+
 /* Round.js end  */
 
 /* TopScorers.js start  */
@@ -617,11 +609,6 @@ Players.js end
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.match:hover {
-  background-color: #e6f7ff;
-  transform: translateY(-5px);
-}
-
 .match h2 {
   color: #007bff;
   text-align: center;
@@ -694,6 +681,22 @@ Players.js end
   border-radius: 5px;
 }
 
+.confirmResult {
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.disabledBtn {
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
 .teamNotAttend {
   display: flex;
   justify-content: center;
@@ -720,16 +723,12 @@ Players.js end
 }
 
 .changedMatchData {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 80%;
-  margin: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 }
 
 .changedMatchDataTeam1 {
   width: 50%;
+  border: 1px red solid;
 }
 
 .editMatch {
@@ -738,8 +737,8 @@ Players.js end
   flex-direction: row;
 }
 
-.editMatchTeam1 {
-  width: 40%;
+.editMatchTeam {
+  width: 70%;
 }
 
 .match-header button {
