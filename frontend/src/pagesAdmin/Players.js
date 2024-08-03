@@ -12,6 +12,7 @@ function Players() {
   const [team, setTeam] = useState(null);
   const [player, setPlayer] = useState("");
   const [players, setPlayers] = useState([]);
+  const [leader, setLeader] = useState("");
   const location = useLocation();
   const teamName = location.state.teamName;
   const teamId = location.state.teamId;
@@ -32,7 +33,14 @@ function Players() {
         )
       );
 
-      setPlayers(playerDetails.map((res) => res.data));
+      const players = playerDetails.map((res) => res.data);
+      setPlayers(players);
+
+      // Check for leader and set leader if found
+      const leader = players.find((player) => player.leader === true);
+      if (leader) {
+        setLeader(leader);
+      }
     } catch (error) {
       console.error("Prišlo je do napake pri pridobivanju ekipe!", error);
     }
@@ -48,14 +56,13 @@ function Players() {
         redCards: 0,
         mustPayYellowCard: false,
         mustPayRedCard: false,
+        leader: false,
       };
       await axios.post("http://localhost:4000/players", newPlayerData);
 
       const response = await axios.get("http://localhost:4000/players");
       const allPlayers = response.data;
-
       const lastPlayer = allPlayers[allPlayers.length - 1];
-
       const updatedPlayers = [...team.players, lastPlayer];
       const updatedTeam = { ...team, players: updatedPlayers };
 
@@ -111,6 +118,19 @@ function Players() {
     });
   };
 
+  const addLeader = async (player, playerId) => {
+    if (leader !== "") {
+      await axios.put(`http://localhost:4000/players/again/${leader._id}`, {
+        leader: false,
+      });
+    }
+
+    await axios.put(`http://localhost:4000/players/again/${playerId}`, {
+      leader: true,
+    });
+    setLeader(player);
+  };
+
   const handleChange = (event) => {
     setPlayer(event.target.value);
   };
@@ -118,6 +138,8 @@ function Players() {
   if (!team) {
     return <p>Nalaganje ekipe...</p>;
   }
+
+  console.log(leader);
 
   return (
     <div className="playerContainer">
@@ -143,8 +165,14 @@ function Players() {
         <ul>
           <h3>Igralci:</h3>
           {players.map((player) => (
-            <div className="player" key={player._id}>
-              <span>{player.name}:</span>
+            <div
+              onClick={() => addLeader(player, player._id)}
+              className="player"
+              key={player._id}
+            >
+              <span>
+                {player.name} {/* {player.leader && <> (K)</>*/}
+              </span>
               <span className="goal">⚽: {player.goalsScored}</span>
               {player.mustPayYellowCard ? (
                 <span className="yellow-card">
@@ -180,6 +208,14 @@ function Players() {
             </div>
           ))}
         </ul>
+      </div>
+      <div>
+        {leader && (
+          <div>
+            {" "}
+            VODJA: <b>{leader.name} </b>{" "}
+          </div>
+        )}
       </div>
     </div>
   );

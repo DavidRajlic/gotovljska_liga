@@ -52,6 +52,9 @@ module.exports = {
         goalsScored: req.body.goalsScored,
         yellowCards: req.body.yellowCards,
         redCards: req.body.redCards,
+        mustPayYellowCard: req.body.mustPayYellowCard,
+        mustPayRedCard: req.body.mustPayRedCard,
+        leader: req.body.leader,
       });
 
       await player.save();
@@ -80,30 +83,26 @@ module.exports = {
         });
       }
 
-      // Ensure the incoming values are numbers
       const goalsScored = parseInt(req.body.goalsScored, 10);
       const yellowCards = parseInt(req.body.yellowCards, 10);
       const redCards = parseInt(req.body.redCards, 10);
 
-      if (isNaN(goalsScored) || isNaN(yellowCards) || isNaN(redCards)) {
-        return res.status(400).json({
-          message:
-            "Invalid input values. Expected numbers for goalsScored, yellowCards, and redCards.",
-        });
+      player.goalsScored += goalsScored || 0;
+      player.yellowCards += yellowCards || 0;
+      player.redCards += redCards || 0;
+      if (req.body.mustPayYellowCard !== undefined) {
+        player.mustPayYellowCard = req.body.mustPayYellowCard;
       }
 
-      player.name = req.body.name || player.name;
-      player.goalsScored = goalsScored + player.goalsScored;
-      player.yellowCards = yellowCards + player.yellowCards;
-      player.redCards = redCards + player.redCards;
+      if (req.body.mustPayRedCard !== undefined) {
+        player.mustPayRedCard = req.body.mustPayRedCard;
+      }
 
-      // Attempt to save the player and catch any errors
       const updatedPlayer = await player.save();
       return res.json(updatedPlayer);
     } catch (err) {
       console.error("Error when updating player:", err);
 
-      // Check if the error is a validation error
       if (err.name === "ValidationError") {
         return res.status(400).json({
           message: "Validation error when updating player.",
@@ -111,7 +110,6 @@ module.exports = {
         });
       }
 
-      // Check if the error is related to database connectivity
       if (err.name === "MongoError" && err.code === 11000) {
         return res.status(500).json({
           message: "Database error when updating player.",
@@ -149,15 +147,24 @@ module.exports = {
       const redCards =
         req.body.redCards !== undefined ? parseInt(req.body.redCards, 10) : 0;
 
-      // Odštejemo vrednosti od trenutnih statistik igralca
       player.goalsScored = player.goalsScored - goalsScored;
       player.yellowCards = player.yellowCards - yellowCards;
       player.redCards = player.redCards - redCards;
 
-      // Poskrbimo, da vrednosti ne gredo pod 0
       player.goalsScored = Math.max(player.goalsScored, 0);
       player.yellowCards = Math.max(player.yellowCards, 0);
       player.redCards = Math.max(player.redCards, 0);
+
+      if (req.body.mustPayYellowCard !== undefined) {
+        player.mustPayYellowCard = req.body.mustPayYellowCard;
+      }
+      if (req.body.mustPayRedCard !== undefined) {
+        player.mustPayRedCard = req.body.mustPayRedCard;
+      }
+
+      if (req.body.leader !== undefined) {
+        player.leader = req.body.leader;
+      }
       const updatedPlayer = await player.save();
 
       return res.json(updatedPlayer);
