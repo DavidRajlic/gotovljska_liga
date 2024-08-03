@@ -14,7 +14,7 @@ function Round() {
   const [freeTeams, setFreeTeams] = useState({});
   const [showEditor, setShowEditor] = useState(true);
   const [nextMatchday, setNextMatchday] = useState(null);
-  const [next, setNext] = useState(null); // Add state for next
+  const [pinned, setPinned] = useState(null); // Add state for next
 
   const navigate = useNavigate();
 
@@ -27,12 +27,10 @@ function Round() {
           axios.get("http://localhost:4000/rounds"),
         ]);
 
-      // Nastavimo pridobljene podatke za ekipe in tekme
       setTeams(teamsResponse.data);
       const fetchedMatches = matchesResponse.data;
       setMatches(fetchedMatches);
 
-      // Poiščemo največji matchday med tekmami
       const maxMatchday = Math.max(
         ...fetchedMatches.map((match) => match.matchday),
         0
@@ -44,7 +42,7 @@ function Round() {
       );
 
       if (pinnedRound) {
-        setNext(pinnedRound.round); // Update next state
+        setPinned(pinnedRound.round); // Update next state
         console.log(`Pinned round:`, pinnedRound);
       } else {
         console.log("Ni pinned round.");
@@ -146,11 +144,6 @@ function Round() {
     }
   };
 
-  const getTeamNameById = (teamId) => {
-    const team = teams.find((team) => team._id === teamId);
-    return team ? team.name : "Neznana ekipa";
-  };
-
   const pinnMatchday = async (matchday) => {
     const rounds = await axios.get("http://localhost:4000/rounds");
 
@@ -165,12 +158,13 @@ function Round() {
         await axios.put(`http://localhost:4000/rounds/${rounds.data[i]._id}`, {
           pinned: true,
         });
-        setNext(rounds.data[i].round); // Update next state
+        setPinned(rounds.data[i].round); // Update next state
       }
     }
   };
 
   const editMatch = (team1, team2, matchId, team1Id, team2Id) => {
+    console.log(team1Id);
     navigate(`/rounds/${matchId}`, {
       state: {
         team1: team1,
@@ -270,16 +264,24 @@ function Round() {
       </div>
       <div className="nextMatchdayAdmin">
         {" "}
-        {next &&
-          groupedMatches[next] && ( // Ensure groupedMatches[next] is defined
+        {pinned &&
+          groupedMatches[pinned] && ( // Ensure groupedMatches[pinned] is defined
             <div>
-              <h2> Tekme naslednjega kola ({next}. kolo) </h2>
-              <table className="matchdayTable" key={next}>
+              {groupedMatches[pinned][0].matchPlayed ? (
+                <h2> Rezultati {pinned}. kola </h2>
+              ) : (
+                <h2> Prihajajoče tekme ({pinned}. kolo) </h2>
+              )}{" "}
+              <table className="matchdayTable" key={pinned}>
                 <tr>
                   <th>TEKME</th>
-                  <th> URA</th>
+                  {groupedMatches[pinned][0].matchPlayed ? (
+                    <th> REZULTAT </th>
+                  ) : (
+                    <th> URA</th>
+                  )}
                 </tr>
-                {groupedMatches[next].map((match) => (
+                {groupedMatches[pinned].map((match) => (
                   <tr key={match._id}>
                     <td>
                       <span>
@@ -310,7 +312,6 @@ function Round() {
       <div className="matchdayContainer">
         {Object.keys(groupedMatches).map((day) => {
           const matchPlayed = groupedMatches[day][0].matchPlayed; // Extracting the matchPlayed status from the first match of the day
-
           return (
             <div className="listOfMatchdays">
               <div className="pinMatchday">

@@ -130,6 +130,8 @@ module.exports = {
       match.date = req.body.date || match.date;
       match.matchday = req.body.matchday || match.matchday;
       match.winner = req.body.winner || match.winner;
+      match.winner =
+        req.body.winner !== undefined ? req.body.winner : match.winner;
 
       match = await match.save();
 
