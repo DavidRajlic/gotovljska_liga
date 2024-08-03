@@ -79,8 +79,6 @@ module.exports = {
    * TeamController.update()
    */
   update: async function (req, res) {
-    console.log("here");
-
     const id = req.params.id;
     try {
       const team = await teamModel.findOne({ _id: id });
@@ -91,7 +89,7 @@ module.exports = {
       }
 
       // Ensure the incoming values are numbers where necessary, default to 0 if not provided
-      const points = parseInt(req.body.points, 10) || 0;
+
       const goalsScored = parseInt(req.body.goalsScored, 10) || 0;
       const goalsConceded = parseInt(req.body.goalsConceded, 10) || 0;
       const matchesPlayed = parseInt(req.body.matchesPlayed, 10) || 0;
@@ -101,12 +99,8 @@ module.exports = {
       const draws = parseInt(req.body.draws, 10) || 0;
       const losses = parseInt(req.body.losses, 10) || 0;
 
-      console.log(typeof points);
-      console.log(goalsScored);
-
       // Only check for NaN values if the property is provided in the request body
       if (
-        (req.body.points && isNaN(points)) ||
         (req.body.goalsScored && isNaN(goalsScored)) ||
         (req.body.goalsConceded && isNaN(goalsConceded)) ||
         (req.body.matchesPlayed && isNaN(matchesPlayed)) ||
@@ -121,12 +115,13 @@ module.exports = {
             "Invalid input values. Expected numbers for points, goalsScored, goalsConceded, matchesPlayed, yellowCards, redCards, wins, draws, and losses.",
         });
       }
-      console.log(typeof points);
 
       // Only update the fields that are provided in the request body
       if (req.body.name) team.name = req.body.name;
       if (req.body.players) team.players = req.body.players;
-      if (req.body.points) team.points += points;
+      console.log("BEFORE:", team.name, team.points, req.body.points);
+      if (req.body.points) team.points += req.body.points;
+      console.log("AFTER:", team.name, team.points, req.body.points);
       if (req.body.goalsScored) team.goalsScored += goalsScored;
       if (req.body.goalsConceded) team.goalsConceded += goalsConceded;
       if (req.body.matchesPlayed) team.matchesPlayed += matchesPlayed;
@@ -210,15 +205,15 @@ module.exports = {
       if (req.body.players !== undefined) team.players = req.body.players;
 
       team.points = team.points - points;
-      team.goalsScored = team.goalsScored - goalsScored;
-      team.goalsConceded = team.goalsConceded - goalsConceded;
+      team.goalsScored = Math.max(team.goalsScored - goalsScored, 0);
+      team.goalsConceded = Math.max(team.goalsConceded - goalsConceded, 0);
       team.goalDifference = team.goalsScored - team.goalsConceded;
-      team.matchesPlayed = team.matchesPlayed - matchesPlayed;
-      team.yellowCards = team.yellowCards - yellowCards;
-      team.redCards = team.redCards - redCards;
-      team.wins = team.wins - wins;
-      team.draws = team.draws - draws;
-      team.losses = team.losses - losses;
+      team.matchesPlayed = Math.max(team.matchesPlayed - matchesPlayed, 0);
+      team.yellowCards = Math.max(team.yellowCards - yellowCards, 0);
+      team.redCards = Math.max(team.redCards - redCards, 0);
+      team.wins = Math.max(team.wins - wins, 0);
+      team.draws = Math.max(team.draws - draws, 0);
+      team.losses = Math.max(team.losses - losses, 0);
 
       const updatedTeam = await team.save();
       return res.json(updatedTeam);
