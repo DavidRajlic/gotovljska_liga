@@ -11,6 +11,7 @@ import Login from "./pagesAdmin/Login";
 import Players from "./pagesAdmin/Players";
 import Rounds from "./pagesAdmin/Rounds";
 import Match from "./pagesAdmin/Match";
+import MustPay from "./pagesAdmin/MustPay";
 import Matchdays from "./pages/Matchdays";
 import Matches from "./pages/Matches";
 import TopScorers from "./pagesAdmin/TopScorers";
@@ -33,6 +34,7 @@ function App() {
         <Route path="/rounds" element={<Rounds />} />
         <Route path="/matchdays" element={<Matchdays />} />
         <Route path="/matches" element={<Matches />} />
+        <Route path="/mustPay" element={<MustPay />} />
         <Route path="/rounds/:id" element={<Match />} />
         <Route path="/scorers" element={<TopScorers />} />
       </Routes>
