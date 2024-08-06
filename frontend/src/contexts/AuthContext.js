@@ -1,12 +1,26 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  useEffect(() => {
+    const adminLoggedIn = Cookies.get("adminLoggedIn");
+    if (adminLoggedIn === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+
+  const logout = () => {
+    Cookies.remove("adminLoggedIn");
+    setIsLoggedIn(false);
+  };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
@@ -14,5 +28,3 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export { AuthContext, AuthProvider };
