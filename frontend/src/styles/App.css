@@ -212,6 +212,36 @@ ul {
 .player .red-card {
   color: red;
 }
+
+@media only screen and (max-width: 1300px) {
+  .playerContainer {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .playerContainer {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .playerContainer {
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .playerContainer {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .playerContainer {
+    width: 100%;
+  }
+}
 /*
 Players.js end 
 */
@@ -387,8 +417,11 @@ Players.js end
 
 .teamContainer form {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 20px;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 10px;
 }
 
 .addTeamInput {
@@ -401,14 +434,13 @@ Players.js end
 }
 
 .addTeamBtn {
-  padding: 10px 20px;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   background-color: #28a745;
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .addTeamBtn:hover {
@@ -460,6 +492,43 @@ Players.js end
 .deleteTeamBtn:hover {
   color: #a00;
 }
+
+@media only screen and (max-width: 1550px) {
+  .teamContainer {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .teamContainer {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .teamContainer {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  .teamContainer {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .teamContainer {
+    width: 85%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .teamContainer {
+    width: 100%;
+  }
+}
+
 /* Team.js end  */
 
 /* Round.js start  */
@@ -547,7 +616,7 @@ Players.js end
   width: 90%;
   margin: auto;
   margin-top: 1rem;
-  padding: 1rem; /* Optional: Adds padding inside the container */
+  padding: 1rem;
 }
 
 .listOfMatchdays {
@@ -576,7 +645,6 @@ Players.js end
 .matchdayTable td {
   border: 1px solid #282c34;
   padding: 0.5rem;
-  text-align: center;
 }
 
 .editMatchBtn {
@@ -597,23 +665,104 @@ Players.js end
 }
 
 .nextMatchdayAdmin div {
-  width: 40%;
+  width: 30%;
 }
 .nextMatchdayAdmin table {
   margin: auto;
 }
 
-.freeTr td {
-  background-color: lightblue;
-  border: none;
+.resultTd {
+  text-align: center;
 }
 .freeTr {
   border: 1px black solid;
+  background-color: lightblue;
 }
 
+.freeTr {
+  border: 1px red solid;
+}
 .pinMatchday {
   display: flex;
   justify-content: end;
+}
+
+.editMatchTd {
+  text-align: center;
+}
+
+@media only screen and (max-width: 1550px) {
+  .matchdayContainer {
+    width: 95%;
+  }
+  .listOfMatchdays {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1380px) {
+  .matchdayContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .matchdayContainer {
+    width: 80%;
+  }
+  .listOfMatchdays {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 1180px) {
+  .matchdayContainer {
+    width: 90%;
+    gap: 10px;
+  }
+  .listOfMatchdays {
+    width: 95%;
+  }
+  .nextMatchdayAdmin div {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 980px) {
+  .matchdayContainer {
+    width: 95%;
+    gap: 10px;
+  }
+
+  .listOfMatchdays {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 870px) {
+  .matchdayContainer {
+    grid-template-columns: repeat(1, 1fr);
+    width: 80%;
+  }
+  .listOfMatchdays {
+    margin: auto;
+    width: 80%;
+  }
+
+  .nextMatchdayAdmin div {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .matchdayContainer {
+    width: 95%;
+  }
+
+  .listOfMatchdays {
+    width: 100%;
+  }
+
+  .nextMatchdayAdmin div {
+    width: 80%;
+  }
 }
 
 /* Round.js end  */
