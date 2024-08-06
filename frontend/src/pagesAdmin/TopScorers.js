@@ -10,7 +10,7 @@ function Teams() {
         const response = await axios.get("http://localhost:4000/players");
         const sortedScorers = response.data.sort(
           (a, b) => b.goalsScored - a.goalsScored
-        ); // Sort players by goals in descending order
+        );
 
         // Adjust ranks for players with the same number of goals
         let previousGoals = null;
@@ -26,7 +26,7 @@ function Teams() {
 
         setScorers(rankedScorers);
       } catch (error) {
-        console.error("Prišlo je do napake pri pridobivanju ekip!", error);
+        console.error("Prišlo je do napake pri pridobivanju igralcev!", error);
       }
     };
 
@@ -47,7 +47,7 @@ function Teams() {
               </tr>
             </thead>
             <tbody>
-              {scorers.slice(0, 10).map(
+              {scorers.map(
                 (scorer, index) =>
                   scorer.goalsScored > 0 && (
                     <tr key={scorer._id}>
