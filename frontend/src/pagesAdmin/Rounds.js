@@ -289,7 +289,7 @@ function Round() {
                       </span>
                     </td>
                     {match.matchPlayed ? (
-                      <td>
+                      <td style={{ textAlign: "center" }}>
                         <b>
                           {" "}
                           {match.team1Goals} : {match.team2Goals}{" "}
@@ -301,7 +301,7 @@ function Round() {
                         </b>
                       </td>
                     ) : (
-                      <td>{match.time}</td>
+                      <td style={{ textAlign: "center" }}>{match.time}</td>
                     )}
                   </tr>
                 ))}
@@ -336,7 +336,7 @@ function Round() {
                       </span>
                     </td>
                     {match.matchPlayed ? (
-                      <td>
+                      <td className="resultTd">
                         <b>
                           {" "}
                           {match.team1Goals} : {match.team2Goals}{" "}
@@ -348,9 +348,9 @@ function Round() {
                         </b>
                       </td>
                     ) : (
-                      <td>{match.time}</td>
+                      <td className="resultTd">{match.time}</td>
                     )}
-                    <td>
+                    <td className="editMatchTd">
                       <button
                         className="editMatchBtn"
                         onClick={() =>
@@ -371,12 +371,10 @@ function Round() {
                 {freeTeams[day] && (
                   <tr className="freeTr">
                     {" "}
-                    <td>
+                    <td colspan="3">
                       <b>PROSTO </b>
                       {freeTeams[day].join(", ")}{" "}
                     </td>
-                    <td></td>
-                    <td></td>
                   </tr>
                 )}
               </table>
