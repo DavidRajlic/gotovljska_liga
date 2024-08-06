@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import Cookies from "js-cookie";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CODE = process.env.REACT_APP_KODA;
 
@@ -13,12 +15,12 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (enteredCode === CODE) {
-      alert("Administrator prijavljen!");
+      toast.success("Uspešno ste se prijavili!");
       Cookies.set("adminLoggedIn", "true", { expires: 7 }); // expires in 7 days
       login();
       navigate("/");
     } else {
-      alert("Neveljavna koda za prijavo administratorja!");
+      toast.error("Neveljavna koda za prijavo!");
     }
   };
 
@@ -28,6 +30,7 @@ function Login() {
 
   return (
     <div className="loginContainer">
+      <ToastContainer position="top-right" />
       <div className="loginBox">
         <h1 className="login-title">Prijava</h1>
         <p className="description">Prijavi se lahko le administrator!</p>
