@@ -98,7 +98,6 @@ function Match() {
   };
 
   const handleGoalClick = (team, index) => {
-    console.log(team, index);
     const player =
       team === "team1" ? team1.players[index] : team2.players[index];
     setGoals((prevGoals) => ({
@@ -488,71 +487,87 @@ function Match() {
       </ul>
       {match.matchPlayed && (
         <div className="match" key={match._id}>
-          <h2 style={{ color: "black" }}> Trenutni podatki o tekmi</h2>
           <div>
             <h2>
-              {match.team1} : {match.team2} {match.team1Goals} :{" "}
-              {match.team2Goals}{" "}
+              {match.team1} : {match.team2}{" "}
+              <span style={{ color: "black" }}>
+                {" "}
+                {match.team1Goals} - {match.team2Goals}{" "}
+              </span>{" "}
               {(match.team1Goals > 0 || match.team2Goals > 0) &&
                 match.team1Scorers.length === 0 &&
-                match.team2Scorers.length === 0 && <span> B.B</span>}
+                match.team2Scorers.length === 0 && (
+                  <span style={{ color: "black" }}> B.B</span>
+                )}
             </h2>
 
             {match.matchPlayed && (
               <div className="matchScorers">
                 {(match.team1Goals > 0 || match.team2Goals > 0) &&
-                  match.team1Scorers.length === 0 &&
-                  match.team2Scorers.length === 0 && (
-                    <div style={{ color: "red" }}>
-                      {" "}
-                      Poražena ekipa se tekme ni udeležeila, zato ji je bila
-                      kazensko odvzeta točka!
+                match.team1Scorers.length === 0 &&
+                match.team2Scorers.length === 0 ? (
+                  <div
+                    className="note"
+                    style={{
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    Poražena ekipa se tekme ni udeležila, zato ji je bila
+                    kazensko odvzeta točka!
+                  </div>
+                ) : (
+                  <div className="scorersColumn">
+                    {" "}
+                    <div className="team1Scorers">
+                      {match.team1Scorers.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          {scorer.goals > 1 && (
+                            <span className="goal"> {scorer.goals}x </span>
+                          )}
+                          <small> ⚽</small>
+                          <br></br>
+                        </div>
+                      ))}
+                      {match.team1YellowCards.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          <small className="yellow-card"> 🟨 </small>
+                        </div>
+                      ))}
+                      {match.team1RedCards.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          <small className="red-card"> 🟥 </small>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                <div className="scorersColumn">
-                  {match.team1Scorers.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player}{" "}
-                      {scorer.goals > 1 && (
-                        <span className="goal"> {scorer.goals}x </span>
-                      )}
-                      <small> ⚽</small>
-                    </div>
-                  ))}
-                  {match.team1YellowCards.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player}{" "}
-                      <small className="yellow-card"> 🟨 </small>
-                    </div>
-                  ))}
-                  {match.team1RedCards.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player} <small className="red-card"> 🟥 </small>
-                    </div>
-                  ))}
-                </div>
-                <div className="scorersColumn">
-                  {match.team2Scorers.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player}{" "}
-                      {scorer.goals > 1 && (
-                        <span className="goal"> {scorer.goals}x </span>
-                      )}
-                      <small> ⚽</small>
-                    </div>
-                  ))}
-                  {match.team2YellowCards.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player}{" "}
-                      <small className="yellow-card"> 🟨 </small>
-                    </div>
-                  ))}
-                  {match.team2RedCards.map((scorer, index) => (
-                    <div key={index}>
-                      {scorer.player} <small className="red-card"> 🟥 </small>
-                    </div>
-                  ))}
-                </div>
+                    <div className="team1Scorers">
+                      {match.team2Scorers.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          {scorer.goals > 1 && (
+                            <span className="goal"> {scorer.goals}x </span>
+                          )}
+                          <small> ⚽</small>
+                        </div>
+                      ))}
+                      {match.team2YellowCards.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          <small className="yellow-card"> 🟨 </small>
+                        </div>
+                      ))}
+                      {match.team2RedCards.map((scorer, index) => (
+                        <div key={index}>
+                          {scorer.player}{" "}
+                          <small className="red-card"> 🟥 </small>
+                        </div>
+                      ))}
+                    </div>{" "}
+                  </div>
+                )}{" "}
               </div>
             )}
           </div>

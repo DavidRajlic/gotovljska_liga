@@ -19,7 +19,6 @@ function Teams() {
         const sortedTeams = sortTeams(teamsData, matchesData);
 
         setTeams(sortedTeams);
-
         setIsLoading(false);
       } catch (error) {
         console.error("Prišlo je do napake pri pridobivanju podatkov!", error);
@@ -33,7 +32,7 @@ function Teams() {
   const sortTeams = (teams, matches) => {
     return teams.sort((a, b) => {
       if (b.points !== a.points) {
-        return b.points - a.points; // sorted by points
+        return b.points - a.points;
       } else {
         const headToHeadResult = getHeadToHeadResult(a, b, matches);
         if (headToHeadResult !== 0) {

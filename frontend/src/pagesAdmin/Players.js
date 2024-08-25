@@ -119,16 +119,18 @@ function Players() {
   };
 
   const addLeader = async (player, playerId) => {
-    if (leader !== "") {
-      await axios.put(`http://localhost:4000/players/again/${leader._id}`, {
-        leader: false,
-      });
-    }
+    if (isLoggedIn) {
+      if (leader !== "") {
+        await axios.put(`http://localhost:4000/players/again/${leader._id}`, {
+          leader: false,
+        });
+      }
 
-    await axios.put(`http://localhost:4000/players/again/${playerId}`, {
-      leader: true,
-    });
-    setLeader(player);
+      await axios.put(`http://localhost:4000/players/again/${playerId}`, {
+        leader: true,
+      });
+      setLeader(player);
+    }
   };
 
   const handleChange = (event) => {
@@ -138,8 +140,6 @@ function Players() {
   if (!team) {
     return <p>Nalaganje ekipe...</p>;
   }
-
-  console.log(leader);
 
   return (
     <div className="playerContainer">

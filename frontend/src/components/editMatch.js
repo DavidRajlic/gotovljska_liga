@@ -15,7 +15,7 @@ const EditMatch = ({
     <>
       <div className="changedMatchData">
         <div className={`changedMatchData${teamName}`}>
-          <h2>{match}</h2>
+          <h2>{match} </h2>
 
           <div>
             <b>⚽:</b>

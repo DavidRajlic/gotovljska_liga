@@ -1,7 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 
 function Navbar() {
+  const { logout } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    alert("Administrator odjavljen!");
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   return (
     <nav>
       <div className="logo">
@@ -9,28 +23,48 @@ function Navbar() {
           {" "}
           <Link to="/">
             {" "}
-            <b> Gotovljska liga ⚽ </b>
+            <b> </b>
           </Link>{" "}
         </span>
       </div>
-
-      <div className="list">
+      <div className="burger-menu" onClick={toggleMenu}>
+        &#9776;
+      </div>
+      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
         <ul>
-          <span>
-            <Link to="/">Lestvica</Link>
-          </span>
-          <span>
-            <Link to="/teams">Ekipe</Link>
-          </span>
-          <span>
-            <Link to="/matchdays">Razpored</Link>
-          </span>
-          <span>
-            <Link to="/scorers"> Strelci </Link>
-          </span>
-          <span>
-            <Link to="/login">Prijava</Link>
-          </span>
+          <Link to="/">
+            {" "}
+            <li> Lestvica </li>
+          </Link>
+
+          <Link to="/teams">
+            {" "}
+            <li> Ekipe </li>
+          </Link>
+
+          <Link to="/rounds">
+            {" "}
+            <li> Razpored </li>
+          </Link>
+
+          <Link to="/scorers">
+            {" "}
+            <li> Strelci </li>
+          </Link>
+
+          <Link to="/mustPay">
+            {" "}
+            <li> Kartoni </li>
+          </Link>
+          {isLoggedIn ? (
+            <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+              Odjava
+            </li>
+          ) : (
+            <li>
+              <Link to="/login">Prijava</Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

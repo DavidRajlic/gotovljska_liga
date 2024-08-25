@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 
 function Round() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [date, setDate] = useState("");
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
@@ -42,10 +44,7 @@ function Round() {
       );
 
       if (pinnedRound) {
-        setPinned(pinnedRound.round); // Update next state
-        console.log(`Pinned round:`, pinnedRound);
-      } else {
-        console.log("Ni pinned round.");
+        setPinned(pinnedRound.round);
       }
     } catch (error) {
       console.error("Prišlo je do napake pri pridobivanju podatkov!", error);
@@ -164,7 +163,6 @@ function Round() {
   };
 
   const editMatch = (team1, team2, matchId, team1Id, team2Id) => {
-    console.log(team1Id);
     navigate(`/rounds/${matchId}`, {
       state: {
         team1: team1,
@@ -176,93 +174,108 @@ function Round() {
     });
   };
 
+  const handleMatchdayClick = (matches) => {
+    if (matches[0].matchPlayed && !isLoggedIn) {
+      const matchIds = matches.map((match) => match._id);
+      navigate("/matches", { state: { matchIds } });
+    }
+  };
+
   return (
     <div>
       <h1 className="matchdayTitle">Razpored</h1>
-      <div className={showEditor ? "showEditor" : "hideEditor"}>
-        <div>
-          <b>{matchday}. KOLO</b>
-          <input
-            className="dateInput"
-            type="text"
-            placeholder="Napiši datum kola"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+      {isLoggedIn && (
+        <div className={showEditor ? "showEditor" : "hideEditor"}>
           <div>
-            <ul className="selectTeamList">
-              {teams.map((team) => (
-                <button
-                  className="selectTeamBtn"
-                  key={team._id}
-                  type="button"
-                  onClick={() => handleTeamClick(team)}
-                  disabled={selectedTeams.length >= 2}
-                >
-                  <b> {team.name} </b>
-                </button>
-              ))}
-            </ul>
+            <b>{matchday}. KOLO</b>
+            <input
+              className="dateInput"
+              type="text"
+              placeholder="Napiši datum kola"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
             <div>
-              <p>Izbrane ekipe:</p>
-              {selectedTeams.map((team, index) => (
-                <div key={index}>
-                  <span>{team.name}</span>
-                </div>
-              ))}
-              {selectedTeams.length === 2 && (
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Čas tekme"
-                    value={selectedTime}
-                    onChange={(e) => setSelectedTime(e.target.value)}
-                  />
-                  <button onClick={addMatch}>Dodaj tekmo</button>
-                </div>
-              )}
+              <ul className="selectTeamList">
+                {teams.map((team) => (
+                  <button
+                    className="selectTeamBtn"
+                    key={team._id}
+                    type="button"
+                    onClick={() => handleTeamClick(team)}
+                    disabled={selectedTeams.length >= 2}
+                  >
+                    <b> {team.name} </b>
+                  </button>
+                ))}
+              </ul>
+              <div>
+                <p>Izbrane ekipe:</p>
+                {selectedTeams.map((team, index) => (
+                  <div key={index}>
+                    <span>{team.name}</span>
+                  </div>
+                ))}
+                {selectedTeams.length === 2 && (
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Čas tekme"
+                      value={selectedTime}
+                      onChange={(e) => setSelectedTime(e.target.value)}
+                    />
+                    <button onClick={addMatch}>Dodaj tekmo</button>
+                  </div>
+                )}
+              </div>
             </div>
+            {currentRoundMatches.length > 0 && (
+              <div>
+                <h4>Tekme za {matchday}. kolo:</h4>
+                {currentRoundMatches.map((match, index) => (
+                  <div key={index}>
+                    <span>
+                      {match.team1} vs {match.team2}
+                    </span>
+                    <span> ob {match.time}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <button className="confirmMatchday" onClick={confirmMatchday}>
+              Potrdi {matchday}. kolo
+            </button>
           </div>
-          {currentRoundMatches.length > 0 && (
-            <div>
-              <h4>Tekme za {matchday}. kolo:</h4>
-              {currentRoundMatches.map((match, index) => (
-                <div key={index}>
-                  <span>
-                    {match.team1} vs {match.team2}
-                  </span>
-                  <span> ob {match.time}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <button className="confirmMatchday" onClick={confirmMatchday}>
-            Potrdi {matchday}. kolo
-          </button>
         </div>
-      </div>
+      )}
 
-      <div>
-        {showEditor ? (
-          <button
-            className="showEditorBtn"
-            onClick={() => setShowEditor(!showEditor)}
-          >
-            {" "}
-            Skrij orodje
-          </button>
-        ) : (
-          <button
-            className="hideEditorBtn"
-            onClick={() => setShowEditor(!showEditor)}
-          >
-            {" "}
-            Pokaži{" "}
-          </button>
-        )}
-      </div>
-      <div className="nextMatchdayAdmin">
+      {isLoggedIn && (
+        <div className="showEditorDiv">
+          {showEditor ? (
+            <button
+              className="showEditorBtn"
+              onClick={() => setShowEditor(!showEditor)}
+            >
+              {" "}
+              Skrij orodje
+            </button>
+          ) : (
+            <button
+              className="hideEditorBtn"
+              onClick={() => setShowEditor(!showEditor)}
+            >
+              {" "}
+              Pokaži{" "}
+            </button>
+          )}
+        </div>
+      )}
+
+      <div
+        className="nextMatchdayAdmin"
+        onClick={() => handleMatchdayClick(groupedMatches[pinned])}
+      >
         {" "}
         {pinned &&
           groupedMatches[pinned] && ( // Ensure groupedMatches[pinned] is defined
@@ -309,15 +322,35 @@ function Round() {
             </div>
           )}
       </div>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "1rem",
+          width: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        {" "}
+        🛈 Za ogled podrobnosti posameznega kroga kliknite na izbrano kolo,
+        katerega podrobnosti želite videti
+      </div>
+
       <div className="matchdayContainer">
         {Object.keys(groupedMatches).map((day) => {
           const matchPlayed = groupedMatches[day][0].matchPlayed; // Extracting the matchPlayed status from the first match of the day
           return (
-            <div className="listOfMatchdays">
-              <div className="pinMatchday">
-                {" "}
-                <span onClick={() => pinnMatchday(day)}> 📌 </span>{" "}
-              </div>
+            <div
+              className="listOfMatchdays"
+              onClick={() => handleMatchdayClick(groupedMatches[day])}
+            >
+              {isLoggedIn && (
+                <div className="pinMatchday">
+                  {" "}
+                  <span onClick={() => pinnMatchday(day)}> 📌 </span>{" "}
+                </div>
+              )}
+
               <h3>
                 {day}. KOLO {groupedMatches[day][0].date}
               </h3>
@@ -325,7 +358,7 @@ function Round() {
                 <tr>
                   <th>TEKME</th>
                   <th>{matchPlayed ? "REZULTAT" : "URA"}</th>
-                  <th> Uredi </th>
+                  {isLoggedIn && <th> Uredi </th>}
                 </tr>
 
                 {groupedMatches[day].map((match) => (
@@ -350,22 +383,24 @@ function Round() {
                     ) : (
                       <td className="resultTd">{match.time}</td>
                     )}
-                    <td className="editMatchTd">
-                      <button
-                        className="editMatchBtn"
-                        onClick={() =>
-                          editMatch(
-                            match.team1,
-                            match.team2,
-                            match._id,
-                            match.team1Id,
-                            match.team2Id
-                          )
-                        }
-                      >
-                        📝
-                      </button>
-                    </td>
+                    {isLoggedIn && (
+                      <td className="editMatchTd">
+                        <button
+                          className="editMatchBtn"
+                          onClick={() =>
+                            editMatch(
+                              match.team1,
+                              match.team2,
+                              match._id,
+                              match.team1Id,
+                              match.team2Id
+                            )
+                          }
+                        >
+                          📝
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
                 {freeTeams[day] && (
