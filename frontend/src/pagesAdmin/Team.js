@@ -11,13 +11,14 @@ function Teams() {
   const { isLoggedIn } = useContext(AuthContext);
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState("");
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/teams");
+        const response = await axios.get(`${DOMAIN}/teams`);
         setTeams(response.data);
       } catch (error) {
         console.error("Prišlo je do napake pri pridobivanju ekip!", error);
@@ -30,7 +31,7 @@ function Teams() {
   const createTeam = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:4000/teams", {
+      await axios.post(`${DOMAIN}/teams`, {
         name: name,
       });
       setName("");
@@ -44,7 +45,7 @@ function Teams() {
 
   const fetchTeams = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/teams");
+      const response = await axios.get(`${DOMAIN}/teams`);
       setTeams(response.data);
     } catch (error) {
       console.error("Prišlo je do napake pri pridobivanju ekip!", error);
@@ -60,7 +61,7 @@ function Teams() {
           label: "Da",
           onClick: async () => {
             try {
-              await axios.delete(`http://localhost:4000/teams/${teamId}`);
+              await axios.delete(`${DOMAIN}/teams/${teamId}`);
               setTeams(teams.filter((team) => team._id !== teamId));
               toast.success("Ekipa uspešno izbrisana!");
             } catch (error) {

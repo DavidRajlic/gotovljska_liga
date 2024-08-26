@@ -4,13 +4,15 @@ import axios from "axios";
 function Teams() {
   const [teams, setTeams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
+  console.log(DOMAIN);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [teamsResponse, matchesResponse] = await Promise.all([
-          axios.get("http://localhost:4000/teams"),
-          axios.get("http://localhost:4000/matches"),
+          axios.get(`${DOMAIN}/teams`),
+          axios.get(`${DOMAIN}/matches`),
         ]);
 
         const teamsData = teamsResponse.data;

@@ -17,6 +17,7 @@ function Round() {
   const [showEditor, setShowEditor] = useState(true);
   const [nextMatchday, setNextMatchday] = useState(null);
   const [pinned, setPinned] = useState(null); // Add state for next
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   const navigate = useNavigate();
 
@@ -24,9 +25,9 @@ function Round() {
     try {
       const [teamsResponse, matchesResponse, roundsResponse] =
         await Promise.all([
-          axios.get("http://localhost:4000/teams"),
-          axios.get("http://localhost:4000/matches"),
-          axios.get("http://localhost:4000/rounds"),
+          axios.get(`${DOMAIN}/teams`),
+          axios.get(`${DOMAIN}/matches`),
+          axios.get(`${DOMAIN}/rounds`),
         ]);
 
       setTeams(teamsResponse.data);
@@ -126,9 +127,9 @@ function Round() {
   const confirmMatchday = async () => {
     try {
       for (const match of currentRoundMatches) {
-        await axios.post("http://localhost:4000/matches", match);
+        await axios.post(`${DOMAIN}/matches`, match);
       }
-      await axios.post("http://localhost:4000/rounds", {
+      await axios.post(`${DOMAIN}/rounds`, {
         round: matchday,
         date: date,
         matches: currentRoundMatches,
@@ -144,17 +145,17 @@ function Round() {
   };
 
   const pinnMatchday = async (matchday) => {
-    const rounds = await axios.get("http://localhost:4000/rounds");
+    const rounds = await axios.get(`${DOMAIN}/rounds`);
 
     for (let i = 0; i < rounds.data.length; i++) {
       if (rounds.data[i].pinned) {
-        await axios.put(`http://localhost:4000/rounds/${rounds.data[i]._id}`, {
+        await axios.put(`${DOMAIN}/rounds/${rounds.data[i]._id}`, {
           pinned: false,
         });
       }
 
       if (Number(matchday) === rounds.data[i].round) {
-        await axios.put(`http://localhost:4000/rounds/${rounds.data[i]._id}`, {
+        await axios.put(`${DOMAIN}/rounds/${rounds.data[i]._id}`, {
           pinned: true,
         });
         setPinned(rounds.data[i].round); // Update next state

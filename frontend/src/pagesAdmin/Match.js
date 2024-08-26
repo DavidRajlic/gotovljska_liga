@@ -26,6 +26,7 @@ function Match() {
     team1: {},
     team2: {},
   });
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   // Stanje za število rumenih in rdečih kartonov na ekipo
   const [team1YellowCardCount, setTeam1YellowCardCount] = useState(0);
@@ -38,9 +39,9 @@ function Match() {
       try {
         const [team1Response, team2Response, matchResponse] = await Promise.all(
           [
-            axios.get(`http://localhost:4000/teams/${team1Id}`),
-            axios.get(`http://localhost:4000/teams/${team2Id}`),
-            axios.get(`http://localhost:4000/matches/${matchId}`),
+            axios.get(`${DOMAIN}/${team1Id}`),
+            axios.get(`${DOMAIN}/teams/${team2Id}`),
+            axios.get(`${DOMAIN}/matches/${matchId}`),
           ]
         );
         setMatch(matchResponse.data);
@@ -130,18 +131,18 @@ function Match() {
       if (match.matchPlayed) {
         console.log(team2.points);
         for (const scorer of match.team1Scorers) {
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             goalsScored: scorer.goals,
           });
         }
         for (const scorer of match.team2Scorers) {
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             goalsScored: scorer.goals,
           });
         }
 
         for (const scorer of match.team1YellowCards) {
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             yellowCards: scorer.yellowCards,
             mustPayYellowCard: false,
           });
@@ -149,7 +150,7 @@ function Match() {
 
         for (const scorer of match.team2YellowCards) {
           console.log(scorer);
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             yellowCards: scorer.yellowCards,
             mustPayYellowCard: false,
           });
@@ -157,20 +158,20 @@ function Match() {
 
         for (const scorer of match.team1RedCards) {
           console.log("NAJS");
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             redCards: scorer.redCards,
             mustPayRedCard: false,
           });
         }
 
         for (const scorer of match.team2RedCards) {
-          await axios.put(`http://localhost:4000/players/again/${scorer.id}`, {
+          await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             redCards: scorer.redCards,
             mustPayRedCard: false,
           });
         }
 
-        await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+        await axios.put(`${DOMAIN}/teams/again/${team1Id}`, {
           goalsScored: match.team1Goals,
           goalsConceded: match.team2Goals,
           yellowCards: match.team1YellowCards.length,
@@ -178,7 +179,7 @@ function Match() {
           matchesPlayed: 1,
         });
 
-        await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+        await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
           goalsScored: match.team2Goals,
           goalsConceded: match.team1Goals,
           yellowCards: match.team2YellowCards.length,
@@ -188,42 +189,42 @@ function Match() {
 
         if (match.winner === team1Id) {
           console.log("here");
-          await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team1Id}`, {
             wins: 1,
             points: 3,
           });
 
-          await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
             losses: 1,
           });
           if (match.team1Scorers.length === 0 && match.team1Goals === 3) {
             console.log("here");
-            await axios.put(`http://localhost:4000/teams/${team2Id}`, {
+            await axios.put(`${DOMAIN}/teams/${team2Id}`, {
               points: 1,
             });
           }
         } else if (match.winner === team2Id) {
           console.log("here");
-          await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
             wins: 1,
             points: 3,
           });
-          await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team1Id}`, {
             losses: 1,
           });
 
           if (match.team2Scorers.length === 0 && match.team2Goals === 3) {
-            await axios.put(`http://localhost:4000/teams/${team1Id}`, {
+            await axios.put(`${DOMAIN}/teams/${team1Id}`, {
               points: 1,
             });
           }
         } else {
           console.log("here");
-          await axios.put(`http://localhost:4000/teams/again/${team2Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
             draws: 1,
             points: 1,
           });
-          await axios.put(`http://localhost:4000/teams/again/${team1Id}`, {
+          await axios.put(`${DOMAIN}/teams/again/${team1Id}`, {
             draws: 1,
             points: 1,
           });

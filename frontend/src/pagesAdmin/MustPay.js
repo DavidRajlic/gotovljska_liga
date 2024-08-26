@@ -4,11 +4,12 @@ import axios from "axios";
 function PlayersWhoMustPay() {
   const [playersToPay, setPlayersToPay] = useState([]);
   const [playersToPayRed, setPlayersToPayRed] = useState([]);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/players");
+        const response = await axios.get(`${DOMAIN}/players`);
         const allPlayers = response.data;
 
         const filteredPlayers = allPlayers.filter(
@@ -31,7 +32,7 @@ function PlayersWhoMustPay() {
 
   async function playerPaidYellowCard(playerId) {
     try {
-      await axios.put(`http://localhost:4000/players/${playerId}`, {
+      await axios.put(`${DOMAIN}//players/${playerId}`, {
         mustPayYellowCard: false,
       });
       setPlayersToPay((prevPlayers) =>
@@ -44,7 +45,7 @@ function PlayersWhoMustPay() {
 
   async function playerPaidRedCard(playerId) {
     try {
-      await axios.put(`http://localhost:4000/players/${playerId}`, {
+      await axios.put(`${DOMAIN}//players/${playerId}`, {
         mustPayRedCard: false,
       });
       setPlayersToPayRed((prevPlayers) =>

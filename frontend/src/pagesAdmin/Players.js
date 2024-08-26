@@ -16,6 +16,7 @@ function Players() {
   const location = useLocation();
   const teamName = location.state.teamName;
   const teamId = location.state.teamId;
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
     fetchTeam();
@@ -23,13 +24,13 @@ function Players() {
 
   const fetchTeam = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/teams/${teamId}`);
+      const response = await axios.get(`${DOMAIN}/teams/${teamId}`);
       setTeam(response.data);
 
       // Fetch player details
       const playerDetails = await Promise.all(
         response.data.players.map((playerId) =>
-          axios.get(`http://localhost:4000/players/${playerId._id}`)
+          axios.get(`${DOMAIN}/players/${playerId._id}`)
         )
       );
 
@@ -58,18 +59,15 @@ function Players() {
         mustPayRedCard: false,
         leader: false,
       };
-      await axios.post("http://localhost:4000/players", newPlayerData);
+      await axios.post("${DOMAIN}/players", newPlayerData);
 
-      const response = await axios.get("http://localhost:4000/players");
+      const response = await axios.get("${DOMAIN}/players");
       const allPlayers = response.data;
       const lastPlayer = allPlayers[allPlayers.length - 1];
       const updatedPlayers = [...team.players, lastPlayer];
       const updatedTeam = { ...team, players: updatedPlayers };
 
-      await axios.put(
-        `http://localhost:4000/teams/players/${teamId}`,
-        updatedTeam
-      );
+      await axios.put(`${DOMAIN}/teams/players/${teamId}`, updatedTeam);
       fetchTeam();
       setTeam(updatedTeam);
       setPlayer("");
@@ -92,7 +90,7 @@ function Players() {
           label: "Da",
           onClick: async () => {
             try {
-              await axios.delete(`http://localhost:4000/players/${playerId}`);
+              await axios.delete(`${DOMAIN}/players/${playerId}`);
               const updatedPlayers = players.filter(
                 (player) => player._id !== playerId
               );
@@ -101,7 +99,7 @@ function Players() {
               );
               setPlayers(updatedPlayers);
               setTeam({ ...team, players: updatedTeamPlayers });
-              await axios.put(`http://localhost:4000/teams/players/${teamId}`, {
+              await axios.put(`${DOMAIN}/teams/players/${teamId}`, {
                 players: updatedPlayers,
               });
               toast.success("Igralec uspešno odstranjen!");
@@ -121,12 +119,12 @@ function Players() {
   const addLeader = async (player, playerId) => {
     if (isLoggedIn) {
       if (leader !== "") {
-        await axios.put(`http://localhost:4000/players/again/${leader._id}`, {
+        await axios.put(`${DOMAIN}/players/again/${leader._id}`, {
           leader: false,
         });
       }
 
-      await axios.put(`http://localhost:4000/players/again/${playerId}`, {
+      await axios.put(`${DOMAIN}/players/again/${playerId}`, {
         leader: true,
       });
       setLeader(player);

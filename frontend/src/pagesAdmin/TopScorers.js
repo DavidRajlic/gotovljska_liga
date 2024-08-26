@@ -3,11 +3,12 @@ import axios from "axios";
 
 function Teams() {
   const [scorers, setScorers] = useState([]);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/players");
+        const response = await axios.get(`${DOMAIN}/players`);
         const sortedScorers = response.data.sort(
           (a, b) => b.goalsScored - a.goalsScored
         );
