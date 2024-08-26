@@ -15,7 +15,9 @@ mongoose
 
 const PORT = 4000;
 const app = express();
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server is running and listening on port ${PORT}`);
+});
 
 // connect frontend to backend
 app.use(cors({ origin: ["http://localhost:3000", "http://localhost:4000"] }));
@@ -23,6 +25,10 @@ app.use(cors());
 
 // needed to transport data from fromntend to backend (name of team for example)
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
 
 const teamsRouter = require("./routes/TeamRoutes");
 const playersRouter = require("./routes/playerRoutes");
