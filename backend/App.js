@@ -11,7 +11,7 @@ const createError = require("http-errors");
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err + "hehehe"));
 
 const PORT = 4000;
 const app = express();
