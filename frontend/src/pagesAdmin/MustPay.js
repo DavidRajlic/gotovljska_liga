@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../contexts/AuthContext";
 
 function PlayersWhoMustPay() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [playersToPay, setPlayersToPay] = useState([]);
   const [playersToPayRed, setPlayersToPayRed] = useState([]);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -67,12 +69,14 @@ function PlayersWhoMustPay() {
             {playersToPay.map((player) => (
               <li className="player-item" key={player._id}>
                 <span className="player-name">{player.name}</span>
-                <button
-                  className="pay-button"
-                  onClick={() => playerPaidYellowCard(player._id)}
-                >
-                  ✔
-                </button>
+                {isLoggedIn && (
+                  <button
+                    className="pay-button"
+                    onClick={() => playerPaidYellowCard(player._id)}
+                  >
+                    ✔
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -91,12 +95,14 @@ function PlayersWhoMustPay() {
             {playersToPayRed.map((player) => (
               <li className="player-item" key={player._id}>
                 <span className="player-name">{player.name}</span>
-                <button
-                  className="pay-button"
-                  onClick={() => playerPaidRedCard(player._id)}
-                >
-                  ✔
-                </button>
+                {isLoggedIn && (
+                  <button
+                    className="pay-button"
+                    onClick={() => playerPaidRedCard(player._id)}
+                  >
+                    ✔
+                  </button>
+                )}
               </li>
             ))}
           </ul>
