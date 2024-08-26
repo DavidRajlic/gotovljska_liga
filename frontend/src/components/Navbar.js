@@ -32,27 +32,27 @@ function Navbar() {
       </div>
       <div className={`nav-links ${menuOpen ? "active" : ""}`}>
         <ul>
-          <Link to="/">
+          <Link to="/" onClick={toggleMenu}>
             {" "}
             <li> Lestvica </li>
           </Link>
 
-          <Link to="/teams">
+          <Link to="/teams" onClick={toggleMenu}>
             {" "}
             <li> Ekipe </li>
           </Link>
 
-          <Link to="/rounds">
+          <Link to="/rounds" onClick={toggleMenu}>
             {" "}
             <li> Razpored </li>
           </Link>
 
-          <Link to="/scorers">
+          <Link to="/scorers" onClick={toggleMenu}>
             {" "}
             <li> Strelci </li>
           </Link>
 
-          <Link to="/mustPay">
+          <Link to="/mustPay" onClick={toggleMenu}>
             {" "}
             <li> Kartoni </li>
           </Link>
@@ -62,7 +62,9 @@ function Navbar() {
             </li>
           ) : (
             <li>
-              <Link to="/login">Prijava</Link>
+              <Link to="/login" onClick={toggleMenu}>
+                Prijava
+              </Link>
             </li>
           )}
         </ul>
