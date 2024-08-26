@@ -7,15 +7,14 @@ function Matches() {
   const { matchIds } = location.state;
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
     const fetchMatchDetails = async () => {
       try {
         const matchDetails = await Promise.all(
           matchIds.map(async (id) => {
-            const response = await axios.get(
-              `http://localhost:4000/matches/${id}`
-            );
+            const response = await axios.get(`${DOMAIN}/matches/${id}`);
             return response.data;
           })
         );
