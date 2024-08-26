@@ -1,4 +1,4 @@
-const teamModel = require("../models/teamModel.js");
+const teamModel = require("../models/TeamModel.js");
 
 /**
  * TeamController.js
