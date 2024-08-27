@@ -1,6 +1,10 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
+}
+
+html,
+body {
   max-width: 100%;
   overflow-x: hidden;
 }
