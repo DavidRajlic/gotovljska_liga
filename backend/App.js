@@ -22,7 +22,7 @@ app.listen(PORT, () => {
 // connect frontend to backend
 //app.use(cors({ origin: ["http://localhost:3000", "http://localhost:4000"] }));
 //app.use(cors());
-app.use(
+/*app.use(
   cors({
     origin: [
       "https://gotovljska-liga-frontend.vercel.app/",
@@ -32,6 +32,7 @@ app.use(
     ],
   })
 );
+*/
 // needed to transport data from fromntend to backend (name of team for example)
 app.use(express.json());
 
