@@ -33,11 +33,35 @@ app.use(cors({ origin: ["http://localhost:3000", "http://localhost:4000"] }));
   })
 );
 */
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:4000",
+  "https://gotovljska-liga-frontend.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Če origin ni podan (npr. pri curl ali kakšnih drugih CLI orodjih), dovoli dostop
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        // Če je origin na seznamu dovoljenih, dovoli dostop
+        callback(null, true);
+      } else {
+        // Če ni dovoljen, zavrni dostop
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 // needed to transport data from fromntend to backend (name of team for example)
 app.use(express.json());
 
+// Tvoja express koda tukaj
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+  res.send("CORS je pravilno nastavljen");
 });
 
 const teamsRouter = require("./routes/TeamRoutes");
