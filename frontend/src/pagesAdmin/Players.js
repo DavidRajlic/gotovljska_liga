@@ -24,14 +24,20 @@ function Players() {
 
   const fetchTeam = async () => {
     try {
-      const response = await axios.get(`${DOMAIN}/teams/${teamId}`);
+      const response = await axios.get(`${DOMAIN}/teams/again/${teamId}`);
       setTeam(response.data);
 
-      // Podatke o igralcih ekipe pridobiš kar iz response.data.players
       setPlayers(response.data.players);
+      const players = response.data.players;
 
+      console.log(players);
+      players.forEach((player) => {
+        console.log(`Player: ${player.name}, Leader: ${player.leader}`);
+      });
       // Check for leader and set leader if found
-      const leader = players.find((player) => player.leader === true);
+      const leader = response.data.players.find(
+        (player) => player.leader === true
+      );
       if (leader) {
         setLeader(leader);
       }
@@ -51,13 +57,14 @@ function Players() {
         mustPayYellowCard: false,
         mustPayRedCard: false,
         leader: false,
+        teamId: teamId,
       };
       await axios.post(`${DOMAIN}/players`, newPlayerData);
 
       const response = await axios.get(`${DOMAIN}/players`);
       const allPlayers = response.data;
       const lastPlayer = allPlayers[allPlayers.length - 1];
-      const updatedPlayers = [...team.players, lastPlayer];
+      const updatedPlayers = [...team.players, lastPlayer._id];
       const updatedTeam = { ...team, players: updatedPlayers };
 
       await axios.put(`${DOMAIN}/teams/players/${teamId}`, updatedTeam);
