@@ -191,7 +191,7 @@ function Round() {
       {isLoggedIn && (
         <div className={showEditor ? "showEditor" : "hideEditor"}>
           <div>
-            <b>{matchday}. KOLO</b>
+            <b>{matchday}. KROG</b>
             <input
               className="dateInput"
               type="text"
@@ -235,7 +235,7 @@ function Round() {
             </div>
             {currentRoundMatches.length > 0 && (
               <div>
-                <h4>Tekme za {matchday}. kolo:</h4>
+                <h4>Tekme za {matchday}. krog:</h4>
                 {currentRoundMatches.map((match, index) => (
                   <div key={index}>
                     <span>
@@ -248,7 +248,7 @@ function Round() {
             )}
 
             <button className="confirmMatchday" onClick={confirmMatchday}>
-              Potrdi {matchday}. kolo
+              Potrdi {matchday}. krog
             </button>
           </div>
         </div>
@@ -285,9 +285,9 @@ function Round() {
           groupedMatches[pinned] && ( // Ensure groupedMatches[pinned] is defined
             <div>
               {groupedMatches[pinned][0].matchPlayed ? (
-                <h2> Rezultati {pinned}. kola </h2>
+                <h2> Rezultati {pinned}. kroga </h2>
               ) : (
-                <h2> Prihajajoče tekme ({pinned}. kolo) </h2>
+                <h2> Prihajajoče tekme ({pinned}.krog) </h2>
               )}{" "}
               <table className="matchdayTable" key={pinned}>
                 <tr>
@@ -355,9 +355,18 @@ function Round() {
                 </div>
               )}
 
-              <h3>
-                {day}. KOLO {groupedMatches[day][0].date}
-              </h3>
+              <div
+                style={{
+                  width: "90%",
+                  marginBottom: "5px",
+                }}
+              >
+                <b> {day}. KROG </b>
+                <small style={{ marginLeft: "10px" }}>
+                  {" "}
+                  {groupedMatches[day][0].date}{" "}
+                </small>
+              </div>
               <table className="matchdayTable" key={day}>
                 <tr>
                   <th>TEKME</th>
