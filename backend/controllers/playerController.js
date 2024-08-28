@@ -55,6 +55,7 @@ module.exports = {
         mustPayYellowCard: req.body.mustPayYellowCard,
         mustPayRedCard: req.body.mustPayRedCard,
         leader: req.body.leader,
+        teamId: req.body.teamId,
       });
 
       await player.save();

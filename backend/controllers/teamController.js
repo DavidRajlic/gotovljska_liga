@@ -1,4 +1,5 @@
 const teamModel = require("../models/TeamModel.js");
+const PlayerModel = require("../models/playerModel.js");
 
 /**
  * TeamController.js
@@ -16,6 +17,34 @@ module.exports = {
     } catch (err) {
       return res.status(500).json({
         message: "Error when getting Teams.",
+        error: err,
+      });
+    }
+  },
+
+  showTeamWithPlayers: async function (req, res) {
+    console.log("kul");
+    const teamId = req.params.id;
+
+    try {
+      // Pridobi ekipo
+      const team = await teamModel.findById(teamId);
+
+      if (!team) {
+        return res.status(404).json({ message: "Ekipa ni bila najdena" });
+      }
+
+      // Pridobi igralce te ekipe
+      const players = await PlayerModel.find({ teamId: teamId });
+      console.log(players);
+
+      return res.json({
+        team: team,
+        players: players,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Napaka pri pridobivanju ekipe in igralcev.",
         error: err,
       });
     }

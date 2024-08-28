@@ -24,7 +24,6 @@ module.exports = {
   },
 
   latest: async function (req, res) {
-    console.log("kjut");
     try {
       const latestMatch = await MatchModel.findOne()
         .sort({ createdAt: -1 })

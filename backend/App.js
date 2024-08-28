@@ -73,13 +73,16 @@ const teamsRouter = require("./routes/TeamRoutes");
 const playersRouter = require("./routes/playerRoutes");
 const roundsRouter = require("./routes/roundRoutes");
 const matchesRouter = require("./routes/matchRoutes");
+
 app.use("/teams", teamsRouter);
+
 app.use("/players", playersRouter);
 app.use("/rounds", roundsRouter);
 app.use("/matches", matchesRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
+  console.log("nicdsdsae");
 });
 
 module.exports = app;

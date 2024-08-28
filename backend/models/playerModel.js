@@ -9,6 +9,10 @@ var playerSchema = new Schema({
   mustPayYellowCard: Boolean,
   mustPayRedCard: Boolean,
   leader: Boolean,
+  teamId: {
+    type: Schema.Types.ObjectId,
+    ref: "team",
+  },
 });
 
 module.exports = mongoose.model("player", playerSchema);

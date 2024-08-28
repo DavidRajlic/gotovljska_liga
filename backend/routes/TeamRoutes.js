@@ -11,10 +11,12 @@ router.get("/", TeamController.list);
  * GET
  */
 router.get("/:id", TeamController.show);
+router.get("/again/:id", TeamController.showTeamWithPlayers);
 
 /*
  * POST
  */
+
 router.post("/", TeamController.create);
 
 /*
