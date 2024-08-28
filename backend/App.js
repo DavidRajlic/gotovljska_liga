@@ -40,22 +40,25 @@ const allowedOrigins = [
   "https://gotovljska-liga-frontend.vercel.app",
 ];
 
+// CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Če origin ni podan (npr. pri curl ali kakšnih drugih CLI orodjih), dovoli dostop
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        // Če je origin na seznamu dovoljenih, dovoli dostop
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
-        // Če ni dovoljen, zavrni dostop
         callback(new Error("Not allowed by CORS"));
       }
     },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Dovoli te glave
+    credentials: true, // Če potrebuješ pošiljanje piškotkov ali avtentikacijskih podatkov
   })
 );
+
+// Samodejno upravljaj s preflight zahtevki
+app.options("*", cors()); // Odzovi se na preflight OPTIONS zahteve
+
 // needed to transport data from fromntend to backend (name of team for example)
 app.use(express.json());
 
