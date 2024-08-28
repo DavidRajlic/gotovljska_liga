@@ -5,7 +5,6 @@ function Teams() {
   const [teams, setTeams] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
-  console.log(DOMAIN);
 
   useEffect(() => {
     const fetchData = async () => {

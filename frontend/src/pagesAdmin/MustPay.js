@@ -47,7 +47,7 @@ function PlayersWhoMustPay() {
 
   async function playerPaidRedCard(playerId) {
     try {
-      await axios.put(`${DOMAIN}//players/${playerId}`, {
+      await axios.put(`${DOMAIN}/players/${playerId}`, {
         mustPayRedCard: false,
       });
       setPlayersToPayRed((prevPlayers) =>

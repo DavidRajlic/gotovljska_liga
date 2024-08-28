@@ -145,6 +145,7 @@ function Round() {
   };
 
   const pinnMatchday = async (matchday) => {
+    console.log("pin");
     const rounds = await axios.get(`${DOMAIN}/rounds`);
 
     for (let i = 0; i < rounds.data.length; i++) {
@@ -161,6 +162,7 @@ function Round() {
         setPinned(rounds.data[i].round); // Update next state
       }
     }
+    console.log(pinned);
   };
 
   const editMatch = (team1, team2, matchId, team1Id, team2Id) => {
@@ -176,6 +178,7 @@ function Round() {
   };
 
   const handleMatchdayClick = (matches) => {
+    console.log("click");
     if (matches[0].matchPlayed && !isLoggedIn) {
       const matchIds = matches.map((match) => match._id);
       navigate("/matches", { state: { matchIds } });

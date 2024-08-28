@@ -59,9 +59,9 @@ function Players() {
         mustPayRedCard: false,
         leader: false,
       };
-      await axios.post("${DOMAIN}/players", newPlayerData);
+      await axios.post(`${DOMAIN}/players`, newPlayerData);
 
-      const response = await axios.get("${DOMAIN}/players");
+      const response = await axios.get(`${DOMAIN}/players`);
       const allPlayers = response.data;
       const lastPlayer = allPlayers[allPlayers.length - 1];
       const updatedPlayers = [...team.players, lastPlayer];

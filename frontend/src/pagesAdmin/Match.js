@@ -39,7 +39,7 @@ function Match() {
       try {
         const [team1Response, team2Response, matchResponse] = await Promise.all(
           [
-            axios.get(`${DOMAIN}/${team1Id}`),
+            axios.get(`${DOMAIN}/teams/${team1Id}`),
             axios.get(`${DOMAIN}/teams/${team2Id}`),
             axios.get(`${DOMAIN}/matches/${matchId}`),
           ]
@@ -292,10 +292,7 @@ function Match() {
         };
 
         if (playerGoals > 0 || playerYellowCards > 0 || playerRedCards > 0) {
-          await axios.put(
-            `http://localhost:4000/players/${playerId}`,
-            updateData
-          );
+          await axios.put(`${DOMAIN}/players/${playerId}`, updateData);
         }
       }
 
@@ -315,10 +312,7 @@ function Match() {
         };
 
         if (playerGoals > 0 || playerYellowCards > 0 || playerRedCards > 0) {
-          await axios.put(
-            `http://localhost:4000/players/${playerId}`,
-            updateData
-          );
+          await axios.put(`${DOMAIN}/players/${playerId}`, updateData);
         }
       }
 
@@ -358,7 +352,7 @@ function Match() {
         team2Draws = 1;
       }
 
-      await axios.put(`http://localhost:4000/teams/${team1Id}`, {
+      await axios.put(`${DOMAIN}/teams/${team1Id}`, {
         points: team1Points,
         goalsScored: team1Goals,
         goalsConceded: team2Goals,
@@ -370,7 +364,7 @@ function Match() {
         losses: team1Losses,
       });
 
-      await axios.put(`http://localhost:4000/teams/${team2Id}`, {
+      await axios.put(`${DOMAIN}/teams/${team2Id}`, {
         points: team2Points,
         goalsScored: team2Goals,
         goalsConceded: team1Goals,
@@ -383,7 +377,7 @@ function Match() {
       });
 
       // Pošlji podatke na strežnik
-      await axios.put(`http://localhost:4000/matches/${matchId}`, {
+      await axios.put(`${DOMAIN}/matches/${matchId}`, {
         team1Goals: team1Goals,
         team2Goals: team2Goals,
         team1Scorers: team1Scorers,
