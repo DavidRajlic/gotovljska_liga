@@ -40,10 +40,10 @@ const allowedOrigins = [
   "https://gotovljska-liga-frontend.vercel.app",
 ];
 
-// CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Če ni origin podan (za nekatere CLI orodja) ali je na seznamu dovoljenih
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
@@ -51,13 +51,15 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Dovoli te glave
-    credentials: true, // Če potrebuješ pošiljanje piškotkov ali avtentikacijskih podatkov
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    preflightContinue: false, // Končaj preflight z zahtevo z odgovorom, ne nadaljuj z naslednjim middlewareom
+    optionsSuccessStatus: 204, // HTTP status koda za uspešne preflight zahteve
   })
 );
 
-// Samodejno upravljaj s preflight zahtevki
-app.options("*", cors()); // Odzovi se na preflight OPTIONS zahteve
+// Nastavi avtomatsko obdelavo OPTIONS zahtev
+app.options("*", cors());
 
 // needed to transport data from fromntend to backend (name of team for example)
 app.use(express.json());
