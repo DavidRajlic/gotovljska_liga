@@ -390,6 +390,7 @@ function Match() {
         winner: winner,
       });
 
+      window.location.reload();
       console.log("Rezultat in strelci so uspešno posodobljeni.");
     } catch (error) {
       console.error(

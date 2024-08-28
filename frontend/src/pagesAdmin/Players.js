@@ -68,6 +68,7 @@ function Players() {
       const updatedTeam = { ...team, players: updatedPlayers };
 
       await axios.put(`${DOMAIN}/teams/players/${teamId}`, updatedTeam);
+
       fetchTeam();
       setTeam(updatedTeam);
       setPlayer("");

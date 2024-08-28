@@ -361,7 +361,7 @@ function Round() {
               <table className="matchdayTable" key={day}>
                 <tr>
                   <th>TEKME</th>
-                  <th>{matchPlayed ? "REZULTAT" : "URA"}</th>
+                  <th>URA</th>
                   {isLoggedIn && <th> Uredi </th>}
                 </tr>
 
@@ -372,21 +372,7 @@ function Round() {
                         {match.team1} : {match.team2}{" "}
                       </span>
                     </td>
-                    {match.matchPlayed ? (
-                      <td className="resultTd">
-                        <b>
-                          {" "}
-                          {match.team1Goals} : {match.team2Goals}{" "}
-                          {(match.team1Goals || match.team2Goals > 0) &&
-                            match.team1Scorers.length === 0 &&
-                            match.team2Scorers.length === 0 && (
-                              <span> B.B</span>
-                            )}{" "}
-                        </b>
-                      </td>
-                    ) : (
-                      <td className="resultTd">{match.time}</td>
-                    )}
+                    <td className="resultTd">{match.time}</td>
                     {isLoggedIn && (
                       <td className="editMatchTd">
                         <button
