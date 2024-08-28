@@ -37,7 +37,7 @@ function Teams() {
   return (
     <div className="topScorersContainer">
       <div>
-        <h1>Lestvica strelcev - TOP 10</h1>
+        <h1>Lestvica strelcev</h1>
         <div>
           <table className="topScorersTable">
             <thead>
