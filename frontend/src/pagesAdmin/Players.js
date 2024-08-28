@@ -28,12 +28,7 @@ function Players() {
       setTeam(response.data);
 
       setPlayers(response.data.players);
-      const players = response.data.players;
 
-      console.log(players);
-      players.forEach((player) => {
-        console.log(`Player: ${player.name}, Leader: ${player.leader}`);
-      });
       // Check for leader and set leader if found
       const leader = response.data.players.find(
         (player) => player.leader === true
