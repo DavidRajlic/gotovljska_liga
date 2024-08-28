@@ -27,15 +27,15 @@ function Players() {
       const response = await axios.get(`${DOMAIN}/teams/${teamId}`);
       setTeam(response.data);
 
-      // Fetch player details
-      const playerDetails = await Promise.all(
-        response.data.players.map((playerId) =>
-          axios.get(`${DOMAIN}/players/${playerId._id}`)
-        )
-      );
+      // Fetch all player details at once
+      const playerIds = response.data.players.map((player) => player._id);
 
-      const players = playerDetails.map((res) => res.data);
-      setPlayers(players);
+      // Pošlji seznam ID-jev v en API klic
+      const playersResponse = await axios.get(`${DOMAIN}/players`, {
+        params: { ids: playerIds.join(",") }, // Pošljemo ID-je kot parameter
+      });
+
+      setPlayers(playersResponse.data);
 
       // Check for leader and set leader if found
       const leader = players.find((player) => player.leader === true);
