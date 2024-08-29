@@ -12,6 +12,7 @@ import Leaderboard from "./pagesAdmin/Leaderboard";
 import "./styles/App.css";
 import { AuthProvider } from "../src/contexts/AuthContext";
 import Teams from "./pagesAdmin/Team";
+import Footer from "./components/Footer";
 
 function App() {
   return (

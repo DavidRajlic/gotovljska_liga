@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import Footer from "../components/Footer";
 
 function Teams() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -134,6 +135,7 @@ function Teams() {
             </div>
           ))}
         </ul>
+        <Footer />
       </div>
     </div>
   );

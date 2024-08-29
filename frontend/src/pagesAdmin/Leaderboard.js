@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "../components/Footer";
 
 function Teams() {
   const [teams, setTeams] = useState([]);
@@ -154,6 +155,7 @@ function Teams() {
           </table>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

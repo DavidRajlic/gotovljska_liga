@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
+import Footer from "../components/Footer";
 
 function PlayersWhoMustPay() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -112,6 +113,7 @@ function PlayersWhoMustPay() {
           </p>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
