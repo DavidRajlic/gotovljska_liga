@@ -39,31 +39,37 @@ function Teams() {
       <div>
         <h1>Lestvica strelcev</h1>
         <div>
-          <table className="topScorersTable">
-            <thead>
-              <tr>
-                <th>Mesto</th>
-                <th>Igralec</th>
-                <th>Število zadetkov</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scorers.map(
-                (scorer, index) =>
-                  scorer.goalsScored > 0 && (
-                    <tr key={scorer._id}>
-                      <td>
-                        <b> {scorer.rank}. </b>
-                      </td>
-                      <td>
-                        <b>{scorer.name}</b>
-                      </td>
-                      <td>{scorer.goalsScored}</td>
-                    </tr>
-                  )
-              )}
-            </tbody>
-          </table>
+          {scorers.every((scorer) => scorer.goalsScored === 0) ? (
+            <p style={{ textAlign: "center", marginTop: "100px" }}>
+              <b> Trenutno še ni strelcev</b>
+            </p>
+          ) : (
+            <table className="topScorersTable">
+              <thead>
+                <tr>
+                  <th>Mesto</th>
+                  <th>Igralec</th>
+                  <th>Število zadetkov</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scorers.map(
+                  (scorer, index) =>
+                    scorer.goalsScored > 0 && (
+                      <tr key={scorer._id}>
+                        <td>
+                          <b>{index + 1}.</b>
+                        </td>
+                        <td>
+                          <b>{scorer.name}</b>
+                        </td>
+                        <td>{scorer.goalsScored}</td>
+                      </tr>
+                    )
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

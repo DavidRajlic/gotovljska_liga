@@ -39,8 +39,8 @@ function Match() {
       try {
         const [team1Response, team2Response, matchResponse] = await Promise.all(
           [
-            axios.get(`${DOMAIN}/teams/${team1Id}`),
-            axios.get(`${DOMAIN}/teams/${team2Id}`),
+            axios.get(`${DOMAIN}/teams/again/${team1Id}`),
+            axios.get(`${DOMAIN}/teams/again/${team2Id}`),
             axios.get(`${DOMAIN}/matches/${matchId}`),
           ]
         );
@@ -129,7 +129,6 @@ function Match() {
 
     try {
       if (match.matchPlayed) {
-        console.log(team2.points);
         for (const scorer of match.team1Scorers) {
           await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             goalsScored: scorer.goals,
@@ -149,7 +148,6 @@ function Match() {
         }
 
         for (const scorer of match.team2YellowCards) {
-          console.log(scorer);
           await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             yellowCards: scorer.yellowCards,
             mustPayYellowCard: false,
@@ -157,7 +155,6 @@ function Match() {
         }
 
         for (const scorer of match.team1RedCards) {
-          console.log("NAJS");
           await axios.put(`${DOMAIN}/players/again/${scorer.id}`, {
             redCards: scorer.redCards,
             mustPayRedCard: false,
@@ -188,7 +185,6 @@ function Match() {
         });
 
         if (match.winner === team1Id) {
-          console.log("here");
           await axios.put(`${DOMAIN}/teams/again/${team1Id}`, {
             wins: 1,
             points: 3,
@@ -198,13 +194,11 @@ function Match() {
             losses: 1,
           });
           if (match.team1Scorers.length === 0 && match.team1Goals === 3) {
-            console.log("here");
             await axios.put(`${DOMAIN}/teams/${team2Id}`, {
               points: 1,
             });
           }
         } else if (match.winner === team2Id) {
-          console.log("here");
           await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
             wins: 1,
             points: 3,
@@ -219,7 +213,6 @@ function Match() {
             });
           }
         } else {
-          console.log("here");
           await axios.put(`${DOMAIN}/teams/again/${team2Id}`, {
             draws: 1,
             points: 1,
@@ -230,8 +223,6 @@ function Match() {
           });
         }
       }
-
-      console.log(team2.points);
 
       // Convert indexes into player names
       const team1Scorers = Object.keys(goals.team1).map((index) => ({
@@ -391,7 +382,6 @@ function Match() {
       });
 
       window.location.reload();
-      console.log("Rezultat in strelci so uspešno posodobljeni.");
     } catch (error) {
       console.error(
         "Prišlo je do napake pri posodabljanju rezultata in strelcev.",
@@ -429,10 +419,10 @@ function Match() {
       <div className="matchHeader">
         <b>
           {" "}
-          <h2>
+          <div>
             {" "}
-            {team1.name} : {team2.name}{" "}
-          </h2>
+            {team1.team.name} : {team2.team.name}{" "}
+          </div>
         </b>
         <input
           onChange={handleChangeTeam1}
@@ -470,14 +460,14 @@ function Match() {
             type="button"
             onClick={() => handleTeamClick(team1)}
           >
-            {team1.name}
+            {team1.team.name}
           </button>
           <button
             key={team2Id}
             type="button"
             onClick={() => handleTeamClick(team2)}
           >
-            {team2.name}
+            {team2.team.name}
           </button>{" "}
         </div>
       </ul>

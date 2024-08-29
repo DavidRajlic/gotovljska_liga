@@ -49,10 +49,11 @@ const EditMatch = ({
         {team.players.map((player, index) => (
           <div className="player" key={index}>
             <span
+              className="editMatchPlayer"
               style={{
                 fontWeight: 700,
                 display: "inline-block",
-                width: "30%",
+                width: "60%",
               }}
             >
               {player.name}:

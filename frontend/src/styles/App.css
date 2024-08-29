@@ -837,6 +837,7 @@ Players.js end
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-bottom: 80px;
 }
 
 .topScorersContainer h1 {
@@ -1112,9 +1113,8 @@ Players.js end
 /* Match start */
 
 .matchContainer {
-  width: 60%;
+  width: 70%;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .matchHeader {
@@ -1182,11 +1182,6 @@ Players.js end
   margin-bottom: 3rem;
 }
 
-.changedMatchDataTeam1 {
-  width: 50%;
-  border: 1px red solid;
-}
-
 .editMatch {
   display: flex;
   justify-content: space-between;
@@ -1194,7 +1189,35 @@ Players.js end
 }
 
 .editMatchTeam {
-  width: 70%;
+  width: 95%;
+}
+
+@media only screen and (max-width: 1220px) {
+  .matchContainer {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .matchContainer {
+    width: 100%;
+  }
+
+  .matchHeader {
+    width: 95%;
+  }
+
+  .match-header button {
+    padding: 5px;
+  }
+
+  .disabledBtn {
+    padding: 5px;
+  }
+
+  .teamNotAttend button {
+    padding: 7px;
+  }
 }
 
 .match-header button {
