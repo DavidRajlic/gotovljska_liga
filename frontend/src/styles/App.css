@@ -833,8 +833,8 @@ Players.js end
 /* TopScorers.js start  */
 
 .topScorersContainer {
-  width: 40%;
-  margin: 20px auto;
+  width: 60%;
+  margin: auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
@@ -876,6 +876,18 @@ Players.js end
 
 .topScorersTable td {
   font-size: 16px;
+}
+
+@media only screen and (max-width: 800px) {
+  .topScorersContainer {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .topScorersContainer {
+    width: 90%;
+  }
 }
 
 /* TopScorers.js end  */
