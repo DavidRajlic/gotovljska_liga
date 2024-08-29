@@ -5,6 +5,7 @@ import { AuthProvider, AuthContext } from "../contexts/AuthContext";
 
 function Round() {
   const { isLoggedIn } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [date, setDate] = useState("");
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
@@ -47,8 +48,10 @@ function Round() {
       if (pinnedRound) {
         setPinned(pinnedRound.round);
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("Prišlo je do napake pri pridobivanju podatkov!", error);
+      setIsLoading(false);
     }
   };
 
@@ -181,6 +184,16 @@ function Round() {
       navigate("/matches", { state: { matchIds } });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div>
+        <h2 style={{ textAlign: "center", marginTop: "5rem" }}>
+          Nalaganje razporeda...
+        </h2>
+      </div>
+    );
+  }
 
   return (
     <div>
