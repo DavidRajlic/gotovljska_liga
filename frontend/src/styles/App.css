@@ -806,15 +806,20 @@ Players.js end
 
 @media only screen and (max-width: 650px) {
   .matchdayContainer {
-    width: 95%;
+    width: 90%;
   }
 
   .listOfMatchdays {
     width: 100%;
+    padding: 8px;
+  }
+
+  .nextMatchdayAdmin div {
+    width: 96%;
   }
 
   .nextMatchdayAdmin {
-    width: 95%;
+    width: 92%;
   }
 
   .selectTeamList button {
