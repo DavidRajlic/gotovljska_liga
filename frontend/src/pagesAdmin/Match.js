@@ -46,6 +46,7 @@ function Match() {
         );
         setMatch(matchResponse.data);
         setTeam1(team1Response.data);
+
         setTeam2(team2Response.data);
       } catch (error) {
         console.error("Prišlo je do napake pri pridobivanju ekipe!", error);
@@ -120,9 +121,9 @@ function Match() {
   const confirmResult = async () => {
     let winner;
     if (team1Goals > team2Goals) {
-      winner = team1;
+      winner = team1.team;
     } else if (team2Goals > team1Goals) {
-      winner = team2;
+      winner = team2.team;
     } else {
       winner = null;
     }
@@ -316,22 +317,22 @@ function Match() {
       let team2Losses = 0;
       let team2Points = 0;
 
-      if (winner === team1 && !didNotPlay) {
+      if (winner === team1.team && !didNotPlay) {
         team1Wins = 1;
         team1Points = 3;
         team2Points = 0;
         team2Losses = 1;
-      } else if (winner === team1 && didNotPlay) {
+      } else if (winner === team1.team && didNotPlay) {
         team1Wins = 1;
         team1Points = 3;
         team2Points = -1;
         team2Losses = 1;
-      } else if (winner === team2 && didNotPlay) {
+      } else if (winner === team2.team && didNotPlay) {
         team2Wins = 1;
         team1Points = -1;
         team2Points = 3;
         team1Losses = 1;
-      } else if (winner === team2 && !didNotPlay) {
+      } else if (winner === team2.team && !didNotPlay) {
         team1Points = 0;
         team2Points = 3;
         team2Wins = 1;
