@@ -23,7 +23,6 @@ module.exports = {
   },
 
   showTeamWithPlayers: async function (req, res) {
-    console.log("kul");
     const teamId = req.params.id;
 
     try {
@@ -36,7 +35,6 @@ module.exports = {
 
       // Pridobi igralce te ekipe
       const players = await PlayerModel.find({ teamId: teamId });
-      console.log(players);
 
       return res.json({
         team: team,
@@ -148,9 +146,7 @@ module.exports = {
       // Only update the fields that are provided in the request body
       if (req.body.name) team.name = req.body.name;
       if (req.body.players) team.players = req.body.players;
-      console.log("BEFORE:", team.name, team.points, req.body.points);
       if (req.body.points) team.points += req.body.points;
-      console.log("AFTER:", team.name, team.points, req.body.points);
       if (req.body.goalsScored) team.goalsScored += goalsScored;
       if (req.body.goalsConceded) team.goalsConceded += goalsConceded;
       if (req.body.matchesPlayed) team.matchesPlayed += matchesPlayed;

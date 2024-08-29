@@ -11,7 +11,7 @@ const createError = require("http-errors");
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err + "hehehe"));
+  .catch((err) => console.log(err));
 
 const PORT = 4000;
 const app = express();
@@ -82,7 +82,6 @@ app.use("/matches", matchesRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
-  console.log("nicdsdsae");
 });
 
 module.exports = app;

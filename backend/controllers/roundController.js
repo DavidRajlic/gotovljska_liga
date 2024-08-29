@@ -23,7 +23,6 @@ module.exports = {
 
   latest: async function (req, res) {
     try {
-      console.log("kjut");
       const latestRound = await RoundModel.findOne()
         .sort({ createdAt: -1 })
         .populate("matches");
