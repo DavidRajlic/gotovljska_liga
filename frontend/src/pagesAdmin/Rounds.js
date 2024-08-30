@@ -346,7 +346,7 @@ function Round() {
         }}
       >
         {" "}
-        🛈 Za ogled podrobnosti posameznega kroga kliknite na izbrano kolo,
+        🛈 Za ogled podrobnosti oddigranih tekem kliknite na izbrani krog,
         katerega podrobnosti želite videti
       </div>
 

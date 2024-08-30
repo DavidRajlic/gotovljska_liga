@@ -279,8 +279,6 @@ Players.js end
 .leaderboard {
   display: flex;
   justify-content: center;
-
-  width: 100%;
 }
 
 .leaderboard h2 {
@@ -292,6 +290,7 @@ Players.js end
 .leaderboard table {
   margin: auto;
   border-collapse: collapse;
+  width: 100%;
 }
 
 .leaderboard th,
@@ -401,7 +400,7 @@ Players.js end
   }
 
   .lossesTh::after {
-    content: "P";
+    content: "P  ";
   }
 
   .pointsTh::after {
@@ -421,7 +420,7 @@ Players.js end
   }
 
   .cardsTh::after {
-    content: "K";
+    content: "K  ";
   }
 
   .leaderboard th,
