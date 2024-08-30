@@ -37,11 +37,6 @@ function Navbar() {
             <li> Lestvica </li>
           </Link>
 
-          <Link to="/teams" onClick={toggleMenu}>
-            {" "}
-            <li> Ekipe </li>
-          </Link>
-
           <Link to="/rounds" onClick={toggleMenu}>
             {" "}
             <li> Razpored </li>
@@ -55,6 +50,10 @@ function Navbar() {
           <Link to="/mustPay" onClick={toggleMenu}>
             {" "}
             <li> Kartoni </li>
+          </Link>
+          <Link to="/teams" onClick={toggleMenu}>
+            {" "}
+            <li> Ekipe </li>
           </Link>
           {isLoggedIn ? (
             <li onClick={handleLogout} style={{ cursor: "pointer" }}>
