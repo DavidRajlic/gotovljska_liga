@@ -5,9 +5,9 @@ function Footer() {
     <footer class="footer">
       <div class="footer-content">
         <p>
-          &copy; 2024 |<b> David Rajlič</b>{" "}
+          &copy; 2024 |{" "}
           <a href="mailto:rajlic.david@gmail.com" target="_blank">
-            rajlic.david@gmail.com
+            <b> David Rajlič</b>
           </a>
           <a href="https://github.com/davidrajlic" target="_blank">
             GitHub

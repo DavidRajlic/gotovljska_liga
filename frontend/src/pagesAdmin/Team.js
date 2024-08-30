@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 function Teams() {
   const { isLoggedIn } = useContext(AuthContext);
   const [teams, setTeams] = useState([]);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [name, setName] = useState("");
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -135,7 +136,7 @@ function Teams() {
             </div>
           ))}
         </ul>
-        <Footer />
+        {windowHeight >= 750 && <Footer />}
       </div>
     </div>
   );
