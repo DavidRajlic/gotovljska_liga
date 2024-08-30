@@ -39,7 +39,7 @@ function Navbar() {
 
           <Link to="/rounds" onClick={toggleMenu}>
             {" "}
-            <li> Razpored/Rezultati </li>
+            <li> Razpored & Rezultati </li>
           </Link>
 
           <Link to="/scorers" onClick={toggleMenu}>
