@@ -178,10 +178,9 @@ function Round() {
     });
   };
 
-  const handleMatchdayClick = (matches) => {
+  const handleMatchdayClick = (matches, day) => {
     if (matches[0].matchPlayed && !isLoggedIn) {
-      const matchIds = matches.map((match) => match._id);
-      navigate("/matches", { state: { matchIds } });
+      navigate(`/matches/day/${day}`);
     }
   };
 
@@ -356,7 +355,7 @@ function Round() {
           return (
             <div
               className="listOfMatchdays"
-              onClick={() => handleMatchdayClick(groupedMatches[day])}
+              onClick={() => handleMatchdayClick(groupedMatches[day], day)}
             >
               {isLoggedIn && (
                 <div className="pinMatchday">

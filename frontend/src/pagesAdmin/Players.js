@@ -15,8 +15,12 @@ function Players() {
   const [players, setPlayers] = useState([]);
   const [leader, setLeader] = useState("");
   const location = useLocation();
-  const teamName = location.state.teamName;
-  const teamId = location.state.teamId;
+  // const teamName = location.state.teamName;
+  // Pridobi trenutni URL
+  const url = window.location.href;
+  const parts = url.split("/");
+  const teamId = parts[parts.length - 1];
+
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
@@ -26,7 +30,7 @@ function Players() {
   const fetchTeam = async () => {
     try {
       const response = await axios.get(`${DOMAIN}/teams/again/${teamId}`);
-      setTeam(response.data);
+      setTeam(response.data.team);
 
       setPlayers(response.data.players);
 
@@ -139,7 +143,7 @@ function Players() {
   return (
     <div className="playerContainer">
       <ToastContainer position="top-right" />
-      <h1>{teamName}</h1>
+      <h1>{team.name}</h1>
       <div>
         {isLoggedIn && (
           <span>

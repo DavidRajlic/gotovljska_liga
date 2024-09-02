@@ -4,21 +4,21 @@ import { useLocation } from "react-router-dom";
 
 function Matches() {
   const location = useLocation();
-  const { matchIds } = location.state;
+  // const { matchIds } = location.state;
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
+  const url = window.location.href;
+  const parts = url.split("/");
+  const matchday = parts[parts.length - 1];
 
   useEffect(() => {
     const fetchMatchDetails = async () => {
       try {
-        const matchDetails = await Promise.all(
-          matchIds.map(async (id) => {
-            const response = await axios.get(`${DOMAIN}/matches/${id}`);
-            return response.data;
-          })
-        );
-        setMatches(matchDetails);
+        const response = await axios.get(`${DOMAIN}/matches/day/${matchday}`);
+
+        console.log(response.data);
+        setMatches(response.data);
         setLoading(false);
       } catch (error) {
         console.error(
@@ -29,7 +29,7 @@ function Matches() {
     };
 
     fetchMatchDetails();
-  }, [matchIds]);
+  }, []);
 
   if (loading) {
     return <div>Nalaganje...</div>;
