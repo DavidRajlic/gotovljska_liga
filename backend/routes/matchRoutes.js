@@ -7,6 +7,7 @@ var matchController = require("../controllers/matchController.js");
  */
 router.get("/", matchController.list);
 router.get("/latest", matchController.latest);
+router.get("/day/:id", matchController.getByMatchday);
 
 /*
  * GET

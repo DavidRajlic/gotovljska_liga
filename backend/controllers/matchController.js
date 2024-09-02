@@ -36,6 +36,30 @@ module.exports = {
     }
   },
 
+  getByMatchday: async function (req, res) {
+    const matchday = req.params.id;
+
+    try {
+      // Poišči vse tekme, ki imajo določen matchday
+      const matches = await MatchModel.find({ matchday: matchday })
+        .populate("team1 team2") // Populiraj podatke o ekipah
+        .sort({ createdAt: -1 }); // Uredi tekme po datumu ustvarjanja, če je potrebno
+
+      // Če ni tekem za določen matchday
+      if (!matches.length) {
+        return res.status(404).json({ message: "Ni tekem za določen dan." });
+      }
+
+      // Vrni seznam tekem
+      res.json(matches);
+    } catch (error) {
+      res.status(500).json({
+        message: "Napaka pri pridobivanju tekem za določen dan.",
+        error,
+      });
+    }
+  },
+
   /**
    * matchController.show()
    */
