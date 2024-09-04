@@ -39,6 +39,7 @@ const allowedOrigins = [
   "http://localhost:4000",
   "https://gotovljska-liga-frontend.vercel.app",
   "https://gotovlje-liga.vercel.app",
+  "https://gotovljskaliga.vercel.app/",
 ];
 
 app.use(
