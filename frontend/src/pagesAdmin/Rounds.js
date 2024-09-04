@@ -287,7 +287,7 @@ function Round() {
 
       <div
         className="nextMatchdayAdmin"
-        onClick={() => handleMatchdayClick(groupedMatches[pinned])}
+        onClick={() => handleMatchdayClick(groupedMatches[pinned], pinned)}
       >
         {" "}
         {pinned &&

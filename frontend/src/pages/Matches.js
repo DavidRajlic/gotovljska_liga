@@ -17,7 +17,6 @@ function Matches() {
       try {
         const response = await axios.get(`${DOMAIN}/matches/day/${matchday}`);
 
-        console.log(response.data);
         setMatches(response.data);
         setLoading(false);
       } catch (error) {
