@@ -15,11 +15,16 @@ function Teams() {
         );
 
         // Adjust ranks for players with the same number of goals
-        let previousGoals = null;
         let rank = 1;
+        let previousGoals = null;
+        let previousRank = 1;
+
         const rankedScorers = sortedScorers.map((scorer, index) => {
-          if (previousGoals !== null && scorer.goalsScored !== previousGoals) {
-            rank++;
+          if (scorer.goalsScored !== previousGoals) {
+            rank = index + 1; // Update the rank only when goals differ
+            previousRank = rank;
+          } else {
+            rank = previousRank; // Same rank for players with the same goals
           }
           previousGoals = scorer.goalsScored;
 
@@ -55,11 +60,11 @@ function Teams() {
               </thead>
               <tbody>
                 {scorers.map(
-                  (scorer, index) =>
+                  (scorer) =>
                     scorer.goalsScored > 0 && (
                       <tr key={scorer._id}>
                         <td>
-                          <b>{index + 1}.</b>
+                          <b>{scorer.rank}.</b>
                         </td>
                         <td>
                           <b>{scorer.name}</b>
