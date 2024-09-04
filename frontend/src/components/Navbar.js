@@ -61,9 +61,9 @@ function Navbar() {
             </li>
           ) : (
             <li>
-              <Link to="/login" onClick={toggleMenu}>
+              {/* <Link to="/login" onClick={toggleMenu}>
                 Prijava
-              </Link>
+              </Link> */}
             </li>
           )}
         </ul>
