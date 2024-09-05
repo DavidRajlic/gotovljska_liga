@@ -37,7 +37,7 @@ function Matches() {
   return (
     <div className="resultsContainer">
       <h1 className="resultsTitle">
-        Rezultati {matches[0].matchday}. kola {matches[0].date}
+        Rezultati {matches[0].matchday}. kroga {matches[0].date}
       </h1>
       <ul>
         {matches.map((match) => (
