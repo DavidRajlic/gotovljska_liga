@@ -40,6 +40,10 @@ const allowedOrigins = [
   "https://gotovljska-liga-frontend.vercel.app",
   "https://gotovlje-liga.vercel.app",
   "https://www.gotovljska-liga.si/",
+  "https://www.gotovljska-liga.si/",
+  "http://www.gotovljska-liga.si/",
+  "https://gotovljska-liga.si/",
+  "http://gotovljska-liga.si/",
 ];
 
 app.use(
