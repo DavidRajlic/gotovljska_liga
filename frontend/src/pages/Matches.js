@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 
 function Matches() {
-  const location = useLocation();
   // const { matchIds } = location.state;
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +35,7 @@ function Matches() {
   return (
     <div className="resultsContainer">
       <h1 className="resultsTitle">
-        Rezultati {matches[0].matchday}. kroga {matches[0].date}
+        Rezultati {matches[0].matchday}.kroga {matches[0].date}
       </h1>
       <ul>
         {matches.map((match) => (
