@@ -294,7 +294,7 @@ function Round() {
           groupedMatches[pinned] && ( // Ensure groupedMatches[pinned] is defined
             <div>
               {groupedMatches[pinned][0].matchPlayed ? (
-                <h2> Rezultati {pinned}. kroga </h2>
+                <h2> Rezultati {pinned}.KROG </h2>
               ) : (
                 <h2> Prihajajoče tekme ({pinned}.krog) </h2>
               )}{" "}

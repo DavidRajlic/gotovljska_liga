@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { AuthProvider, AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Footer from "../components/Footer";
 
 function Players() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -14,7 +13,7 @@ function Players() {
   const [player, setPlayer] = useState("");
   const [players, setPlayers] = useState([]);
   const [leader, setLeader] = useState("");
-  const location = useLocation();
+
   // const teamName = location.state.teamName;
   // Pridobi trenutni URL
   const url = window.location.href;

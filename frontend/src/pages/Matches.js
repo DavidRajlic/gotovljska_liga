@@ -34,9 +34,7 @@ function Matches() {
 
   return (
     <div className="resultsContainer">
-      <h1 className="resultsTitle">
-        Rezultati {matches[0].matchday}.kroga {matches[0].date}
-      </h1>
+      <h1 className="resultsTitle">Rezultati!</h1>
       <ul>
         {matches.map((match) => (
           <div className="match" key={match._id}>
