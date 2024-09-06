@@ -172,15 +172,9 @@ function Players() {
                 {player.name} {/* {player.leader && <> (K)</>*/}
               </span>
               <span className="goal">⚽: {player.goalsScored}</span>
-              {player.mustPayYellowCard ? (
-                <span className="yellow-card">
-                  {" "}
-                  🟨: {player.yellowCards}
-                  <small style={{ color: "red" }}> * </small>{" "}
-                </span>
-              ) : (
-                <span className="yellow-card"> 🟨: {player.yellowCards} </span>
-              )}
+
+              <span className="yellow-card"> 🟨: {player.yellowCards} </span>
+
               {player.mustPayRedCard ? (
                 <span className="red-card">
                   🟥: {player.redCards}{" "}
