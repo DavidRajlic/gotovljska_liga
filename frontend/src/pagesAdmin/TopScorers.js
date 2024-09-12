@@ -4,12 +4,15 @@ import Footer from "../components/Footer";
 
 function Teams() {
   const [scorers, setScorers] = useState([]);
+  const [teams, setTeams] = useState([]);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const response = await axios.get(`${DOMAIN}/players`);
+        const responseTeams = await axios.get(`${DOMAIN}/teams`);
+
         const sortedScorers = response.data.sort(
           (a, b) => b.goalsScored - a.goalsScored
         );
@@ -31,6 +34,7 @@ function Teams() {
           return { ...scorer, rank };
         });
 
+        setTeams(responseTeams.data);
         setScorers(rankedScorers);
       } catch (error) {
         console.error("Prišlo je do napake pri pridobivanju igralcev!", error);
@@ -39,6 +43,12 @@ function Teams() {
 
     fetchPlayers();
   }, []);
+
+  // Helper function to find team name by teamId
+  const getTeamName = (teamId) => {
+    const team = teams.find((team) => team._id === teamId);
+    return team ? team.name : "Neznana ekipa";
+  };
 
   return (
     <div className="topScorersContainer">
@@ -55,6 +65,7 @@ function Teams() {
                 <tr>
                   <th>Mesto</th>
                   <th>Igralec</th>
+                  <th>Ekipa</th>
                   <th>Število zadetkov</th>
                 </tr>
               </thead>
@@ -69,7 +80,13 @@ function Teams() {
                         <td>
                           <b>{scorer.name}</b>
                         </td>
-                        <td>{scorer.goalsScored}</td>
+                        <td>
+                          <b>{getTeamName(scorer.teamId)}</b>{" "}
+                        </td>
+                        <td>
+                          {" "}
+                          <b> {scorer.goalsScored} </b>
+                        </td>
                       </tr>
                     )
                 )}
