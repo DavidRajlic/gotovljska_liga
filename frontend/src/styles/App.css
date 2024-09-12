@@ -887,6 +887,18 @@ Players.js end
   .topScorersContainer {
     width: 90%;
   }
+  .topScorersTable th,
+  .topScorersTable td {
+    padding: 8px;
+  }
+
+  .topScorersTable td {
+    font-size: 13px;
+  }
+
+  .topScorersTable th {
+    font-size: 14px;
+  }
 }
 
 /* TopScorers.js end  */
