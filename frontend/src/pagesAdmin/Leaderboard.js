@@ -36,7 +36,8 @@ function Teams() {
       if (b.points !== a.points) {
         return b.points - a.points;
       } else {
-        const headToHeadResult = getHeadToHeadResult(a, b, matches);
+        const headToHeadResult = getHeadToHeadResult(b, a, matches);
+
         if (headToHeadResult !== 0) {
           return headToHeadResult;
         } else {
@@ -88,7 +89,7 @@ function Teams() {
 
     if (teamAWins !== teamBWins) {
       // sorting by head to head wins
-      return teamBWins - teamAWins;
+      return teamAWins - teamBWins;
     } else if (teamAGoalDifference !== teamBGoalDifference) {
       // then by head to head goal difference
       return teamBGoalDifference - teamAGoalDifference;
