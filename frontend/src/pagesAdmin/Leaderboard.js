@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Footer from "../components/Footer";
+import Ajax from "../images/Ajax.png";
+import Gotovlje from "../images/Gotovlje.png";
 
 function Teams() {
   const [teams, setTeams] = useState([]);
@@ -137,7 +139,20 @@ function Teams() {
                     <b>{index + 1}.</b>
                   </td>
                   <td>
-                    <b>{team.name}</b>
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {" "}
+                      <img
+                        src={require(`../images/${team.name}.png`)}
+                        width="20px"
+                        alt="Ajax"
+                      />
+                      <b style={{ paddingLeft: "5px" }}> {team.name}</b>
+                    </span>
                   </td>
                   <td>{team.matchesPlayed}</td>
                   <td>{team.wins}</td>

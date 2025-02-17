@@ -298,7 +298,22 @@ Players.js end
   border: 1px solid black;
   padding: 12px;
   text-align: center;
-  background-color: lightblue;
+  /* background-color: #f2f2f2; */
+}
+
+/*
+.leaderboard tr:nth-child(even) {
+  background-color: #e3eafc;
+}
+
+.leaderboard tr:nth-child(odd) {
+  background-color: #f8f9fc; 
+}
+
+*/
+
+.leaderboard tr:hover {
+  background-color: #ddd;
 }
 
 .leaderboard th {
@@ -433,6 +448,13 @@ Players.js end
   .leaderboard th,
   .leaderboard td {
     padding: 8px;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  .leaderboard th,
+  .leaderboard td {
+    padding: 5px;
   }
 }
 /* Leaderboard.js end
