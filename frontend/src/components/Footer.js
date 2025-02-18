@@ -5,12 +5,9 @@ function Footer() {
     <footer class="footer">
       <div class="footer-content">
         <p>
-          &copy; 2024 |{" "}
+          &copy; {new Date().getFullYear()} |{" "}
           <a href="mailto:rajlic.david@gmail.com" target="_blank">
             <b> David Rajlič</b>
-          </a>
-          <a href="https://github.com/davidrajlic" target="_blank">
-            GitHub
           </a>
         </p>
       </div>
