@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Footer from "../components/Footer";
-import Ajax from "../images/Ajax.png";
-import Gotovlje from "../images/Gotovlje.png";
 
 function Teams() {
   const [teams, setTeams] = useState([]);

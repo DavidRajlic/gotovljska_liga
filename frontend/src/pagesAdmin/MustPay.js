@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import Footer from "../components/Footer";
@@ -8,12 +8,27 @@ function PlayersWhoMustPay() {
   const [playersToPay, setPlayersToPay] = useState([]);
   const [playersToPayRed, setPlayersToPayRed] = useState([]);
   const DOMAIN = process.env.REACT_APP_DOMAIN;
+  let lastRound = useRef(0);
 
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
         const response = await axios.get(`${DOMAIN}/players`);
+        const rounds = await axios.get(`${DOMAIN}/rounds`);
         const allPlayers = response.data;
+        const allRounds = rounds.data;
+        for (let i = 0; i < allRounds.length; i++) {
+          if (allRounds[i].done) {
+            lastRound.current = i + 1;
+          } else {
+            break;
+          }
+        }
+        const lastMatchday = await axios.get(
+          `${DOMAIN}/matches/day/${lastRound.current}`
+        );
+        console.log(lastRound.current);
+        console.log(lastMatchday.data);
 
         const filteredPlayers = allPlayers.filter(
           (player) => player.mustPayYellowCard
@@ -62,14 +77,15 @@ function PlayersWhoMustPay() {
   return (
     <div className="players-container">
       <div className="players-section">
-        <h3 className="section-title">
-          Igralci, ki morajo poravnati kazen za prejeti rumeni karton (3€)
-        </h3>
-        {playersToPay.length > 0 ? (
+        <h3 className="section-title">Denarne kazni</h3>
+
+        {playersToPay.length > 0 || playersToPayRed.length > 0 ? (
           <ul className="players-list">
+            {/* Rumeni kartoni */}
             {playersToPay.map((player) => (
               <li className="player-item" key={player._id}>
                 <span className="player-name">{player.name}</span>
+                <span> Prejeti rumeni karton (3€)</span>
                 {isLoggedIn && (
                   <button
                     className="pay-button"
@@ -80,22 +96,12 @@ function PlayersWhoMustPay() {
                 )}
               </li>
             ))}
-          </ul>
-        ) : (
-          <p className="no-players-message">
-            Noben igralec trenutno ne potrebuje plačati za rumeni karton.
-          </p>
-        )}
-      </div>
-      <div className="players-section">
-        <h3 className="section-title">
-          Igralci, ki morajo poravnati kazen za prejeti rdeči karton (6€)
-        </h3>
-        {playersToPayRed.length > 0 ? (
-          <ul className="players-list">
+
+            {/* Rdeči kartoni */}
             {playersToPayRed.map((player) => (
               <li className="player-item" key={player._id}>
                 <span className="player-name">{player.name}</span>
+                <span> Prejeti rdeči karton (6€)</span>
                 {isLoggedIn && (
                   <button
                     className="pay-button"
@@ -109,9 +115,19 @@ function PlayersWhoMustPay() {
           </ul>
         ) : (
           <p className="no-players-message">
-            Noben igralec trenutno ne potrebuje plačati za rdeči karton.
+            Noben igralec trenutno ne potrebuje plačati kazni.
           </p>
         )}
+      </div>
+      <div className="players-section">
+        <h3 className="section-title">Prepoved igranja</h3>
+        <ul className="players-list">
+          {/* <li className="player-item"><span className="player-name">David Rajlič</span>
+                <span> 5. rumeni karton</span> </li>*/}
+        </ul>
+        <p className="no-players-message">
+          Trenutno nima noben igralec prepovedi igranja
+        </p>
       </div>
       <Footer />
     </div>
