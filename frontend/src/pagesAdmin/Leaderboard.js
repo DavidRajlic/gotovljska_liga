@@ -69,9 +69,13 @@ function Teams() {
           const team1IsTeamA = match.team1Id === teamA._id;
 
           // counting number of wins
-          if (match.team1Goals > match.team2Goals) {
+          if (match.team1Goals > match.team2Goals && team1IsTeamA) {
             teamAWins++;
-          } else if (match.team1Goals < match.team2Goals) {
+          } else if (match.team1Goals < match.team2Goals && team1IsTeamA) {
+            teamBWins++;
+          } else if (match.team1Goals < match.team2Goals && !team1IsTeamA) {
+            teamAWins++;
+          } else if (match.team1Goals > match.team2Goals && !team1IsTeamA) {
             teamBWins++;
           }
 
@@ -87,12 +91,13 @@ function Teams() {
       }
     });
 
+    console.log(teamAWins, teamBWins);
     if (teamAWins !== teamBWins) {
       // sorting by head to head wins
       return teamAWins - teamBWins;
     } else if (teamAGoalDifference !== teamBGoalDifference) {
       // then by head to head goal difference
-      return teamBGoalDifference - teamAGoalDifference;
+      return teamAGoalDifference - teamBGoalDifference;
     } else {
       // else head to head not resolved
       return 0;
