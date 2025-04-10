@@ -131,7 +131,7 @@ function PlayersWhoMustPay() {
               <span>
                 {" "}
                 (prepoved igranja v 13.krogu) -{" "}
-                <span style={{ fontWeight: "800", color: "black" }}>
+                <span style={{ fontWeight: "800", color: "red" }}>
                   {" "}
                   rdeči karton{" "}
                 </span>{" "}
