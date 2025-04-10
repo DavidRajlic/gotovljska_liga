@@ -1471,12 +1471,18 @@ Players.js end
 }
 
 @media only screen and (max-width: 1000px) {
+  .players-section {
+    width: 65%;
+  }
   .loginBox {
     width: 40%;
   }
 }
 
 @media only screen and (max-width: 750px) {
+  .players-section {
+    width: 90%;
+  }
   .loginBox {
     width: 50%;
   }
@@ -1541,6 +1547,9 @@ Players.js end
 }
 
 @media only screen and (max-width: 500px) {
+  .players-section {
+    width: 98%;
+  }
   .footer-content {
     min-width: 92%;
   }

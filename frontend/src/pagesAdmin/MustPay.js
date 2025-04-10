@@ -123,8 +123,20 @@ function PlayersWhoMustPay() {
         <h3 className="section-title">Prepoved igranja</h3>
         <ul className="players-list">
           <li className="player-item">
-            <span className="player-name">Gal Guček</span>
-            <span> Rdeči karton</span>{" "}
+            <span className="player-name">
+              <span style={{ fontWeight: "800", color: "black" }}>
+                {" "}
+                Gal Guček{" "}
+              </span>
+              <span>
+                {" "}
+                (prepoved igranja v 13.krogu) -{" "}
+                <span style={{ fontWeight: "800", color: "black" }}>
+                  {" "}
+                  rdeči karton{" "}
+                </span>{" "}
+              </span>
+            </span>
           </li>
         </ul>
         {/*<p className="no-players-message">
