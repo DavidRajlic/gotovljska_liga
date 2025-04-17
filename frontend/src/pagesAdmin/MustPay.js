@@ -122,8 +122,9 @@ function PlayersWhoMustPay() {
       <div className="players-section">
         <h3 className="section-title">Prepoved igranja</h3>
         <ul className="players-list">
-          <li className="player-item">
-            <span className="player-name">
+          {/*
+            <li className="player-item">
+           <span className="player-name">
               <span style={{ fontWeight: "800", color: "black" }}>
                 {" "}
                 Gal Guček{" "}
@@ -137,11 +138,13 @@ function PlayersWhoMustPay() {
                 </span>{" "}
               </span>
             </span>
-          </li>
+            </li>  */}
         </ul>
-        {/*<p className="no-players-message">
-          Trenutno nima noben igralec prepovedi igranja
-        </p>*/}
+        {
+          <p className="no-players-message">
+            Trenutno nima noben igralec prepovedi igranja
+          </p>
+        }
       </div>
       <Footer />
     </div>
