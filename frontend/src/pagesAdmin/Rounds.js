@@ -75,9 +75,17 @@ function Round() {
           setNextMatchday(match.matchday);
         }
       }
+
       acc[day].push(match);
       return acc;
     }, {});
+
+    if (grouped[17] && grouped[17].length > 1) {
+      const matches17 = grouped[17];
+      const lastMatch = matches17.pop();
+      matches17.unshift(lastMatch);
+      grouped[17] = matches17;
+    }
 
     setGroupedMatches(grouped);
     calculateFreeTeams(grouped);
