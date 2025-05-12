@@ -45,6 +45,17 @@ function Matches() {
                   {" "}
                   {match.team1Goals} - {match.team2Goals}{" "}
                 </span>{" "}
+                {match._id === "66cfad7d26703c179b836050" && (
+                  <h6
+                    style={{
+                      padding: "none",
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    po dogovoru tekma 16.kroga oddigrana v 17.krogu
+                  </h6>
+                )}{" "}
                 {(match.team1Goals > 0 || match.team2Goals > 0) &&
                   match.team1Scorers.length === 0 &&
                   match.team2Scorers.length === 0 && (
