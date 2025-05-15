@@ -50,6 +50,16 @@ function Teams() {
     return team ? team.name : "Neznana ekipa";
   };
 
+  let rank = 0;
+  const checkRank = (currRank) => {
+    if (rank !== currRank) {
+      rank = currRank;
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="topScorersContainer">
       <div>
@@ -75,7 +85,7 @@ function Teams() {
                     scorer.goalsScored > 0 && (
                       <tr key={scorer._id}>
                         <td>
-                          <b>{scorer.rank}.</b>
+                          {checkRank(scorer.rank) && <b>{scorer.rank}.</b>}{" "}
                         </td>
                         <td>
                           <b>{scorer.name}</b>
