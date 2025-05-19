@@ -75,17 +75,9 @@ function Round() {
           setNextMatchday(match.matchday);
         }
       }
-
       acc[day].push(match);
       return acc;
     }, {});
-
-    if (grouped[17] && grouped[17].length > 1) {
-      const matches17 = grouped[17];
-      const lastMatch = matches17.pop();
-      matches17.unshift(lastMatch);
-      grouped[17] = matches17;
-    }
 
     setGroupedMatches(grouped);
     calculateFreeTeams(grouped);
@@ -387,7 +379,11 @@ function Round() {
               <table className="matchdayTable" key={day}>
                 <tr>
                   <th>TEKME</th>
-                  <th>URA</th>
+                   {groupedMatches[day][0].matchPlayed ? (
+                    <th> REZULTAT </th>
+                  ) : (
+                    <th> URA</th>
+                  )}
                   {isLoggedIn && <th> Uredi </th>}
                 </tr>
 
@@ -398,7 +394,8 @@ function Round() {
                         {match.team1} : {match.team2}{" "}
                       </span>
                     </td>
-                    <td className="resultTd">{match.time}</td>
+                    {match.matchPlayed ? (<td className="resultTd" style={{ fontWeight:"Bold"}}> {match.team1Goals} : {match.team2Goals}</td> ) : (<td className="resultTd" > {match.time}</td>)} 
+                    
                     {isLoggedIn && (
                       <td className="editMatchTd">
                         <button
@@ -422,7 +419,7 @@ function Round() {
                 {freeTeams[day] && (
                   <tr className="freeTr">
                     {" "}
-                    <td colspan="3">
+                    <td colSpan="3">
                       <b>PROSTO </b>
                       {freeTeams[day].join(", ")}{" "}
                     </td>
