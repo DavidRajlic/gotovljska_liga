@@ -122,29 +122,111 @@ function PlayersWhoMustPay() {
       <div className="players-section">
         <h3 className="section-title">Prepoved igranja</h3>
         <ul className="players-list">
-          {/*
+          {
             <li className="player-item">
-           <span className="player-name">
-              <span style={{ fontWeight: "800", color: "black" }}>
-                {" "}
-                Gal Guček{" "}
-              </span>
-              <span>
-                {" "}
-                (prepoved igranja v 13.krogu) -{" "}
-                <span style={{ fontWeight: "800", color: "red" }}>
+              <span className="player-name">
+                <span style={{ fontWeight: "800", color: "black" }}>
                   {" "}
-                  rdeči karton{" "}
-                </span>{" "}
+                  David Kramarič{" "}
+                </span>
+                <span>
+                  {" "}
+                  (prepoved igranja v 21.krogu) -{" "}
+                  <span style={{ fontWeight: "800", color: "red" }}>
+                    {" "}
+                    rdeči karton{" "}
+                  </span>{" "}
+                </span>
               </span>
-            </span>
-            </li>  */}
+            </li>
+
+          }
+          {
+            <li className="player-item">
+              <span className="player-name">
+                <span style={{ fontWeight: "800", color: "black" }}>
+                  {" "}
+                  Danijel Komljen{" "}
+                </span>
+                <span>
+                  {" "}
+                  (prepoved igranja v 21.krogu) -{" "}
+                  <span style={{ fontWeight: "800", color: "red" }}>
+                    {" "}
+                    rdeči karton{" "}
+                  </span>{" "}
+                </span>
+              </span>
+            </li>
+
+          }
+          {
+            <li className="player-item">
+              <span className="player-name">
+                <span style={{ fontWeight: "800", color: "black" }}>
+                  {" "}
+                  Albin Berisha{" "}
+                </span>
+                <span>
+                  {" "}
+                  (prepoved igranja v 21.krogu) -{" "}
+                  <span style={{ fontWeight: "800", color: "red" }}>
+                    {" "}
+                    rdeči karton{" "}
+                  </span>{" "}
+                </span>
+              </span>
+            </li>
+
+          }
+
+          {
+            <li className="player-item">
+              <span className="player-name">
+                <span style={{ fontWeight: "800", color: "black" }}>
+                  {" "}
+                  Arben Berisha{" "}
+                </span>
+                <span>
+                  {" "}
+                  (prepoved igranja v 21.krogu) -{" "}
+                  <span style={{ fontWeight: "800", color: "red" }}>
+                    {" "}
+                    rdeči karton{" "}
+                  </span>{" "}
+                </span>
+              </span>
+            </li>
+
+
+          }
+          {
+            <li className="player-item">
+              <span className="player-name">
+                <span style={{ fontWeight: "800", color: "black" }}>
+                  {" "}
+                  Agon Gashi{" "}
+                </span>
+                <span>
+                  {" "}
+                  (prepoved igranja v 21.krogu) -{" "}
+                  <span style={{ fontWeight: "800", color: "red" }}>
+                    {" "}
+                    rdeči karton{" "}
+                  </span>{" "}
+                </span>
+              </span>
+            </li>
+
+          }
         </ul>
-        {
-          <p className="no-players-message">
-            Trenutno nima noben igralec prepovedi igranja
-          </p>
-        }
+        {/*
+  <p className="no-players-message">
+    Trenutno nima noben igralec prepovedi igranja
+  </p>
+*/}
+
+
       </div>
       <Footer />
     </div>
