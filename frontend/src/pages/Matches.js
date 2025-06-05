@@ -46,19 +46,18 @@ function Matches() {
                   {match.team1Goals} - {match.team2Goals}{" "}
                 </span>{" "}
                 {match._id === "681e2be083811dc90d24adc0" && (
-                  <h6
+                  <div lassName="notify"
                     style={{ 
                        color: "#856404",
                       borderRadius: "6px",
                       padding: "12px",
                       marginTop: "10px",
-                      fontSize: "14px",
                       fontWeight: 500,
                     }}
                   >
                     {" "}
                     ⚠️ Obvestilo: Po dogovoru tekma 16.kroga odigrana v 17.krogu
-                  </h6>
+                  </div>
                 )}{" "}
 
                 {match._id === "683f1054e2315dcffe6aea00" && (
