@@ -48,38 +48,52 @@ function Matches() {
                 {match._id === "681e2be083811dc90d24adc0" && (
                   <h6
                     style={{
-                      padding: "none",
-                      color: "red",
+                       color: "#856404",
+                      borderRadius: "6px",
+                      padding: "12px",
+                      marginTop: "10px",
+                      fontSize: "14px",
+                      fontWeight: 500,
                     }}
                   >
                     {" "}
-                    po dogovoru tekma 16.kroga odigrana v 17.krogu
+                    ⚠️ Obvestilo: Po dogovoru tekma 16.kroga odigrana v 17.krogu
                   </h6>
                 )}{" "}
 
                 {match._id === "683f1054e2315dcffe6aea00" && (
-                  <h6
+                  <div
                     style={{
-                      padding: "none",
-                      color: "red",
+                      color: "#856404",
+                      borderRadius: "6px",
+                      padding: "12px",
+                      marginTop: "10px",
+                      fontSize: "14px",
+                      fontWeight: 500,
                     }}
                   >
-                    {" "}
-                    Po dogovoru tekma 21.kroga odigrana vnaprej v 20.krogu
-                  </h6>
-                )}{" "}
+                    ⚠️ Obvestilo: Tekma 21. kroga je bila po dogovoru odigrana vnaprej v okviru 20. kroga.
+                  </div>
+                )}
+
 
                 {match._id === "683f1054e2315dcffe6aea04" && (
-                  <h6
+                  <div
                     style={{
-                      padding: "none",
-                      color: "red",
+                      backgroundColor: "#f8d7da",
+                      color: "#721c24",
+                      border: "1px solid #f5c6cb",
+                      borderRadius: "6px",
+                      padding: "12px",
+                      marginTop: "10px",
+                      fontSize: "14px",
+                      fontWeight: 500,
                     }}
                   >
-                    {" "}
-                    Tekma predčasno prekinjena zaradi neprimernega vedenja poražene ekipe, kateri je bila tudi kazensko odvzeta točka!
-                  </h6>
+                    🚫 Kazen: Tekma je bila predčasno prekinjena zaradi neprimernega vedenja poražene ekipe, kateri je bila kazensko odvzeta točka!
+                  </div>
                 )}
+
                 {(match.team1Goals > 0 || match.team2Goals > 0) &&
                   match.team1Scorers.length === 0 &&
                   match.team2Scorers.length === 0 && (
@@ -90,8 +104,8 @@ function Matches() {
               {match.matchPlayed && (
                 <div className="matchScorers">
                   {(match.team1Goals > 0 || match.team2Goals > 0) &&
-                  match.team1Scorers.length === 0 &&
-                  match.team2Scorers.length === 0 ? (
+                    match.team1Scorers.length === 0 &&
+                    match.team2Scorers.length === 0 ? (
                     <div
                       className="note"
                       style={{
