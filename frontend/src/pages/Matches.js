@@ -57,6 +57,18 @@ function Matches() {
                   </h6>
                 )}{" "}
 
+                {match._id === "683f1054e2315dcffe6aea00" && (
+                  <h6
+                    style={{
+                      padding: "none",
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    Po dogovoru tekma 21.kroga odigrana vnaprej v 20.krogu
+                  </h6>
+                )}{" "}
+
                 {match._id === "683f1054e2315dcffe6aea04" && (
                   <h6
                     style={{
