@@ -103,6 +103,7 @@ nav span a {
     display: flex;
     flex-direction: column;
   }
+
   .nav-links li {
     margin: 0;
     padding: 15px;
@@ -114,6 +115,7 @@ nav span a {
   .nav-links li:hover {
     background-color: #ddd;
   }
+
   .nav b {
     font-size: 5px;
   }
@@ -271,6 +273,7 @@ ul {
     margin-left: 5px;
   }
 }
+
 /*
 Players.js end 
 */
@@ -403,9 +406,11 @@ Players.js end
   .leaderboard table {
     width: 95%;
   }
+
   .matchesPlayedTh::after {
     content: "OT";
   }
+
   .winsTh::after {
     content: "Z";
   }
@@ -445,6 +450,7 @@ Players.js end
 }
 
 @media only screen and (max-width: 600px) {
+
   .leaderboard th,
   .leaderboard td {
     padding: 8px;
@@ -452,11 +458,13 @@ Players.js end
 }
 
 @media only screen and (max-width: 470px) {
+
   .leaderboard th,
   .leaderboard td {
     padding: 5px;
   }
 }
+
 /* Leaderboard.js end
 
 /* Team.js start  */
@@ -615,17 +623,28 @@ Players.js end
 }
 
 .selectTeamList button {
-  background-color: #e9192d; /* Zelena barva ozadja */
-  border: none; /* Brez obrobe */
-  color: white; /* Barva besedila */
-  padding: 15px 32px; /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
-  text-align: center; /* Poravnava besedila na sredino */
-  text-decoration: none; /* Brez podčrtaja */
-  display: inline-block; /* Inline-block prikaz */
-  font-size: 16px; /* Velikost pisave */
-  margin: 4px 2px; /* Zunanji robovi (zgoraj/spodaj, levo/desno) */
-  cursor: pointer; /* Spremeni kazalec miške v kazalec */
-  border-radius: 12px; /* Zaobljeni robovi */
+  background-color: #e9192d;
+  /* Zelena barva ozadja */
+  border: none;
+  /* Brez obrobe */
+  color: white;
+  /* Barva besedila */
+  padding: 15px 32px;
+  /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
+  text-align: center;
+  /* Poravnava besedila na sredino */
+  text-decoration: none;
+  /* Brez podčrtaja */
+  display: inline-block;
+  /* Inline-block prikaz */
+  font-size: 16px;
+  /* Velikost pisave */
+  margin: 4px 2px;
+  /* Zunanji robovi (zgoraj/spodaj, levo/desno) */
+  cursor: pointer;
+  /* Spremeni kazalec miške v kazalec */
+  border-radius: 12px;
+  /* Zaobljeni robovi */
 }
 
 .selectTeamBtn:hover {
@@ -678,7 +697,8 @@ Players.js end
 .matchdayContainer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem; /* Adds consistent spacing between the tables */
+  gap: 1rem;
+  /* Adds consistent spacing between the tables */
   width: 90%;
   margin: auto;
   margin-top: 1rem;
@@ -688,9 +708,12 @@ Players.js end
 .listOfMatchdays {
   width: 90%;
   cursor: pointer;
-  border: 1px solid #ccc; /* Adds a border around each table container */
-  padding: 1rem; /* Adds padding inside each table container */
-  box-sizing: border-box; /* Ensures padding and border are included in the width */
+  border: 1px solid #ccc;
+  /* Adds a border around each table container */
+  padding: 1rem;
+  /* Adds padding inside each table container */
+  box-sizing: border-box;
+  /* Ensures padding and border are included in the width */
 }
 
 .matchdayTable {
@@ -737,6 +760,7 @@ Players.js end
 .nextMatchdayAdmin div {
   width: 90%;
 }
+
 .nextMatchdayAdmin table {
   margin: auto;
 }
@@ -744,6 +768,7 @@ Players.js end
 .resultTd {
   text-align: center;
 }
+
 .freeTr {
   border: 1px black solid;
   background-color: lightblue;
@@ -752,6 +777,7 @@ Players.js end
 .freeTr {
   border: 1px red solid;
 }
+
 .pinMatchday {
   display: flex;
   justify-content: end;
@@ -765,6 +791,7 @@ Players.js end
   .matchdayContainer {
     width: 95%;
   }
+
   .listOfMatchdays {
     width: 100%;
   }
@@ -778,6 +805,7 @@ Players.js end
   .matchdayContainer {
     width: 80%;
   }
+
   .listOfMatchdays {
     width: 90%;
   }
@@ -788,6 +816,7 @@ Players.js end
     width: 90%;
     gap: 10px;
   }
+
   .listOfMatchdays {
     width: 95%;
   }
@@ -807,21 +836,25 @@ Players.js end
     width: 100%;
   }
 }
+
 @media only screen and (max-width: 870px) {
   .matchdayContainer {
     grid-template-columns: repeat(1, 1fr);
     width: 80%;
   }
+
   .listOfMatchdays {
     margin: auto;
     width: 80%;
   }
+
   .nextMatchdayAdmin {
     width: 80%;
   }
 
   .selectTeamList button {
-    padding: 10px 20px; /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
+    padding: 10px 20px;
+    /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
   }
 }
 
@@ -844,8 +877,10 @@ Players.js end
   }
 
   .selectTeamList button {
-    font-size: 12px; /* Velikost pisave */
-    padding: 10px 10px; /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
+    font-size: 12px;
+    /* Velikost pisave */
+    padding: 10px 10px;
+    /* Notranje obrobe (zgoraj/spodaj, levo/desno) */
   }
 }
 
@@ -909,6 +944,7 @@ Players.js end
   .topScorersContainer {
     width: 90%;
   }
+
   .topScorersTable th,
   .topScorersTable td {
     padding: 8px;
@@ -939,6 +975,7 @@ Players.js end
 .nextMatchday div {
   width: 40%;
 }
+
 .nextMatchday table {
   margin: auto;
 }
@@ -963,6 +1000,20 @@ Players.js end
   justify-content: center;
   margin-top: 5px;
 }
+
+.notify {
+  color: #856404;
+    border-radius: "6px";
+    padding: "12px";
+    margin-top: "10px";
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.punish-note {
+  font-size: 14px;
+}
+
 /* Matchdays.js end  */
 
 /* Matches.js start  */
@@ -1081,6 +1132,14 @@ Players.js end
   .matchScorers {
     font-size: 10px;
   }
+
+  .notify {
+    font-size: 8px;
+  }
+
+  .punish-note {
+    font-size: 8px;
+  }
 }
 
 @media only screen and (max-width: 520px) {
@@ -1151,6 +1210,7 @@ Players.js end
   padding: 0;
   margin: 0;
 }
+
 /* Matches.js end  */
 
 .players {
@@ -1317,6 +1377,7 @@ Players.js end
 .players .player span:hover {
   color: #007bff;
 }
+
 /* must pay  */
 
 .players-container {
@@ -1474,6 +1535,7 @@ Players.js end
   .players-section {
     width: 65%;
   }
+
   .loginBox {
     width: 40%;
   }
@@ -1483,6 +1545,7 @@ Players.js end
   .players-section {
     width: 90%;
   }
+
   .loginBox {
     width: 50%;
   }
@@ -1492,6 +1555,7 @@ Players.js end
   .loginBox {
     width: 70%;
   }
+
   .button {
     width: 35%;
   }
@@ -1550,9 +1614,11 @@ Players.js end
   .players-section {
     width: 98%;
   }
+
   .footer-content {
     min-width: 92%;
   }
+
   .footer p {
     font-size: 13px;
   }

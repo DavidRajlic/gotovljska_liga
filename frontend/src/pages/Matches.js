@@ -47,7 +47,7 @@ function Matches() {
                 </span>{" "}
                 {match._id === "681e2be083811dc90d24adc0" && (
                   <h6
-                    style={{
+                    style={{ 
                        color: "#856404",
                       borderRadius: "6px",
                       padding: "12px",
@@ -62,13 +62,13 @@ function Matches() {
                 )}{" "}
 
                 {match._id === "683f1054e2315dcffe6aea00" && (
-                  <div
+                  <div className="notify"
                     style={{
                       color: "#856404",
                       borderRadius: "6px",
                       padding: "12px",
                       marginTop: "10px",
-                      fontSize: "14px",
+                      
                       fontWeight: 500,
                     }}
                   >
@@ -78,7 +78,7 @@ function Matches() {
 
 
                 {match._id === "683f1054e2315dcffe6aea04" && (
-                  <div
+                  <div className="punish-note"
                     style={{
                       backgroundColor: "#f8d7da",
                       color: "#721c24",
@@ -86,7 +86,6 @@ function Matches() {
                       borderRadius: "6px",
                       padding: "12px",
                       marginTop: "10px",
-                      fontSize: "14px",
                       fontWeight: 500,
                     }}
                   >
