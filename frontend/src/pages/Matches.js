@@ -56,6 +56,18 @@ function Matches() {
                     po dogovoru tekma 16.kroga odigrana v 17.krogu
                   </h6>
                 )}{" "}
+
+                {match._id === "683f1054e2315dcffe6aea04" && (
+                  <h6
+                    style={{
+                      padding: "none",
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    Tekma predčasno prekinjena zaradi neprimernega vedenja poražene ekipe, kateri je bila tudi kazensko odvzeta točka!
+                  </h6>
+                )}
                 {(match.team1Goals > 0 || match.team2Goals > 0) &&
                   match.team1Scorers.length === 0 &&
                   match.team2Scorers.length === 0 && (
