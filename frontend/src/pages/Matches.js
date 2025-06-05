@@ -46,7 +46,7 @@ function Matches() {
                   {match.team1Goals} - {match.team2Goals}{" "}
                 </span>{" "}
                 {match._id === "681e2be083811dc90d24adc0" && (
-                  <div lassName="notify"
+                  <div className="notify"
                     style={{ 
                        color: "#856404",
                       borderRadius: "6px",
